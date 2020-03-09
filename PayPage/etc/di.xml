@@ -1,0 +1,612 @@
+<?xml version="1.0" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Payment Method Facade configuration -->
+    <virtualType name="PayPageCreditCardFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolCreditCard</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageStcPayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolStcPay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolStcPay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageApplePayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolApplePay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolApplePay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageOmanNetFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_OMANNET</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolOmanNet</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolOmanNet</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageMadaFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolMada</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolMada</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageSadadFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolSadad</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolSadad</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageAtFawryFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_ATFAWRY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAtFawry</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAtFawry</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageKnPayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolKnPay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolKnPay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageAmexFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAmex</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAmex</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <virtualType name="PayPageCreditCardConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageStcPayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageApplePayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageOmanNetConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_OMANNET</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageMadaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageSadadConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAtFawryConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_ATFAWRY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageKnPayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAmexConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Logger, initialized with PayPageCreditCardConfig -->
+    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Gateway\Http\Client\ClientMock">
+        <arguments>
+            <argument name="logger" xsi:type="object">PayPageLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- Commands infrastructure -->
+    <virtualType name="PayPageCommandPoolCreditCard" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolStcPay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandStcPay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolApplePay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandApplePay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolOmanNet" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandOmanNet</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolMada" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandMada</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolSadad" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandSadad</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolAtFawry" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAtFawry</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolKnPay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandKnPay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolAmex" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAmex</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Authorize command -->
+    <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandStcPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestStcPay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandApplePay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestApplePay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandOmanNet" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestOmanNet</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandMada" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestMada</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandSadad" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestSadad</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandAtFawry" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAtFawry</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandKnPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestKnPay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandAmex" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAmex</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Authorization Request -->
+    <virtualType name="PayPageAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestCreditCard</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestStcPay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestStcPay</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestApplePay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestApplePay</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestOmanNet" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestOmanNet</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestMada" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestMada</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestSadad" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestSadad</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestAtFawry" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestAtFawry</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestKnPay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestKnPay</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestAmex" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestAmex</item>
+                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="AuthorizationRequestCreditCard" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestStcPay" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageStcPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestApplePay" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageApplePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestOmanNet" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageOmanNetConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestMada" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageMadaConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestSadad" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageSadadConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestAtFawry" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageAtFawryConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestKnPay" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageKnPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestAmex" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageAmexConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Capture command -->
+    <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\CaptureRequest</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Capture Request -->
+    <type name="PayTabs\PayPage\Gateway\Request\CaptureRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Void command -->
+    <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Void Request -->
+    <type name="PayTabs\PayPage\Gateway\Request\VoidRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Response handlers -->
+    <virtualType name="PayPageResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="txnid" xsi:type="string">PayTabs\PayPage\Gateway\Response\TxnIdHandler</item>
+                <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Value handlers infrastructure -->
+    <virtualType name="PayPageValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolStcPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerStcPay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolApplePay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerApplePay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolOmanNet" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerOmanNet</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolMada" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerMada</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolSadad" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerSadad</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolAtFawry" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAtFawry</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolKnPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerKnPay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolAmex" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAmex</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerStcPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageStcPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerApplePay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageApplePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerOmanNet" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageOmanNetConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerMada" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageMadaConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerSadad" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageSadadConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerAtFawry" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAtFawryConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerKnPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageKnPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerAmex" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAmexConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+
+    <!-- <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="MyOrderPlaceAfterPlugin" type="PayTabs\PayPage\Plugin\OrderServicePlugin" sortOrder="99" />
+    </type> -->
+    <type name="Magento\Framework\App\Request\CsrfValidator">
+        <plugin name="csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
+    </type>
+
+</config>
