@@ -100,6 +100,7 @@ class Api
         $email = $billingAddress->getEmail();
         $city = $billingAddress->getCity();
         $postcode = $billingAddress->getPostcode();
+        if (empty($postcode)) $postcode = '11111';
         $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
         $telephone = $billingAddress->getTelephone();
@@ -119,6 +120,7 @@ class Api
             $s_lastName = $shippingAddress->getlastname();
             $s_city = $shippingAddress->getCity();
             $s_postcode = $shippingAddress->getPostcode();
+            if (empty($s_postcode)) $s_postcode = '11111';
             $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
 
