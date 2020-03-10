@@ -51,6 +51,7 @@ class Response extends Action
         // Get the params that were passed from our Router
         $orderId = $this->getRequest()->getParam('p', null);
 
+        // PayTabs "Invoice ID"
         $transactionId = $this->getRequest()->getParam('payment_reference', null);
 
         $resultRedirect = $this->resultRedirectFactory->create();
@@ -77,6 +78,9 @@ class Response extends Action
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->verify_payment($transactionId);
+        if (!$verify_response) {
+            return;
+        }
 
         // $orderId = $verify_response->reference_no;
         if ($orderId != $verify_response->reference_no) {
@@ -92,12 +96,29 @@ class Response extends Action
         $verifyPayment = $success;
 
         if ($verifyPayment) {
-            // $paymentAmount = $verify_response->amount;
-            // $paymentCurrency = $verify_response->currency;
+            // PayTabs "Transaction ID"
+            $txnId = $verify_response->transaction_id;
+            $paymentAmount = $verify_response->amount;
+            $paymentCurrency = $verify_response->currency;
 
-            $payment->setTransactionId($transactionId);
-            $payment->setIsTransactionClosed(false);
-            // $payment->setShouldCloseParentTransaction(true);
+            $payment
+                ->setTransactionId($txnId)
+                ->setLastTransId($txnId)
+                ->setCcTransId($txnId)
+                ->setIsTransactionClosed(false)
+                ->setShouldCloseParentTransaction(true)
+                ->setAdditionalInformation("Invoice ID", $transactionId)
+                ->setAdditionalInformation("Payment amount", $paymentAmount)
+                ->setAdditionalInformation("Payment currency", $paymentCurrency)
+                ->save();
+
+            $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
+            $transaction = $payment->addTransaction($transType, null, false);
+            $transaction
+                ->setIsClosed(true)
+                ->setParentTxnId(null)
+                ->save();
+
 
             // $orderState = Order::STATE_PROCESSING;
             $this->setNewStatus($order, $paymentSuccess);
