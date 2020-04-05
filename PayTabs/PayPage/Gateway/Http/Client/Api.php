@@ -72,11 +72,14 @@ class Api
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+        $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
+        $lang_code = $localeResolver->getLocale();
+        $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
 
         // Compute Prices
 
@@ -230,7 +233,7 @@ class Api
             'cms_with_version' => $systemVersion, // $params['whmcsVersion'],
             'reference_no'     => $invoiceId,
             'site_url'         => $baseurl,
-            'msg_lang'         => 'English'
+            'msg_lang'         => $lang
         ];
 
         //
