@@ -68,7 +68,7 @@ class Api
 
         // $paymentType = 'creditcard'; //$this->paymentType($paymentCode);
 
-        $orderId = $order->getId();
+        $orderId = $order->getIncrementId();
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
