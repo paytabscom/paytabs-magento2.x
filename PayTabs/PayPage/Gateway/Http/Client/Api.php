@@ -149,7 +149,8 @@ class Api
         /** 1.3. Read Products */
 
         // $items = $order->getAllItems();
-        $items = $order->getItems(); //$order->getAllVisibleItems();
+        // $items = $order->getItems();
+        $items = $order->getAllVisibleItems();
 
         $products_str = implode(' || ', array_map(function ($p) {
             return $p->getName();

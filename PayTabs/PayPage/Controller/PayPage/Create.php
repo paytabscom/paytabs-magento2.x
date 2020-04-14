@@ -22,6 +22,7 @@ class Create extends Action
     private $pageFactory;
     private $jsonResultFactory;
     protected $orderRepository;
+    protected $quoteRepository;
     private $paytabs;
 
     /**
@@ -33,6 +34,7 @@ class Create extends Action
         PageFactory $pageFactory,
         \Magento\Framework\Controller\Result\JsonFactory $jsonResultFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Checkout\Model\Session $checkoutSession
     ) {
@@ -42,6 +44,7 @@ class Create extends Action
         $this->pageFactory = $pageFactory;
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
+        $this->quoteRepository = $quoteRepository;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
     }
 
@@ -55,18 +58,32 @@ class Create extends Action
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getParam('quote', null);
         if (!$quoteId) {
-            return false;
+            $result->setData([
+                'result' => 'Quote ID is missing!'
+            ]);
+            return $result;
         }
 
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            return false;
+            $result->setData([
+                'result' => 'Order is missing!'
+            ]);
+            return $result;
         }
 
-        $page = $this->prepare($order);
+        $paypage = $this->prepare($order);
+        if ($paypage && $paypage->response_code == 4012) {
+            // Create paypage success
+        } else {
+            // Create paypage failed, Save the Qoute (user's Cart)
+            $quote = $this->quoteRepository->get($quoteId);
+            $quote->setIsActive(true)->save();
+            $order->cancel()->save();
+        }
 
-        $result->setData($page);
+        $result->setData($paypage);
 
         return $result;
     }
