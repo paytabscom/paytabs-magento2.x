@@ -25,16 +25,23 @@ class Response extends Action
     private $paytabs;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $_logger;
+
+    /**
      * @param Context $context
      * @param PageFactory $pageFactory
      */
     public function __construct(
         Context $context,
-        PageFactory $pageFactory
+        PageFactory $pageFactory,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
+        $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
     }
@@ -45,6 +52,7 @@ class Response extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
+            $this->_logger->addError("Paytabs: no post back data received in callback");
             return;
         }
 
@@ -59,6 +67,7 @@ class Response extends Action
         //
 
         if (!$orderId || !$transactionId) {
+            $this->_logger->addError("Paytabs: OrderId/TransactionId data did not receive in callback");
             return;
         }
 
@@ -66,6 +75,11 @@ class Response extends Action
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($orderId);
+
+        if (!$order) {
+            $this->_logger->addError("Paytabs: Order is missing");
+            return;
+        }
 
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
@@ -84,6 +98,7 @@ class Response extends Action
 
         // $orderId = $verify_response->reference_no;
         if ($orderId != $verify_response->reference_no) {
+            $this->_logger->addError("Paytabs Response: Order reference number is mismatch ");
             $this->messageManager->addWarningMessage('Order reference number is mismatch');
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
@@ -126,6 +141,7 @@ class Response extends Action
             $this->messageManager->addSuccessMessage($res_msg);
             $resultRedirect->setPath('checkout/onepage/success');
         } else {
+            $this->_logger->addError("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
             $payment->setIsTransactionPending(true);
             $payment->setIsFraudDetected(true);
 

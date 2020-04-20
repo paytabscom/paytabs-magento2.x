@@ -65,9 +65,14 @@ define(
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
                                 clickableOverlay: false,
-                                actions: {
-                                    always: function () { }
-                                }
+                                buttons: [{
+                                    text: $.mage.__('Close'),
+                                    class: 'action primary accept',
+
+                                    click: function () {
+                                        $.mage.redirect(_urlBuilder.build('checkout/cart'));
+                                    }
+                                }]
                             });
                         }
                     })

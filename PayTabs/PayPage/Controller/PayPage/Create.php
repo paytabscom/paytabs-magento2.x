@@ -26,6 +26,11 @@ class Create extends Action
     private $paytabs;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $_logger;
+
+    /**
      * @param Context $context
      * @param PageFactory $pageFactory
      */
@@ -36,7 +41,8 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->_orderFactory = $orderFactory;
@@ -45,6 +51,7 @@ class Create extends Action
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
+        $this->_logger = $logger;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
     }
 
@@ -58,6 +65,7 @@ class Create extends Action
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getParam('quote', null);
         if (!$quoteId) {
+            $this->_logger->addError("Paytabs: Quote ID is missing!");
             $result->setData([
                 'result' => 'Quote ID is missing!'
             ]);
@@ -67,6 +75,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
+            $this->_logger->addError("Paytabs: Order is missing!");
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -77,9 +86,11 @@ class Create extends Action
         if ($paypage && $paypage->response_code == 4012) {
             // Create paypage success
         } else {
+            $this->_logger->addError("Paytabs: create paypage failed! - " . json_encode($paypage));
+
             // Create paypage failed, Save the Qoute (user's Cart)
             $quote = $this->quoteRepository->get($quoteId);
-            $quote->setIsActive(true)->save();
+            $quote->setIsActive(true)->removePayment()->save();
             $order->cancel()->save();
         }
 
