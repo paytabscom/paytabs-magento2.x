@@ -37,6 +37,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -77,6 +82,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -112,6 +122,11 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -151,6 +166,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -186,6 +206,11 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -225,6 +250,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -260,6 +290,11 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -299,6 +334,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -336,6 +376,11 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
+                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
@@ -346,7 +391,7 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
-            
+
         </section>
     </system>
 </config>

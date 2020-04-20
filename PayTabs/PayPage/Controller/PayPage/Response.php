@@ -25,6 +25,11 @@ class Response extends Action
     private $paytabs;
 
     /**
+     * @var Magento\Sales\Model\Order\Email\Sender\OrderSender
+     */
+    private $_orderSender;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
@@ -36,11 +41,13 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
+        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
+        $this->_orderSender = $orderSender;
         $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -89,6 +96,9 @@ class Response extends Action
         $paymentFailed = $paymentMethod->getConfigData('order_failed_status');
         if (!$paymentFailed) $paymentFailed = Order::STATE_CANCELED;
 
+        $sendInvoice = $paymentMethod->getConfigData('send_invoice');
+        if (!$sendInvoice) $sendInvoice = false;
+
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->verify_payment($transactionId);
@@ -122,10 +132,23 @@ class Response extends Action
                 ->setCcTransId($txnId)
                 ->setIsTransactionClosed(false)
                 ->setShouldCloseParentTransaction(true)
-                ->setAdditionalInformation("Invoice ID", $transactionId)
                 ->setAdditionalInformation("Payment amount", $paymentAmount)
                 ->setAdditionalInformation("Payment currency", $paymentCurrency)
                 ->save();
+
+            if ($sendInvoice) {
+                $payment->registerCaptureNotification($paymentAmount, true)->save();
+
+                $invoice = $payment->getCreatedInvoice();
+                if ($invoice && !$order->getEmailSent()) {
+                    $this->_orderSender->send($order);
+                    $order->addStatusHistoryComment(
+                        __('You notified customer about invoice #%1.', $invoice->getIncrementId())
+                    )
+                        ->setIsCustomerNotified(true)
+                        ->save();
+                }
+            }
 
             $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
             $transaction = $payment->addTransaction($transType, null, false);
