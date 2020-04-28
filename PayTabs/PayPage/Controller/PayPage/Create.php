@@ -75,7 +75,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            $this->_logger->addError("Paytabs: Order is missing!");
+            $this->_logger->addError("Paytabs: Order is missing!, Quote = [{$quoteId}]");
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -86,7 +86,7 @@ class Create extends Action
         if ($paypage && $paypage->response_code == 4012) {
             // Create paypage success
         } else {
-            $this->_logger->addError("Paytabs: create paypage failed! - " . json_encode($paypage));
+            $this->_logger->addError("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
 
             // Create paypage failed, Save the Qoute (user's Cart)
             $quote = $this->quoteRepository->get($quoteId);

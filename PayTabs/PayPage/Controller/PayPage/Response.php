@@ -84,7 +84,7 @@ class Response extends Action
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($orderId);
 
         if (!$order) {
-            $this->_logger->addError("Paytabs: Order is missing");
+            $this->_logger->addError("Paytabs: Order is missing, Order param = [{$orderId}]");
             return;
         }
 
@@ -108,7 +108,7 @@ class Response extends Action
 
         // $orderId = $verify_response->reference_no;
         if ($orderId != $verify_response->reference_no) {
-            $this->_logger->addError("Paytabs Response: Order reference number is mismatch ");
+            $this->_logger->addError("Paytabs Response: Order reference number is mismatch, Order = [{$orderId}], ReferenceId = [{$verify_response->reference_no}] ");
             $this->messageManager->addWarningMessage('Order reference number is mismatch');
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
