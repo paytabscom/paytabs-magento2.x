@@ -73,6 +73,8 @@ class Api
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
         $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
+        $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        $versionMagento = $productMetadata->getVersion();
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
@@ -97,7 +99,6 @@ class Api
         /** 1.2. Read BillingAddress info */
 
         $billingAddress = $order->getBillingAddress();
-        // var_dump($billingAddress);
         $firstName = $billingAddress->getFirstname();
         $lastName = $billingAddress->getlastname();
         $email = $billingAddress->getEmail();
@@ -157,7 +158,7 @@ class Api
         $items = $order->getAllVisibleItems();
 
         $products_str = implode(' || ', array_map(function ($p) {
-            return $p->getName();
+            return str_replace('||', '/', $p->getName());
         }, $items));
 
         $quantity = implode(' || ', array_map(function ($p) {
@@ -184,8 +185,8 @@ class Api
         $phone = $telephone;
 
         // System Parameters
-        $version = '2.3.3'; //Mage::getVersion();
-        $systemVersion = "Magento $version";
+        // $version = '2.3.3'; //Mage::getVersion();
+        $systemVersion = "Magento {$versionMagento}";
 
         // $locale = Mage::app()->getLocale()->getLocaleCode(); // en_US
 
@@ -198,47 +199,52 @@ class Api
         /** 2. Fill post array */
 
         $post_arr = [
-            'payment_type'     => $paymentType,
-            'amount'           => $amount,
-            'shipping_firstname' => $s_firstName,
-            'shipping_lastname'  => $s_lastName,
-            'email'            => $email,
-            'billing_address'  => $billing_address,
-            'address_shipping' => $shipping_address,
-            'address1'         => $address1,
-            // 'address2'         => $address2,
-            'city'             => $city,
-            'state'            => $state,
-            'country'          => $country,
-            'city_shipping'    => $s_city,
-            'state_shipping'   => $s_state,
-            'country'          => $country,
-            'country_shipping' => $s_country,
-            'zipcode'          => $postcode,
-            'phone'            => $phone,
-            'cc_phone_number'  => $phoneext,
-            'cc_first_name'    => $firstName,
-            'cc_last_name'     => $lastName,
-            'phone_number'     => $phone,
-            'postal_code'      => $postcode,
+            'payment_type' => $paymentType,
+
+            'currency'           => $currencyCode,
+            'amount'             => $amount,
+            'other_charges'      => $otherCharges,
+            'discount'           => $discountAmount,
+            'title'              => $title,
+            'description'        => $description,
+            'products_per_title' => $products_str,
+            'quantity'           => $quantity,
+            'unit_price'         => $unit_price,
+
+            'billing_address' => $billing_address,
+            'email'           => $email,
+            'address1'        => $address1,
+            // 'address2'    => $address2,
+            'city'            => $city,
+            'state'           => $state,
+            'country'         => $country,
+            'zipcode'         => $postcode,
+            'phone'           => $phone,
+            'cc_phone_number' => $phoneext,
+            'cc_first_name'   => $firstName,
+            'cc_last_name'    => $lastName,
+            'phone_number'    => $phone,
+            'postal_code'     => $postcode,
+
+            'shipping_firstname'   => $s_firstName,
+            'shipping_lastname'    => $s_lastName,
+            'address_shipping'     => $shipping_address,
+            'city_shipping'        => $s_city,
+            'state_shipping'       => $s_state,
+            'country_shipping'     => $s_country,
             'postal_code_shipping' => $s_postcode,
-            'currency'         => $currencyCode,
-            'title'            => $title,
-            'products_per_title'     => $products_str,
-            'description'    => $description,
-            'quantity'         => $quantity,
-            'unit_price'       => $unit_price,
-            'other_charges'    => $otherCharges,
-            'discount' => $discountAmount,
-            'return_url'       => $returnUrl,
-            // 'callback_url'     => $callbackUrl,
-            'invoiceid'        => $invoiceId,
+
+            'invoiceid'    => $invoiceId,
+            'reference_no' => $invoiceId,
+
+            // 'callback_url' => $callbackUrl,
             'ip_customer'      => $_SERVER['REMOTE_ADDR'],
             'ip_merchant'      => $_SERVER['SERVER_ADDR'],
             'cms_with_version' => $systemVersion, // $params['whmcsVersion'],
-            'reference_no'     => $invoiceId,
+            'return_url'       => $returnUrl,
             'site_url'         => $baseurl,
-            'msg_lang'         => $lang
+
+            'msg_lang' => $lang
         ];
 
         //
