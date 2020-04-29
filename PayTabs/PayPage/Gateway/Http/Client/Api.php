@@ -106,6 +106,7 @@ class Api
 
         $postcode = $billingAddress->getPostcode();
         if (empty($postcode) || trim($postcode) == '') $postcode = '11111';
+        $postcode = Api::convertAr2En($postcode);
 
         $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
@@ -128,6 +129,7 @@ class Api
 
             $s_postcode = $shippingAddress->getPostcode();
             if (empty($s_postcode) || trim($s_postcode) == '') $s_postcode = '11111';
+            $s_postcode = Api::convertAr2En($s_postcode);
 
             $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
@@ -765,6 +767,47 @@ class Api
         }
 
         return $iso_3;
+    }
+
+    public static function convertAr2En($string)
+    {
+        $nonEnglish = [
+            // Arabic
+            [
+                '٠',
+                '١',
+                '٢',
+                '٣',
+                '٤',
+                '٥',
+                '٦',
+                '٧',
+                '٨',
+                '٩'
+            ],
+            // Persian
+            [
+                '۰',
+                '۱',
+                '۲',
+                '۳',
+                '۴',
+                '۵',
+                '۶',
+                '۷',
+                '۸',
+                '۹'
+            ]
+        ];
+
+        $num = range(0, 9);
+
+        $englishNumbersOnly = $string;
+        foreach ($nonEnglish as $oldNum) {
+            $englishNumbersOnly = str_replace($oldNum, $num, $englishNumbersOnly);
+        }
+
+        return $englishNumbersOnly;
     }
 }
 
