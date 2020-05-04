@@ -159,24 +159,21 @@ class Api
         // $items = $order->getItems();
         $items = $order->getAllVisibleItems();
 
-        $products_str = implode(' || ', array_map(function ($p) {
-            return str_replace('||', '/', $p->getName());
-        }, $items));
+        $items_arr = array_map(function ($p) {
+            return [
+                'name' => $p->getName(),
+                'quantity' => $p->getQtyOrdered(),
+                'price' => $p->getPrice()
+            ];
+        }, $items);
 
-        $quantity = implode(' || ', array_map(function ($p) {
-            return $p->getQtyOrdered();
-        }, $items));
-
-        $unit_price = implode(' || ', array_map(function ($p) {
-            return $p->getPrice();
-        }, $items));
+        $products_arr = $this->prepare_products($items_arr);
 
 
         // Gateway Configuration Parameters
 
         // Invoice Parameters
         $invoiceId = $orderId;
-        $description = ''; //$params["description"];
         $currencyCode = $currency;
 
         // Client Parameters
@@ -187,10 +184,7 @@ class Api
         $phone = $telephone;
 
         // System Parameters
-        // $version = '2.3.3'; //Mage::getVersion();
         $systemVersion = "Magento {$versionMagento}";
-
-        // $locale = Mage::app()->getLocale()->getLocaleCode(); // en_US
 
         // Computed Parameters
         $title = $firstName . " " . $lastName;
@@ -203,55 +197,81 @@ class Api
         $post_arr = [
             'payment_type' => $paymentType,
 
-            'currency'           => $currencyCode,
-            'amount'             => $amount,
-            'other_charges'      => $otherCharges,
-            'discount'           => $discountAmount,
-            'title'              => $title,
-            'description'        => $description,
-            'products_per_title' => $products_str,
-            'quantity'           => $quantity,
-            'unit_price'         => $unit_price,
+            'title'         => $title,
 
-            'billing_address' => $billing_address,
-            'email'           => $email,
-            'address1'        => $address1,
-            // 'address2'    => $address2,
-            'city'            => $city,
-            'state'           => $state,
-            'country'         => $country,
-            'zipcode'         => $postcode,
-            'phone'           => $phone,
-            'cc_phone_number' => $phoneext,
+            'currency'      => $currencyCode,
+            'amount'        => $amount,
+            'other_charges' => $otherCharges,
+            'discount'      => $discountAmount,
+
+            'reference_no'  => $invoiceId,
+
             'cc_first_name'   => $firstName,
             'cc_last_name'    => $lastName,
+            'cc_phone_number' => $phoneext,
             'phone_number'    => $phone,
+            'email'           => $email,
+
+            'billing_address' => $billing_address,
+            'state'           => $state,
+            'city'            => $city,
             'postal_code'     => $postcode,
+            'country'         => $country,
 
             'shipping_firstname'   => $s_firstName,
             'shipping_lastname'    => $s_lastName,
             'address_shipping'     => $shipping_address,
             'city_shipping'        => $s_city,
             'state_shipping'       => $s_state,
-            'country_shipping'     => $s_country,
             'postal_code_shipping' => $s_postcode,
+            'country_shipping'     => $s_country,
 
-            'invoiceid'    => $invoiceId,
-            'reference_no' => $invoiceId,
+            'site_url'   => $baseurl,
+            'return_url' => $returnUrl,
 
-            // 'callback_url' => $callbackUrl,
-            'ip_customer'      => $_SERVER['REMOTE_ADDR'],
-            'ip_merchant'      => $_SERVER['SERVER_ADDR'],
-            'cms_with_version' => $systemVersion, // $params['whmcsVersion'],
-            'return_url'       => $returnUrl,
-            'site_url'         => $baseurl,
-
-            'msg_lang' => $lang
+            'msg_lang'         => $lang,
+            'cms_with_version' => $systemVersion,
         ];
+
+        $post_arr = array_merge($post_arr, $products_arr);
 
         //
 
         return $post_arr;
+    }
+
+    /**
+     * @param $items: array of the products, each product has the format ['name' => xx, 'quantity' => x, 'price' =>x]
+     * @return array to pass to paypage API in the format ['products_per_title' => 'xx || xx ', 'quantity' => 'xx || xx', 'unit_price' => 'xx || xx']
+     */
+    private function prepare_products(array $items)
+    {
+        $products_per_title_limit = 250;
+
+        // Max product's title allowed
+        $product_length = floor($products_per_title_limit / count($items)) - 4;
+
+        $glue = ' || ';
+
+        $products_str = implode($glue, array_map(function ($p) use ($product_length) {
+            $name = str_replace('||', '/', $p['name']);
+            return substr($name, 0, $product_length);
+        }, $items));
+
+        $quantity = implode($glue, array_map(function ($p) {
+            return $p['quantity'];
+        }, $items));
+
+        $unit_price = implode($glue, array_map(function ($p) {
+            return $p['price'];
+        }, $items));
+
+
+        return [
+            'products_per_title' => $products_str,
+            'quantity'           => $quantity,
+            'unit_price'         => $unit_price,
+        ];
     }
 
     public static function getCountryDetails($iso_2)
