@@ -101,8 +101,13 @@ class Api
         $billingAddress = $order->getBillingAddress();
         $firstName = $billingAddress->getFirstname();
         $lastName = $billingAddress->getlastname();
+
         $email = $billingAddress->getEmail();
         $city = $billingAddress->getCity();
+
+        Api::pt_fillIfEmpty($firstName);
+        Api::pt_fillIfEmpty($lastName);
+        Api::pt_fillIfEmpty($city);
 
         $postcode = $billingAddress->getPostcode();
         if (empty($postcode) || trim($postcode) == '') $postcode = '11111';
@@ -126,6 +131,10 @@ class Api
             $s_firstName = $shippingAddress->getFirstname();
             $s_lastName = $shippingAddress->getlastname();
             $s_city = $shippingAddress->getCity();
+
+            Api::pt_fillIfEmpty($s_firstName);
+            Api::pt_fillIfEmpty($s_lastName);
+            Api::pt_fillIfEmpty($s_city);
 
             $s_postcode = $shippingAddress->getPostcode();
             if (empty($s_postcode) || trim($s_postcode) == '') $s_postcode = '11111';
@@ -246,16 +255,11 @@ class Api
      */
     private function prepare_products(array $items)
     {
-        $products_per_title_limit = 250;
-
-        // Max product's title allowed
-        $product_length = floor($products_per_title_limit / count($items)) - 4;
-
         $glue = ' || ';
 
-        $products_str = implode($glue, array_map(function ($p) use ($product_length) {
+        $products_str = implode($glue, array_map(function ($p) {
             $name = str_replace('||', '/', $p['name']);
-            return substr($name, 0, $product_length);
+            return $name;
         }, $items));
 
         $quantity = implode($glue, array_map(function ($p) {
@@ -829,6 +833,13 @@ class Api
 
         return $englishNumbersOnly;
     }
+
+    public static function pt_fillIfEmpty(&$string)
+    {
+        if (empty(preg_replace('/[\W]/', '', $string))) {
+            $string .= 'NA';
+        }
+    }
 }
 
 
@@ -890,7 +901,7 @@ class PaytabsApi
     {
         $fields_string = "";
         foreach ($fields as $key => $value) {
-            $fields_string .= $key . '=' . $value . '&';
+            $fields_string .= $key . '=' . urlencode($value) . '&';
         }
         $fields_string = rtrim($fields_string, '&');
         $ch = curl_init();
