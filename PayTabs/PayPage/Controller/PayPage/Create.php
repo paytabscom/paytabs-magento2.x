@@ -88,9 +88,13 @@ class Create extends Action
         } else {
             $this->_logger->addError("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
 
-            // Create paypage failed, Save the Qoute (user's Cart)
-            $quote = $this->quoteRepository->get($quoteId);
-            $quote->setIsActive(true)->removePayment()->save();
+            try {
+                // Create paypage failed, Save the Quote (user's Cart)
+                $quote = $this->quoteRepository->get($quoteId);
+                $quote->setIsActive(true)->removePayment()->save();
+            } catch (\Throwable $th) {
+                $this->_logger->addError("Paytabs: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
+            }
             $order->cancel()->save();
         }
 
@@ -114,8 +118,9 @@ class Create extends Action
 
     public function getOrder()
     {
-        if ($this->checkoutSession->getLastRealOrderId()) {
-            $order = $this->_orderFactory->create()->loadByIncrementId($this->checkoutSession->getLastRealOrderId());
+        $lastRealOrderId = $this->checkoutSession->getLastRealOrderId();
+        if ($lastRealOrderId) {
+            $order = $this->_orderFactory->create()->loadByIncrementId($lastRealOrderId);
             return $order;
         }
         return false;
