@@ -11,6 +11,7 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
+use PayTabs\PayPage\Gateway\Http\Client\Api;
 
 /**
  * Class Index
@@ -121,6 +122,10 @@ class Response extends Action
         $verifyPayment = $success;
 
         if ($verifyPayment) {
+            if (Api::hadPaid($order)) {
+                $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
+            }
+
             // PayTabs "Transaction ID"
             $txnId = $verify_response->transaction_id;
             $paymentAmount = $verify_response->amount;
@@ -132,8 +137,8 @@ class Response extends Action
                 ->setCcTransId($txnId)
                 ->setIsTransactionClosed(false)
                 ->setShouldCloseParentTransaction(true)
-                ->setAdditionalInformation("Payment amount", $paymentAmount)
-                ->setAdditionalInformation("Payment currency", $paymentCurrency)
+                ->setAdditionalInformation("payment_amount", $paymentAmount)
+                ->setAdditionalInformation("payment_currency", $paymentCurrency)
                 ->save();
 
             if ($sendInvoice) {

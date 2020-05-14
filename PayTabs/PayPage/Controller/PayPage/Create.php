@@ -10,6 +10,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use PayTabs\PayPage\Gateway\Http\Client\Api;
 
 /**
  * Class Index
@@ -96,6 +97,11 @@ class Create extends Action
                 $this->_logger->addError("Paytabs: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
             }
             $order->cancel()->save();
+        }
+
+        if (Api::hadPaid($order)) {
+            $paypage->had_paid = true;
+            $paypage->order_id = $order->getId();
         }
 
         $result->setData($paypage);

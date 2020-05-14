@@ -840,6 +840,28 @@ class Api
             $string .= 'NA';
         }
     }
+
+    /**
+     * check if the Order is paid and complete
+     * sometimes and for some reason, create_paypage been called twice, after the User paid for the Order
+     * @return true if the Order has been paid before, false otherwise
+     */
+    public static function hadPaid($order)
+    {
+        $lastTransId = $order->getPayment()->getLastTransId();
+        $amountPaid = $order->getPayment()->getAmountPaid();
+        $info = $order->getPayment()->getAdditionalInformation();
+
+        $payment_amount = 0;
+        if ($info && isset($info['payment_amount'])) {
+            $payment_amount = $info['payment_amount'];
+        }
+
+        if ($lastTransId && floor($amountPaid) == floor($payment_amount)) {
+            return true;
+        }
+        return false;
+    }
 }
 
 
