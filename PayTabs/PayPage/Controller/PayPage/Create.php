@@ -84,7 +84,7 @@ class Create extends Action
         }
 
         $paypage = $this->prepare($order);
-        if ($paypage && $paypage->response_code == 4012) {
+        if ($paypage->success) {
             // Create paypage success
         } else {
             $this->_logger->addError("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));

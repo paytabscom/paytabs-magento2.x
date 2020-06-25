@@ -103,8 +103,20 @@ class Response extends Action
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->verify_payment($transactionId);
-        if (!$verify_response) {
-            return;
+        $success = $verify_response->success;
+        $res_msg = $verify_response->result;
+
+        if (!$success) {
+            $this->_logger->addError("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
+            $payment->setIsTransactionPending(true);
+            $payment->setIsFraudDetected(true);
+
+            // $orderState = Order::STATE_CANCELED;
+            $this->setNewStatus($order, $paymentFailed);
+
+            $this->messageManager->addErrorMessage($res_msg);
+            $resultRedirect->setPath('checkout/onepage/failure');
+            return $resultRedirect;
         }
 
         // $orderId = $verify_response->reference_no;
@@ -115,70 +127,53 @@ class Response extends Action
             return $resultRedirect;
         }
 
-        //if get response successful
-        $success = ($verify_response->response_code == 100);
-        $res_msg = $verify_response->result;
 
-        $verifyPayment = $success;
-
-        if ($verifyPayment) {
-            if (Api::hadPaid($order)) {
-                $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
-            }
-
-            // PayTabs "Transaction ID"
-            $txnId = $verify_response->transaction_id;
-            $paymentAmount = $verify_response->amount;
-            $paymentCurrency = $verify_response->currency;
-
-            $payment
-                ->setTransactionId($txnId)
-                ->setLastTransId($txnId)
-                ->setCcTransId($txnId)
-                ->setIsTransactionClosed(false)
-                ->setShouldCloseParentTransaction(true)
-                ->setAdditionalInformation("payment_amount", $paymentAmount)
-                ->setAdditionalInformation("payment_currency", $paymentCurrency)
-                ->save();
-
-            if ($sendInvoice) {
-                $payment->registerCaptureNotification($paymentAmount, true)->save();
-
-                $invoice = $payment->getCreatedInvoice();
-                if ($invoice && !$order->getEmailSent()) {
-                    $this->_orderSender->send($order);
-                    $order->addStatusHistoryComment(
-                        __('You notified customer about invoice #%1.', $invoice->getIncrementId())
-                    )
-                        ->setIsCustomerNotified(true)
-                        ->save();
-                }
-            }
-
-            $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
-            $transaction = $payment->addTransaction($transType, null, false);
-            $transaction
-                ->setIsClosed(true)
-                ->setParentTxnId(null)
-                ->save();
-
-
-            // $orderState = Order::STATE_PROCESSING;
-            $this->setNewStatus($order, $paymentSuccess);
-
-            $this->messageManager->addSuccessMessage($res_msg);
-            $resultRedirect->setPath('checkout/onepage/success');
-        } else {
-            $this->_logger->addError("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
-            $payment->setIsTransactionPending(true);
-            $payment->setIsFraudDetected(true);
-
-            // $orderState = Order::STATE_CANCELED;
-            $this->setNewStatus($order, $paymentFailed);
-
-            $this->messageManager->addErrorMessage($res_msg);
-            $resultRedirect->setPath('checkout/onepage/failure');
+        if (Api::hadPaid($order)) {
+            $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
         }
+
+        // PayTabs "Transaction ID"
+        $txnId = $verify_response->transaction_id;
+        $paymentAmount = $verify_response->amount;
+        $paymentCurrency = $verify_response->currency;
+
+        $payment
+            ->setTransactionId($txnId)
+            ->setLastTransId($txnId)
+            ->setCcTransId($txnId)
+            ->setIsTransactionClosed(false)
+            ->setShouldCloseParentTransaction(true)
+            ->setAdditionalInformation("payment_amount", $paymentAmount)
+            ->setAdditionalInformation("payment_currency", $paymentCurrency)
+            ->save();
+
+        if ($sendInvoice) {
+            $payment->registerCaptureNotification($paymentAmount, true)->save();
+
+            $invoice = $payment->getCreatedInvoice();
+            if ($invoice && !$order->getEmailSent()) {
+                $this->_orderSender->send($order);
+                $order->addStatusHistoryComment(
+                    __('You notified customer about invoice #%1.', $invoice->getIncrementId())
+                )
+                    ->setIsCustomerNotified(true)
+                    ->save();
+            }
+        }
+
+        $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
+        $transaction = $payment->addTransaction($transType, null, false);
+        $transaction
+            ->setIsClosed(true)
+            ->setParentTxnId(null)
+            ->save();
+
+
+        // $orderState = Order::STATE_PROCESSING;
+        $this->setNewStatus($order, $paymentSuccess);
+
+        $this->messageManager->addSuccessMessage($res_msg);
+        $resultRedirect->setPath('checkout/onepage/success');
 
         return $resultRedirect;
 
