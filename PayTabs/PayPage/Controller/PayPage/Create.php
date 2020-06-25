@@ -32,7 +32,7 @@ class Create extends Action
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    protected $_logger;
+    // protected $_logger;
 
     /**
      * @param Context $context
@@ -45,8 +45,8 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Psr\Log\LoggerInterface $logger
+        \Magento\Checkout\Model\Session $checkoutSession
+        // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->_orderFactory = $orderFactory;
@@ -55,7 +55,7 @@ class Create extends Action
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
-        $this->_logger = $logger;
+        // $this->_logger = $logger;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();
     }

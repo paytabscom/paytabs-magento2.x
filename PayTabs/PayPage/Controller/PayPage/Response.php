@@ -36,7 +36,7 @@ class Response extends Action
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    protected $_logger;
+    // protected $_logger;
 
     /**
      * @param Context $context
@@ -45,14 +45,14 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
-        \Psr\Log\LoggerInterface $logger
+        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
+        // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
         $this->_orderSender = $orderSender;
-        $this->_logger = $logger;
+        // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();

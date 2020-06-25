@@ -12,7 +12,19 @@ function paytabs_error_log($msg, $severity = 1)
     $logger = new \Zend\Log\Logger();
     $logger->addWriter($writer);
 
-    $logger->info($msg);
+    switch ($severity) {
+        case 2:
+            $logger->warn($msg);
+            break;
+
+        case 3:
+            $logger->err($msg);
+            break;
+
+        default:
+            $logger->info($msg);
+            break;
+    }
 }
 
 class PaytabsCore
@@ -127,9 +139,9 @@ class PaytabsHelper
 
     public static function log($msg, $severity = 1)
     {
-        if (function_exists('paytabs_error_log')) {
+        try {
             paytabs_error_log($msg, $severity);
-        } else {
+        } catch (\Throwable $th) {
             try {
                 $_prefix = date('c') . ' PayTabs: ';
                 $_msg = ($_prefix . $msg . PHP_EOL);
