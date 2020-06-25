@@ -6,7 +6,7 @@ use stdClass;
 
 define('PAYTABS_DEBUG_FILE', BP . "/var/log/debug_paytabs.log");
 
-function paytabs_error_log($msg, $severity = 1)
+function paytabs_error_log($msg, $severity = 3)
 {
     $writer = new \Zend\Log\Writer\Stream(PAYTABS_DEBUG_FILE);
     $logger = new \Zend\Log\Logger();
