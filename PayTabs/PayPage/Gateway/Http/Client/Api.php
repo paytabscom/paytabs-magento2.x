@@ -153,19 +153,18 @@ class Api
         $pt_holder = new PaytabsHolder();
         $pt_holder
             ->set01PaymentCode($paymentType)
-            ->set02Title($title)
-            ->set03Payment($currency, $amount, $otherCharges, $discountAmount)
-            ->set04Products($items_arr)
-            ->set05ReferenceNum($orderId)
+            ->set02ReferenceNum($orderId)
+            ->set03InvoiceInfo($title, $lang)
+            ->set04Payment($currency, $amount, $otherCharges, $discountAmount)
+            ->set05Products($items_arr)
             ->set06CustomerInfo($firstName, $lastName, $phoneext, $phone, $email)
             ->set07Billing($billing_address, $state, $city, $postcode, $country)
             ->set08Shipping($s_firstName, $s_lastName, $shipping_address, $s_state, $s_city, $s_postcode, $s_country)
             ->set09URLs($baseurl, $returnUrl)
-            ->set10Lang($lang)
-            ->set11CMSVersion($systemVersion)
-            ->set12IPCustomer('');
+            ->set10CMSVersion($systemVersion)
+            ->set11IPCustomer('');
 
-        $post_arr = $pt_holder->build(true);
+        $post_arr = $pt_holder->pt_build(true);
 
         //
 
