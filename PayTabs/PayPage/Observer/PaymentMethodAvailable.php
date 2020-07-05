@@ -9,6 +9,8 @@ namespace PayTabs\PayPage\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 class PaymentMethodAvailable implements ObserverInterface
 {
@@ -19,16 +21,28 @@ class PaymentMethodAvailable implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         $code = $observer->getEvent()->getMethodInstance()->getCode();
 
-        if ($paytabs::isPayTabsPayment($code)) {
+        new PaytabsCore();
+        $isPaytabs = PaytabsHelper::isPayTabsPayment($code);
+
+        if ($isPaytabs) {
             $checkResult = $observer->getEvent()->getResult();
 
             if ($checkResult->getData('is_available')) {
-                $isAllowed = $paytabs::paymentAllowed($code);
+                $currency = $this->getCurrency();
+                $isAllowed = PaytabsHelper::paymentAllowed($code, $currency);
                 $checkResult->setData('is_available', $isAllowed);
             }
         }
+    }
+
+    private function getCurrency()
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+        $currencyCode = $storeManager->getStore()->getCurrentCurrency()->getCode();
+
+        return $currencyCode;
     }
 }

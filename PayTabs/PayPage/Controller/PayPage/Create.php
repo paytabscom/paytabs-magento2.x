@@ -11,6 +11,9 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+
+use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
 /**
  * Class Index
@@ -29,7 +32,7 @@ class Create extends Action
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    protected $_logger;
+    // protected $_logger;
 
     /**
      * @param Context $context
@@ -42,8 +45,8 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Psr\Log\LoggerInterface $logger
+        \Magento\Checkout\Model\Session $checkoutSession
+        // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->_orderFactory = $orderFactory;
@@ -52,8 +55,9 @@ class Create extends Action
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
-        $this->_logger = $logger;
+        // $this->_logger = $logger;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
+        new PaytabsCore();
     }
 
     /**
@@ -66,7 +70,7 @@ class Create extends Action
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getParam('quote', null);
         if (!$quoteId) {
-            $this->_logger->addError("Paytabs: Quote ID is missing!");
+            paytabs_error_log("Paytabs: Quote ID is missing!");
             $result->setData([
                 'result' => 'Quote ID is missing!'
             ]);
@@ -76,7 +80,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            $this->_logger->addError("Paytabs: Order is missing!, Quote = [{$quoteId}]");
+            paytabs_error_log("Paytabs: Order is missing!, Quote = [{$quoteId}]");
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -84,17 +88,17 @@ class Create extends Action
         }
 
         $paypage = $this->prepare($order);
-        if ($paypage && $paypage->response_code == 4012) {
+        if ($paypage->success) {
             // Create paypage success
         } else {
-            $this->_logger->addError("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
+            paytabs_error_log("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
 
             try {
                 // Create paypage failed, Save the Quote (user's Cart)
                 $quote = $this->quoteRepository->get($quoteId);
                 $quote->setIsActive(true)->removePayment()->save();
             } catch (\Throwable $th) {
-                $this->_logger->addError("Paytabs: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
+                paytabs_error_log("Paytabs: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
             }
             $order->cancel()->save();
         }
