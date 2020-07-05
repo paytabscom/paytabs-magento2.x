@@ -17,11 +17,11 @@
                 <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Title</label>
                 </field>
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -66,11 +66,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -108,11 +108,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -150,11 +150,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -192,11 +192,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -234,11 +234,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -276,11 +276,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -318,11 +318,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -360,11 +360,11 @@
                     <label>Title</label>
                 </field>
 
-                <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Email</label>
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
                 </field>
-                <field id="merchant_secret" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Merchant Secret</label>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">

@@ -3,9 +3,9 @@
 namespace PayTabs\PayPage\Gateway\Http\Client;
 
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
-use PayTabs\PayPage\Gateway\Http\PaytabsHolder;
+use PayTabs\PayPage\Gateway\Http\PaytabsHolder2;
 
 class Api
 {
@@ -13,11 +13,11 @@ class Api
     {
         // $paymentType = $paymentMethod->getCode();
 
-        $Email = $paymentMethod->getConfigData('merchant_email');
-        $secretKey = $paymentMethod->getConfigData('merchant_secret');
+        $profileId = $paymentMethod->getConfigData('profile_id');
+        $serverKey = $paymentMethod->getConfigData('server_key');
 
-        new PaytabsCore();
-        $pt = PaytabsApi::getInstance($Email, $secretKey);
+        new PaytabsCore2();
+        $pt = PaytabsApi::getInstance($profileId, $serverKey);
 
         return $pt;
     }
@@ -39,26 +39,26 @@ class Api
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
-        $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
-        $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        $versionMagento = $productMetadata->getVersion();
+        // $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
+        // $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        // $versionMagento = $productMetadata->getVersion();
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
-        $lang_code = $localeResolver->getLocale();
-        $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
+        // $lang_code = $localeResolver->getLocale();
+        // $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
 
         // Compute Prices
 
         $amount = $order->getGrandTotal();
-        $shippingAmount = $order->getShippingAmount();
+        // $shippingAmount = $order->getShippingAmount();
         $discountAmount = abs($order->getDiscountAmount());
-        $taxAmount = $order->getTaxAmount();
+        // $taxAmount = $order->getTaxAmount();
 
         $amount += $discountAmount;
-        $otherCharges = $shippingAmount + $taxAmount;
+        // $otherCharges = $shippingAmount + $taxAmount;
 
         $amount = number_format((float) $amount, 2, '.', '');
 
@@ -72,22 +72,22 @@ class Api
         $email = $billingAddress->getEmail();
         $city = $billingAddress->getCity();
 
-        $postcode = trim($billingAddress->getPostcode());
+        // $postcode = trim($billingAddress->getPostcode());
 
         $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
-        $telephone = $billingAddress->getTelephone();
+        // $telephone = $billingAddress->getTelephone();
         $streets = $billingAddress->getStreet();
         $street = ($streets && is_array($streets) && count($streets) > 0) ? $streets[0] : '';
         $street2 = ($streets && is_array($streets) && count($streets) > 1) ? $streets[1] : '';
 
-        $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
-        $phoneext = $cdetails['phone'];
+        // $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
+        // $phoneext = $cdetails['phone'];
 
         $country = PaytabsHelper::countryGetiso3($country_iso2);
 
 
-        $shippingAddress = $order->getShippingAddress();
+        /*$shippingAddress = $order->getShippingAddress();
         if ($shippingAddress) {
             $s_firstName = $shippingAddress->getFirstname();
             $s_lastName = $shippingAddress->getlastname();
@@ -115,7 +115,7 @@ class Api
             $s_street2 = $street2;
 
             $s_country = $country;
-        }
+        }*/
 
         /** 1.3. Read Products */
 
@@ -136,35 +136,30 @@ class Api
         $address1 = $street;
         $address2 = $street2;
         $state = $region ? $region : 'N/A';
-        $s_state = $s_region ? $s_region : 'N/A';
-        $phone = $telephone;
+        // $s_state = $s_region ? $s_region : 'N/A';
+        // $phone = $telephone;
 
         // System Parameters
-        $systemVersion = "Magento {$versionMagento}";
+        // $systemVersion = "Magento {$versionMagento}";
 
         // Computed Parameters
         $title = $firstName . " " . $lastName;
         $billing_address = $address1 . ' ' . $address2;
-        $shipping_address = $s_street . ' ' . $s_street2;
+        // $shipping_address = $s_street . ' ' . $s_street2;
 
 
         /** 2. Fill post array */
 
-        $pt_holder = new PaytabsHolder();
+        $pt_holder = new PaytabsHolder2();
         $pt_holder
             ->set01PaymentCode($paymentType)
-            ->set02ReferenceNum($orderId)
-            ->set03InvoiceInfo($title, $lang)
-            ->set04Payment($currency, $amount, $otherCharges, $discountAmount)
-            ->set05Products($items_arr)
-            ->set06CustomerInfo($firstName, $lastName, $phoneext, $phone, $email)
-            ->set07Billing($billing_address, $state, $city, $postcode, $country)
-            ->set08Shipping($s_firstName, $s_lastName, $shipping_address, $s_state, $s_city, $s_postcode, $s_country)
-            ->set09URLs($baseurl, $returnUrl)
-            ->set10CMSVersion($systemVersion)
-            ->set11IPCustomer('');
+            ->set02Transaction('sale', 'ecom')
+            ->set03Cart($orderId, $currency, $amount, json_encode($items_arr))
+            ->set04CustomerDetails($title, $email, $billing_address, $city, $state, $country, '')
+            ->set05URLs($returnUrl, null)
+            ->set06HideShipping(true);
 
-        $post_arr = $pt_holder->pt_build(true);
+        $post_arr = $pt_holder->pt_build();
 
         //
 

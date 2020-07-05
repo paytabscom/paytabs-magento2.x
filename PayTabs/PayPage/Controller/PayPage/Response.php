@@ -12,7 +12,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
 
 use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
@@ -55,7 +55,7 @@ class Response extends Action
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
-        new PaytabsCore();
+        new PaytabsCore2();
     }
 
     /**
@@ -72,7 +72,7 @@ class Response extends Action
         $orderId = $this->getRequest()->getParam('p', null);
 
         // PayTabs "Invoice ID"
-        $transactionId = $this->getRequest()->getParam('payment_reference', null);
+        $transactionId = $this->getRequest()->getParam('tranRef', null);
 
         $resultRedirect = $this->resultRedirectFactory->create();
 
@@ -108,7 +108,7 @@ class Response extends Action
 
         $verify_response = $ptApi->verify_payment($transactionId);
         $success = $verify_response->success;
-        $res_msg = $verify_response->result;
+        $res_msg = $verify_response->message;
 
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
@@ -124,7 +124,7 @@ class Response extends Action
         }
 
         // $orderId = $verify_response->reference_no;
-        if ($orderId != $verify_response->reference_no) {
+        if ($orderId != $verify_response->cart_id) {
             paytabs_error_log("Paytabs Response: Order reference number is mismatch, Order = [{$orderId}], ReferenceId = [{$verify_response->reference_no}] ");
             $this->messageManager->addWarningMessage('Order reference number is mismatch');
             $resultRedirect->setPath('checkout/onepage/failure');
@@ -137,9 +137,9 @@ class Response extends Action
         }
 
         // PayTabs "Transaction ID"
-        $txnId = $verify_response->transaction_id;
-        $paymentAmount = $verify_response->amount;
-        $paymentCurrency = $verify_response->currency;
+        $txnId = $verify_response->tran_ref;
+        $paymentAmount = $verify_response->cart_amount;
+        $paymentCurrency = $verify_response->cart_currency;
 
         $payment
             ->setTransactionId($txnId)

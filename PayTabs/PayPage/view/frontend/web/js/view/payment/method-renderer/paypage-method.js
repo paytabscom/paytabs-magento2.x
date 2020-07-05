@@ -56,9 +56,9 @@ define(
                 )
                     .done(function (result) {
                         console.log(result);
-                        if (result && result.response_code == 4012) {
+                        if (result && result.success) {
                             if (!result.had_paid) {
-                                $.mage.redirect(result.payment_url);
+                                $.mage.redirect(result.redirect_url);
                             } else {
                                 alert({
                                     title: 'Previous paid amount detected',
@@ -69,14 +69,14 @@ define(
                                             text: 'Pay anyway',
                                             class: 'action primary accept',
                                             click: function () {
-                                                $.mage.redirect(result.payment_url);
+                                                $.mage.redirect(result.redirect_url);
                                             }
                                         },
                                         {
                                             text: 'Order details',
                                             class: 'action secondary',
                                             click: function () {
-                                                $.mage.redirect(_urlBuilder.build('sales/order/view/order_id/' + result.order_id + '/'));
+                                                $.mage.redirect(_urlBuilder.build('sales/order/view/order_id/' + result.cart_id + '/'));
                                             }
                                         }
                                     ]
@@ -84,7 +84,7 @@ define(
                             }
 
                         } else {
-                            let msg = result.details || result.result;
+                            let msg = result.message;
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
