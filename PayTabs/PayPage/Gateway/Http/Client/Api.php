@@ -33,13 +33,11 @@ class Api
     {
         /** 1. Read required Params */
 
-        // $paymentType = 'creditcard'; //$this->paymentType($paymentCode);
-
         $orderId = $order->getIncrementId();
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
-        // $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
+        $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
         // $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         // $versionMagento = $productMetadata->getVersion();
 
@@ -47,75 +45,50 @@ class Api
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
-        // $lang_code = $localeResolver->getLocale();
-        // $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
+        $lang_code = $localeResolver->getLocale();
 
         // Compute Prices
 
         $amount = $order->getGrandTotal();
-        // $shippingAmount = $order->getShippingAmount();
         $discountAmount = abs($order->getDiscountAmount());
+        // $shippingAmount = $order->getShippingAmount();
         // $taxAmount = $order->getTaxAmount();
-
-        $amount += $discountAmount;
         // $otherCharges = $shippingAmount + $taxAmount;
 
+        $amount += $discountAmount;
         $amount = number_format((float) $amount, 2, '.', '');
 
 
         /** 1.2. Read BillingAddress info */
 
         $billingAddress = $order->getBillingAddress();
-        $firstName = $billingAddress->getFirstname();
-        $lastName = $billingAddress->getlastname();
 
-        $email = $billingAddress->getEmail();
-        $city = $billingAddress->getCity();
+        $postcode = trim($billingAddress->getPostcode());
 
-        // $postcode = trim($billingAddress->getPostcode());
-
-        $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
-        // $telephone = $billingAddress->getTelephone();
-        $streets = $billingAddress->getStreet();
-        $street = ($streets && is_array($streets) && count($streets) > 0) ? $streets[0] : '';
-        $street2 = ($streets && is_array($streets) && count($streets) > 1) ? $streets[1] : '';
-
-        // $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
-        // $phoneext = $cdetails['phone'];
-
         $country = PaytabsHelper::countryGetiso3($country_iso2);
 
+        $streets = $billingAddress->getStreet();
+        $billing_address = array_reduce($streets, function ($acc, $street) {
+            return $acc . ', ' . $street;
+        }, '');
 
-        /*$shippingAddress = $order->getShippingAddress();
+
+        $hasShipping = false;
+        $shippingAddress = $order->getShippingAddress();
         if ($shippingAddress) {
-            $s_firstName = $shippingAddress->getFirstname();
-            $s_lastName = $shippingAddress->getlastname();
-            $s_city = $shippingAddress->getCity();
+            $hasShipping = true;
 
             $s_postcode = trim($shippingAddress->getPostcode());
 
-            $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
+            $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
 
             $s_streets = $shippingAddress->getStreet();
-            $s_street = ($s_streets && is_array($s_streets) && count($s_streets) > 0) ? $s_streets[0] : '';
-            $s_street2 = ($s_streets && is_array($s_streets) && count($s_streets) > 1) ? $s_streets[1] : '';
-
-            $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
-        } else {
-            $s_firstName = $firstName;
-            $s_lastName = $lastName;
-            $s_city = $city;
-            $s_postcode = $postcode;
-            $s_region = $region;
-            $s_country_iso2 = $country_iso2;
-
-            $s_street = $street;
-            $s_street2 = $street2;
-
-            $s_country = $country;
-        }*/
+            $shipping_address = array_reduce($s_streets, function ($acc, $street) {
+                return $acc . ', ' . $street;
+            }, '');
+        }
 
         /** 1.3. Read Products */
 
@@ -132,20 +105,8 @@ class Api
         }, $items);
 
 
-        // Client Parameters
-        $address1 = $street;
-        $address2 = $street2;
-        $state = $region ? $region : 'N/A';
-        // $s_state = $s_region ? $s_region : 'N/A';
-        // $phone = $telephone;
-
         // System Parameters
         // $systemVersion = "Magento {$versionMagento}";
-
-        // Computed Parameters
-        $title = $firstName . " " . $lastName;
-        $billing_address = $address1 . ' ' . $address2;
-        // $shipping_address = $s_street . ' ' . $s_street2;
 
 
         /** 2. Fill post array */
@@ -155,9 +116,36 @@ class Api
             ->set01PaymentCode($paymentType)
             ->set02Transaction('sale', 'ecom')
             ->set03Cart($orderId, $currency, $amount, json_encode($items_arr))
-            ->set04CustomerDetails($title, $email, $billing_address, $city, $state, $country, '')
-            ->set05URLs($returnUrl, null)
-            ->set06HideShipping(true);
+            ->set04CustomerDetails(
+                $billingAddress->getName(),
+                $billingAddress->getEmail(),
+                $billingAddress->getTelephone(),
+                $billing_address,
+                $billingAddress->getCity(),
+                $billingAddress->getRegionCode(),
+                $country,
+                $postcode,
+                null
+            );
+
+        if ($hasShipping) {
+            $pt_holder->set05ShippingDetails(
+                $shippingAddress->getName(),
+                $shippingAddress->getEmail(),
+                $shippingAddress->getTelephone(),
+                $shipping_address,
+                $shippingAddress->getCity(),
+                $shippingAddress->getRegionCode(),
+                $s_country,
+                $s_postcode,
+                null
+            );
+        }
+
+        $pt_holder
+            ->set06HideShipping(false)
+            ->set07URLs($returnUrl, null)
+            ->set08Lang($lang_code);
 
         $post_arr = $pt_holder->pt_build();
 
