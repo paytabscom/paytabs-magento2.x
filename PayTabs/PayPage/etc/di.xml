@@ -323,7 +323,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestCreditCard</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -331,7 +331,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestStcPay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -339,7 +339,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestApplePay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -347,7 +347,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestOmanNet</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -355,7 +355,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestMada</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -363,7 +363,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestSadad</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -371,7 +371,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestAtFawry</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -379,7 +379,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestKnPay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -387,7 +387,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestAmex</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -442,10 +442,10 @@
     <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\CaptureRequest</argument>
-            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
             <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
         </arguments>
     </virtualType>
 
@@ -459,11 +459,11 @@
     <!-- Void command -->
     <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
-            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
             <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
+            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument> -->
         </arguments>
     </virtualType>
 
@@ -479,7 +479,7 @@
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="txnid" xsi:type="string">PayTabs\PayPage\Gateway\Response\TxnIdHandler</item>
-                <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item>
+                <!-- <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item> -->
             </argument>
         </arguments>
     </virtualType>

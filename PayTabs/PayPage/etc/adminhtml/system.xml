@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <!--
 /**
  * Copyright © 2015 Magento. All rights reserved.
@@ -14,7 +14,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
                 <field id="merchant_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -28,11 +28,11 @@
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field> -->
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -46,15 +46,13 @@
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
-                <!-- <field id="debug" translate="label" type="select" sortOrder="85" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Debug</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="stcpay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - STCPay</label>
@@ -62,7 +60,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -73,11 +71,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -92,11 +90,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="applepay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - ApplePay</label>
@@ -104,7 +103,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -115,11 +114,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -134,11 +133,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="omannet" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - OmanNet</label>
@@ -146,7 +146,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -157,11 +157,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -176,11 +176,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="mada" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Mada</label>
@@ -188,7 +189,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -199,11 +200,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -218,11 +219,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="sadad" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Sadad</label>
@@ -230,7 +232,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -241,11 +243,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -260,11 +262,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="atfawry" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - @Fawry</label>
@@ -272,7 +275,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -283,11 +286,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -302,11 +305,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="knpay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - KNPay</label>
@@ -314,7 +318,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -325,11 +329,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -344,11 +348,12 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
             </group>
+
 
             <group id="amex" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Amex</label>
@@ -356,7 +361,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
 
@@ -367,11 +372,11 @@
                     <label>Merchant Secret</label>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
@@ -386,7 +391,7 @@
                     <frontend_class>validate-number</frontend_class>
                 </field>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>

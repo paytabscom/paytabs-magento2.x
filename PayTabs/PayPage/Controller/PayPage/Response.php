@@ -96,13 +96,12 @@ class Response extends Action
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
 
-        $paymentSuccess = $paymentMethod->getConfigData('order_success_status');
-        if (!$paymentSuccess) $paymentSuccess = Order::STATE_PROCESSING;
-        $paymentFailed = $paymentMethod->getConfigData('order_failed_status');
-        if (!$paymentFailed) $paymentFailed = Order::STATE_CANCELED;
+        $paymentSuccess =
+            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+        $paymentFailed =
+            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
-        $sendInvoice = $paymentMethod->getConfigData('send_invoice');
-        if (!$sendInvoice) $sendInvoice = false;
+        $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
@@ -112,11 +111,13 @@ class Response extends Action
 
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
-            $payment->setIsTransactionPending(true);
-            $payment->setIsFraudDetected(true);
 
-            // $orderState = Order::STATE_CANCELED;
-            $this->setNewStatus($order, $paymentFailed);
+            $payment->deny();
+
+            if ($paymentFailed != Order::STATE_CANCELED) {
+                $this->setNewStatus($order, $paymentFailed);
+            }
+            $order->save();
 
             $this->messageManager->addErrorMessage($res_msg);
             $resultRedirect->setPath('checkout/onepage/failure');
@@ -144,12 +145,15 @@ class Response extends Action
         $payment
             ->setTransactionId($txnId)
             ->setLastTransId($txnId)
-            ->setCcTransId($txnId)
-            ->setIsTransactionClosed(false)
+            ->setIsTransactionClosed(true)
             ->setShouldCloseParentTransaction(true)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
+
+        $payment->accept();
+
+        // $payment->capture();
 
         if ($sendInvoice) {
             $payment->registerCaptureNotification($paymentAmount, true)->save();
@@ -160,8 +164,7 @@ class Response extends Action
                 $order->addStatusHistoryComment(
                     __('You notified customer about invoice #%1.', $invoice->getIncrementId())
                 )
-                    ->setIsCustomerNotified(true)
-                    ->save();
+                    ->setIsCustomerNotified(true);
             }
         }
 
@@ -173,8 +176,10 @@ class Response extends Action
             ->save();
 
 
-        // $orderState = Order::STATE_PROCESSING;
-        $this->setNewStatus($order, $paymentSuccess);
+        if ($paymentSuccess != Order::STATE_PROCESSING) {
+            $this->setNewStatus($order, $paymentSuccess);
+        }
+        $order->save();
 
         $this->messageManager->addSuccessMessage($res_msg);
         $resultRedirect->setPath('checkout/onepage/success');
@@ -188,13 +193,8 @@ class Response extends Action
 
     public function setNewStatus($order, $newStatus)
     {
-        if ($newStatus == Order::STATE_CANCELED) {
-            $order->cancel();
-        } else {
-            $order->setState($newStatus)->setStatus($newStatus);
-            $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
-        }
-        $order->save();
+        $order->setState($newStatus)->setStatus($newStatus);
+        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
     }
 }
 

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace PayTabs\PayPage\Model\Adminhtml\Source;
 
-use Magento\Payment\Model\Method\AbstractMethod;
 
 /**
  * Class PaymentAction
@@ -19,7 +20,7 @@ class PaymentAction implements \Magento\Framework\Option\ArrayInterface
     {
         return [
             [
-                'value' => AbstractMethod::ACTION_AUTHORIZE,
+                'value' => 'authorize',
                 'label' => __('Authorize')
             ]
         ];

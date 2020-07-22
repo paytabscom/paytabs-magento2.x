@@ -48,7 +48,6 @@ class ResponseCodeValidator extends AbstractValidator
      */
     private function isSuccessfulTransaction(array $response)
     {
-        return isset($response[self::RESULT_CODE])
-            && $response[self::RESULT_CODE] !== ClientMock::FAILURE;
+        return true;
     }
 }

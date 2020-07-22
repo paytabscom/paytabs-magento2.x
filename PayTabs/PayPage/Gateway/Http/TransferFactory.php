@@ -10,7 +10,7 @@ namespace PayTabs\PayPage\Gateway\Http;
 use Magento\Payment\Gateway\Http\TransferBuilder;
 use Magento\Payment\Gateway\Http\TransferFactoryInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use PayTabs\PayPage\Gateway\Request\MockDataRequest;
+
 
 class TransferFactory implements TransferFactoryInterface
 {
@@ -38,13 +38,7 @@ class TransferFactory implements TransferFactoryInterface
         return $this->transferBuilder
             ->setBody($request)
             ->setMethod('POST')
-            ->setHeaders(
-                [
-                    'force_result' => isset($request[MockDataRequest::FORCE_RESULT])
-                        ? $request[MockDataRequest::FORCE_RESULT]
-                        : null
-                ]
-            )
+            ->setHeaders([])
             ->setUri('https://www.paytabs.com/apiv2/create_pay_page')
             ->build();
     }
