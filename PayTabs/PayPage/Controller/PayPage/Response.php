@@ -153,7 +153,7 @@ class Response extends Action
 
         $payment->accept();
 
-        // $payment->capture();
+        $payment->capture();
 
         if ($sendInvoice) {
             $payment->registerCaptureNotification($paymentAmount, true)->save();
@@ -164,7 +164,8 @@ class Response extends Action
                 $order->addStatusHistoryComment(
                     __('You notified customer about invoice #%1.', $invoice->getIncrementId())
                 )
-                    ->setIsCustomerNotified(true);
+                    ->setIsCustomerNotified(true)
+                    ->save();
             }
         }
 
