@@ -158,7 +158,8 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommand</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <!-- <item name="void" xsi:type="string">PayPageVoidCommand</item> -->
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -167,7 +168,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandStcPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -176,7 +177,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandApplePay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -185,7 +186,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandOmanNet</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -194,7 +195,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandMada</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -203,7 +204,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandSadad</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -212,7 +213,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAtFawry</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -221,7 +222,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandKnPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -230,7 +231,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAmex</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -473,6 +474,26 @@
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
         </arguments>
     </type>
+
+
+    <!-- Refund command -->
+    <virtualType name="PayPageRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\RefundRequest</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientRefund</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseRefundValidator</argument>
+            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\RefundHandler</argument> -->
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Gateway\Request\RefundRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
 
     <!-- Response handlers -->
     <virtualType name="PayPageResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">

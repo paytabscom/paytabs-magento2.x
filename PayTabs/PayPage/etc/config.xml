@@ -20,6 +20,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -42,6 +43,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -60,6 +62,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -78,6 +81,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -96,6 +100,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -114,6 +119,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -132,6 +138,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -150,6 +157,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
@@ -168,6 +176,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
 
                 <is_gateway>1</is_gateway>
