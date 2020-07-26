@@ -15,9 +15,9 @@
 
                 <model>PayPageCreditCardFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -43,9 +43,9 @@
 
                 <model>PayPageStcPayFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -67,9 +67,9 @@
 
                 <model>PayPageApplePayFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -91,9 +91,9 @@
 
                 <model>PayPageOmanNetFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -115,9 +115,9 @@
 
                 <model>PayPageMadaFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -139,9 +139,9 @@
 
                 <model>PayPageSadadFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -163,9 +163,9 @@
 
                 <model>PayPageAtFawryFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -187,9 +187,9 @@
 
                 <model>PayPageKnPayFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -211,9 +211,9 @@
 
                 <model>PayPageAmexFacade</model>
 
-                <hide_personal_info>false</hide_personal_info>
-                <hide_billing>false</hide_billing>
-                <hide_view_invoice>false</hide_view_invoice>
+                <hide_personal_info>0</hide_personal_info>
+                <hide_billing>0</hide_billing>
+                <hide_view_invoice>0</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
