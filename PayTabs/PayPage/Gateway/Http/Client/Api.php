@@ -29,11 +29,15 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentType)
+    public function prepare_order($order, $paymentMethod)
     {
         /** 1. Read required Params */
 
-        // $paymentType = 'creditcard'; //$this->paymentType($paymentCode);
+        $paymentType = $paymentMethod->getCode(); //'creditcard';
+
+        $hide_personal_info = $paymentMethod->getConfigData('hide_personal_info') == '1';
+        $hide_billing = $paymentMethod->getConfigData('hide_billing') == '1';
+        $hide_view_invoice = $paymentMethod->getConfigData('hide_view_invoice') == '1';
 
         $orderId = $order->getIncrementId();
 
@@ -160,9 +164,10 @@ class Api
             ->set06CustomerInfo($firstName, $lastName, $phoneext, $phone, $email)
             ->set07Billing($billing_address, $state, $city, $postcode, $country)
             ->set08Shipping($s_firstName, $s_lastName, $shipping_address, $s_state, $s_city, $s_postcode, $s_country)
-            ->set09URLs($baseurl, $returnUrl)
-            ->set10CMSVersion($systemVersion)
-            ->set11IPCustomer('');
+            ->set09HideOptions($hide_personal_info, $hide_billing, $hide_view_invoice)
+            ->set10URLs($baseurl, $returnUrl)
+            ->set11CMSVersion($systemVersion)
+            ->set12IPCustomer('');
 
         $post_arr = $pt_holder->pt_build(true);
 

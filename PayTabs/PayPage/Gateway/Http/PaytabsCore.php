@@ -33,7 +33,7 @@ class PaytabsCore
 
 /**
  * PayTabs PHP SDK
- * Version: 1.1.0
+ * Version: 1.1.1
  */
 
 
@@ -763,6 +763,13 @@ class PaytabsHolder
     private $shipping;
 
     /**
+     * hide_personal_info
+     * hide_billing
+     * hide_view_invoice
+     */
+    private $hide_options;
+
+    /**
      * site_url
      * return_url
      */
@@ -857,6 +864,10 @@ class PaytabsHolder
             $this->cms_version,
             $this->ip_customer
         );
+
+        if ($this->hide_options) {
+            $all = array_merge($all, $this->hide_options);
+        }
 
         if ($this->preauth) {
             $all = array_merge($all, $this->preauth);
@@ -1014,7 +1025,21 @@ class PaytabsHolder
         return $this;
     }
 
-    public function set09URLs($site_url, $return_url)
+    /**
+     * Optional method
+     */
+    public function set09HideOptions($hide_personal_info, $hide_billing, $hide_view_invoice)
+    {
+        $this->hide_options = [
+            'hide_personal_info' => $hide_personal_info ? 'true' : '',
+            'hide_billing' => $hide_billing ? 'true' : '',
+            'hide_view_invoice' => $hide_view_invoice ? 'true' : '',
+        ];
+
+        return $this;
+    }
+
+    public function set10URLs($site_url, $return_url)
     {
         $this->urls = [
             'site_url'   => $site_url,
@@ -1024,14 +1049,14 @@ class PaytabsHolder
         return $this;
     }
 
-    public function set10CMSVersion($cms_version)
+    public function set11CMSVersion($cms_version)
     {
         $this->cms_version = ['cms_with_version' => $cms_version];
 
         return $this;
     }
 
-    public function set11IPCustomer($ip_customer)
+    public function set12IPCustomer($ip_customer)
     {
         $this->ip_customer = ['ip_customer' => $ip_customer];
 
@@ -1042,7 +1067,7 @@ class PaytabsHolder
      * Optional method
      * https://dev.paytabs.com/docs/paypage.html#pre-authorization-using-api
      */
-    public function set12PreAuth($isPreAuth = false)
+    public function set13PreAuth($isPreAuth = false)
     {
         $this->preauth = [
             'is_preauth' => $isPreAuth ? 1 : 0,
@@ -1056,7 +1081,7 @@ class PaytabsHolder
      * Call it only in case you want to use Tokenization feature
      * https://dev.paytabs.com/docs/tokenization/
      */
-    public function set13Tokenization($isTokenization = false, $isExistingCustomer = false)
+    public function set14Tokenization($isTokenization = false, $isExistingCustomer = false)
     {
         $this->tokenization = [
             'is_tokenization' => $isTokenization ? 'TRUE' : 'FALSE',

@@ -15,6 +15,10 @@
 
                 <model>PayPageCreditCardFacade</model>
 
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
+
                 <payment_action>authorize</payment_action>
 
                 <can_authorize>1</can_authorize>
@@ -31,12 +35,17 @@
                 <privateInfoKeys>FRAUD_MSG_LIST</privateInfoKeys> -->
             </creditcard>
 
+
             <stcpay>
                 <active>0</active>
                 <title>PayTabs - STCPay</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageStcPayFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -50,12 +59,17 @@
                 <is_offline>0</is_offline>
             </stcpay>
 
+
             <applepay>
                 <active>0</active>
                 <title>PayTabs - ApplePay</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageApplePayFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -69,12 +83,17 @@
                 <is_offline>0</is_offline>
             </applepay>
 
+
             <omannet>
                 <active>0</active>
                 <title>PayTabs - OmanNet</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageOmanNetFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -88,12 +107,17 @@
                 <is_offline>0</is_offline>
             </omannet>
 
+
             <mada>
                 <active>0</active>
                 <title>PayTabs - Mada</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageMadaFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -107,12 +131,17 @@
                 <is_offline>0</is_offline>
             </mada>
 
+
             <sadad>
                 <active>0</active>
                 <title>PayTabs - Sadad</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageSadadFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -126,12 +155,17 @@
                 <is_offline>0</is_offline>
             </sadad>
 
+
             <atfawry>
                 <active>0</active>
                 <title>PayTabs - @Fawry</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageAtFawryFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -145,12 +179,17 @@
                 <is_offline>0</is_offline>
             </atfawry>
 
+
             <knpay>
                 <active>0</active>
                 <title>PayTabs - KNPay</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageKnPayFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
@@ -164,12 +203,17 @@
                 <is_offline>0</is_offline>
             </knpay>
 
+
             <amex>
                 <active>0</active>
                 <title>PayTabs - Amex</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageAmexFacade</model>
+
+                <hide_personal_info>false</hide_personal_info>
+                <hide_billing>false</hide_billing>
+                <hide_view_invoice>false</hide_view_invoice>
 
                 <payment_action>authorize</payment_action>
 
