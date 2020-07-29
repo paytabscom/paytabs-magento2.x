@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
     <!-- Payment Method Facade configuration -->
+
     <virtualType name="PayPageCreditCardFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
@@ -102,7 +104,11 @@
         </arguments>
     </virtualType>
 
+    <!-- Payment Method Facade configuration -->
+
+
     <!-- Configuration reader -->
+
     <virtualType name="PayPageCreditCardConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
@@ -154,20 +160,11 @@
         </arguments>
     </virtualType>
 
-    <!-- Logger, initialized with PayPageCreditCardConfig -->
-    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
-        <arguments>
-            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
-        </arguments>
-    </virtualType>
+    <!-- Configuration reader -->
 
-    <type name="PayTabs\PayPage\Gateway\Http\Client\ClientMock">
-        <arguments>
-            <argument name="logger" xsi:type="object">PayPageLogger</argument>
-        </arguments>
-    </type>
 
     <!-- Commands infrastructure -->
+
     <virtualType name="PayPageCommandPoolCreditCard" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -260,7 +257,11 @@
         </arguments>
     </virtualType>
 
+    <!-- Commands infrastructure -->
+
+
     <!-- Authorize command -->
+
     <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
@@ -352,7 +353,11 @@
         </arguments>
     </virtualType>
 
+    <!-- Authorize command -->
+
+
     <!-- Authorization Request -->
+
     <virtualType name="PayPageAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
@@ -485,7 +490,9 @@
         </arguments>
     </virtualType>
 
+
     <!-- Capture command -->
+
     <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\CaptureRequest</argument>
@@ -497,6 +504,7 @@
     </virtualType>
 
     <!-- Capture Request -->
+
     <type name="PayTabs\PayPage\Gateway\Request\CaptureRequest">
         <arguments>
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
@@ -504,6 +512,7 @@
     </type>
 
     <!-- Void command -->
+
     <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
@@ -515,6 +524,7 @@
     </virtualType>
 
     <!-- Void Request -->
+
     <type name="PayTabs\PayPage\Gateway\Request\VoidRequest">
         <arguments>
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
@@ -523,6 +533,7 @@
 
 
     <!-- Refund command -->
+
     <virtualType name="PayPageRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
@@ -540,8 +551,11 @@
         </arguments>
     </type>
 
+    <!-- Refund command -->
+
 
     <!-- Response handlers -->
+
     <virtualType name="PayPageResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -551,7 +565,11 @@
         </arguments>
     </virtualType>
 
+    <!-- Response handlers -->
+
+
     <!-- Value handlers infrastructure -->
+
     <virtualType name="PayPageValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -623,6 +641,9 @@
         </arguments>
     </virtualType>
 
+    <!-- Value handlers infrastructure -->
+
+
     <virtualType name="PayPageConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageCreditCardConfig</argument>
@@ -674,6 +695,7 @@
         </arguments>
     </virtualType>
 
+
     <type name="PayTabs\PayPage\Block\Info">
         <arguments>
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
@@ -687,5 +709,22 @@
     <type name="Magento\Framework\App\Request\CsrfValidator">
         <plugin name="csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
+
+
+    <!-- Logger, initialized with PayPageCreditCardConfig -->
+
+    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Gateway\Http\Client\ClientMock">
+        <arguments>
+            <argument name="logger" xsi:type="object">PayPageLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
 
 </config>

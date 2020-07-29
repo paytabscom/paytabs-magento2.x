@@ -50,7 +50,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -106,7 +106,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -162,7 +162,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -218,7 +218,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -274,7 +274,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -330,7 +330,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -386,7 +386,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -442,7 +442,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -498,7 +498,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -554,7 +554,7 @@
                     <label>Hide Billing info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="send_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="hide_view_invoice" translate="label" type="select" sortOrder="82" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide View invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
