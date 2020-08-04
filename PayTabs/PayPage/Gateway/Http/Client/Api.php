@@ -82,8 +82,6 @@ class Api
         $country_iso2 = $billingAddress->getCountryId();
         $telephone = $billingAddress->getTelephone();
         $streets = $billingAddress->getStreet();
-        $street = ($streets && is_array($streets) && count($streets) > 0) ? $streets[0] : '';
-        $street2 = ($streets && is_array($streets) && count($streets) > 1) ? $streets[1] : '';
 
         $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
         $phoneext = $cdetails['phone'];
@@ -103,20 +101,19 @@ class Api
             $s_country_iso2 = $shippingAddress->getCountryId();
 
             $s_streets = $shippingAddress->getStreet();
-            $s_street = ($s_streets && is_array($s_streets) && count($s_streets) > 0) ? $s_streets[0] : '';
-            $s_street2 = ($s_streets && is_array($s_streets) && count($s_streets) > 1) ? $s_streets[1] : '';
 
             $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
         } else {
             $s_firstName = $firstName;
             $s_lastName = $lastName;
             $s_city = $city;
+
             $s_postcode = $postcode;
+
             $s_region = $region;
             $s_country_iso2 = $country_iso2;
 
-            $s_street = $street;
-            $s_street2 = $street2;
+            $s_streets = $streets;
 
             $s_country = $country;
         }
@@ -136,20 +133,13 @@ class Api
         }, $items);
 
 
-        // Client Parameters
-        $address1 = $street;
-        $address2 = $street2;
-        $state = $region ? $region : 'N/A';
-        $s_state = $s_region ? $s_region : 'N/A';
-        $phone = $telephone;
-
         // System Parameters
         $systemVersion = "Magento {$versionMagento}";
 
         // Computed Parameters
         $title = $firstName . " " . $lastName;
-        $billing_address = $address1 . ' ' . $address2;
-        $shipping_address = $s_street . ' ' . $s_street2;
+        $billing_address = implode(', ', $streets);
+        $shipping_address = implode(', ', $s_streets);
 
 
         /** 2. Fill post array */
@@ -161,13 +151,18 @@ class Api
             ->set03InvoiceInfo($title, $lang)
             ->set04Payment($currency, $amount, $otherCharges, $discountAmount)
             ->set05Products($items_arr)
-            ->set06CustomerInfo($firstName, $lastName, $phoneext, $phone, $email)
-            ->set07Billing($billing_address, $state, $city, $postcode, $country)
-            ->set08Shipping($s_firstName, $s_lastName, $shipping_address, $s_state, $s_city, $s_postcode, $s_country)
+            ->set06CustomerInfo($firstName, $lastName, $phoneext, $telephone, $email)
+            ->set07Billing($billing_address, $region, $city, $postcode, $country)
+            ->set08Shipping($s_firstName, $s_lastName, $shipping_address, $s_region, $s_city, $s_postcode, $s_country)
             ->set09HideOptions($hide_personal_info, $hide_billing, $hide_view_invoice)
             ->set10URLs($baseurl, $returnUrl)
             ->set11CMSVersion($systemVersion)
             ->set12IPCustomer('');
+
+        if ($paymentType == 'valu') {
+            $valu_product_id = $paymentMethod->getConfigData('valu_product_id');
+            $pt_holder->set20ValuParams($valu_product_id, 0);
+        }
 
         $post_arr = $pt_holder->pt_build(true);
 
