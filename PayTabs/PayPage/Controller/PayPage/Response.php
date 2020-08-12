@@ -69,8 +69,9 @@ class Response extends Action
         }
 
         // Get the params that were passed from our Router
-        $orderId = $this->getRequest()->getParam('p', null);
+        $pOrderId = $this->getRequest()->getParam('p', null);
 
+        // PT
         // PayTabs "Invoice ID"
         $transactionId = $this->getRequest()->getParam('tranRef', null);
 
@@ -78,7 +79,7 @@ class Response extends Action
 
         //
 
-        if (!$orderId || !$transactionId) {
+        if (!$pOrderId || !$transactionId) {
             paytabs_error_log("Paytabs: OrderId/TransactionId data did not receive in callback");
             return;
         }
@@ -86,46 +87,49 @@ class Response extends Action
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($orderId);
+        $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing, Order param = [{$orderId}]");
+            paytabs_error_log("Paytabs: Order is missing, Order param = [{$pOrderId}]");
             return;
         }
 
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
 
-        $paymentSuccess = $paymentMethod->getConfigData('order_success_status');
-        if (!$paymentSuccess) $paymentSuccess = Order::STATE_PROCESSING;
-        $paymentFailed = $paymentMethod->getConfigData('order_failed_status');
-        if (!$paymentFailed) $paymentFailed = Order::STATE_CANCELED;
+        $paymentSuccess =
+            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+        $paymentFailed =
+            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
-        $sendInvoice = $paymentMethod->getConfigData('send_invoice');
-        if (!$sendInvoice) $sendInvoice = false;
+        $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->verify_payment($transactionId);
+
         $success = $verify_response->success;
         $res_msg = $verify_response->message;
+        $orderId = @$verify_response->reference_no;
+        $transaction_ref = @$verify_response->transaction_id;
 
         if (!$success) {
-            paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
-            $payment->setIsTransactionPending(true);
-            $payment->setIsFraudDetected(true);
+            paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
 
-            // $orderState = Order::STATE_CANCELED;
-            $this->setNewStatus($order, $paymentFailed);
+            $payment->deny();
+
+            if ($paymentFailed != Order::STATE_CANCELED) {
+                $this->setNewStatus($order, $paymentFailed);
+            }
+            $order->save();
 
             $this->messageManager->addErrorMessage($res_msg);
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
         }
 
-        // $orderId = $verify_response->reference_no;
-        if ($orderId != $verify_response->cart_id) {
-            paytabs_error_log("Paytabs Response: Order reference number is mismatch, Order = [{$orderId}], ReferenceId = [{$verify_response->reference_no}] ");
+        if ($pOrderId != $orderId) {
+            paytabs_error_log("Paytabs Response: Order reference number is mismatch, Order = [{$pOrderId}], ReferenceId = [{$verify_response->reference_no}] ");
             $this->messageManager->addWarningMessage('Order reference number is mismatch');
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
@@ -137,19 +141,21 @@ class Response extends Action
         }
 
         // PayTabs "Transaction ID"
-        $txnId = $verify_response->tran_ref;
         $paymentAmount = $verify_response->cart_amount;
         $paymentCurrency = $verify_response->cart_currency;
 
         $payment
-            ->setTransactionId($txnId)
-            ->setLastTransId($txnId)
-            ->setCcTransId($txnId)
-            ->setIsTransactionClosed(false)
+            ->setTransactionId($transaction_ref)
+            ->setLastTransId($transaction_ref)
+            ->setIsTransactionClosed(true)
             ->setShouldCloseParentTransaction(true)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
+
+        $payment->accept();
+
+        $payment->capture();
 
         if ($sendInvoice) {
             $payment->registerCaptureNotification($paymentAmount, true)->save();
@@ -173,8 +179,10 @@ class Response extends Action
             ->save();
 
 
-        // $orderState = Order::STATE_PROCESSING;
-        $this->setNewStatus($order, $paymentSuccess);
+        if ($paymentSuccess != Order::STATE_PROCESSING) {
+            $this->setNewStatus($order, $paymentSuccess);
+        }
+        $order->save();
 
         $this->messageManager->addSuccessMessage($res_msg);
         $resultRedirect->setPath('checkout/onepage/success');
@@ -188,13 +196,8 @@ class Response extends Action
 
     public function setNewStatus($order, $newStatus)
     {
-        if ($newStatus == Order::STATE_CANCELED) {
-            $order->cancel();
-        } else {
-            $order->setState($newStatus)->setStatus($newStatus);
-            $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
-        }
-        $order->save();
+        $order->setState($newStatus)->setStatus($newStatus);
+        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
     }
 }
 

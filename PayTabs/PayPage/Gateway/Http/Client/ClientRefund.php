@@ -10,12 +10,10 @@ namespace PayTabs\PayPage\Gateway\Http\Client;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
+use PayTabs\PayPage\Gateway\Http\PaytabsApi;
 
-class ClientMock implements ClientInterface
+class ClientRefund implements ClientInterface
 {
-    const SUCCESS = 1;
-    const FAILURE = 0;
-
     /**
      * @var Logger
      */
@@ -37,13 +35,19 @@ class ClientMock implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        $response = [];
+        $req_data = $transferObject->getBody();
+        $values = $req_data['params'];
+        $auth = $req_data['auth'];
 
-        // $this->logger->debug([
-        //     'request' => $transferObject->getBody(),
-        //     'response' => $response
-        // ]);
+        $ptApi = PaytabsApi::getInstance($auth['merchant_id'], $auth['merchant_key']);
 
-        return $response;
+        $response = $ptApi->refund($values);
+
+        $this->logger->debug([
+            'request' => $transferObject->getBody(),
+            'response' => (array) $response
+        ]);
+
+        return (array) $response;
     }
 }

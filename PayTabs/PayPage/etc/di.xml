@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
     <!-- Payment Method Facade configuration -->
+
     <virtualType name="PayPageCreditCardFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
@@ -92,7 +94,21 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageValUFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolValU</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolValU</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Payment Method Facade configuration -->
+
+
     <!-- Configuration reader -->
+
     <virtualType name="PayPageCreditCardConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
@@ -138,27 +154,24 @@
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
         </arguments>
     </virtualType>
-
-    <!-- Logger, initialized with PayPageCreditCardConfig -->
-    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
+    <virtualType name="PayPageValUConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
         </arguments>
     </virtualType>
 
-    <type name="PayTabs\PayPage\Gateway\Http\Client\ClientMock">
-        <arguments>
-            <argument name="logger" xsi:type="object">PayPageLogger</argument>
-        </arguments>
-    </type>
+    <!-- Configuration reader -->
+
 
     <!-- Commands infrastructure -->
+
     <virtualType name="PayPageCommandPoolCreditCard" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommand</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <!-- <item name="void" xsi:type="string">PayPageVoidCommand</item> -->
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -167,7 +180,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandStcPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -176,7 +189,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandApplePay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -185,7 +198,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandOmanNet</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -194,7 +207,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandMada</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -203,7 +216,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandSadad</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -212,7 +225,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAtFawry</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -221,7 +234,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandKnPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -230,12 +243,25 @@
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAmex</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolValU" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandValU</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
 
+    <!-- Commands infrastructure -->
+
+
     <!-- Authorize command -->
+
     <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
@@ -317,13 +343,26 @@
             <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageAuthorizeCommandValU" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestValU</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Authorize command -->
+
 
     <!-- Authorization Request -->
+
     <virtualType name="PayPageAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestCreditCard</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -331,7 +370,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestStcPay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -339,7 +378,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestApplePay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -347,7 +386,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestOmanNet</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -355,7 +394,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestMada</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -363,7 +402,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestSadad</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -371,7 +410,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestAtFawry</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -379,7 +418,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestKnPay</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -387,7 +426,15 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="transaction" xsi:type="string">AuthorizationRequestAmex</item>
-                <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestValU" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestValU</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
             </argument>
         </arguments>
     </virtualType>
@@ -437,19 +484,27 @@
             <argument name="config" xsi:type="object">PayPageAmexConfig</argument>
         </arguments>
     </virtualType>
+    <virtualType name="AuthorizationRequestValU" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageValUConfig</argument>
+        </arguments>
+    </virtualType>
+
 
     <!-- Capture command -->
+
     <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\CaptureRequest</argument>
-            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
             <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
         </arguments>
     </virtualType>
 
     <!-- Capture Request -->
+
     <type name="PayTabs\PayPage\Gateway\Request\CaptureRequest">
         <arguments>
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
@@ -457,34 +512,64 @@
     </type>
 
     <!-- Void command -->
+
     <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
-            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
             <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
+            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument> -->
         </arguments>
     </virtualType>
 
     <!-- Void Request -->
+
     <type name="PayTabs\PayPage\Gateway\Request\VoidRequest">
         <arguments>
             <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
         </arguments>
     </type>
 
+
+    <!-- Refund command -->
+
+    <virtualType name="PayPageRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\RefundRequest</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientRefund</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseRefundValidator</argument>
+            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\RefundHandler</argument> -->
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Gateway\Request\RefundRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Refund command -->
+
+
     <!-- Response handlers -->
+
     <virtualType name="PayPageResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="txnid" xsi:type="string">PayTabs\PayPage\Gateway\Response\TxnIdHandler</item>
-                <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item>
+                <!-- <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item> -->
             </argument>
         </arguments>
     </virtualType>
 
+    <!-- Response handlers -->
+
+
     <!-- Value handlers infrastructure -->
+
     <virtualType name="PayPageValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -548,6 +633,16 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolValU" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerValU</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Value handlers infrastructure -->
+
 
     <virtualType name="PayPageConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
@@ -594,6 +689,12 @@
             <argument name="configInterface" xsi:type="object">PayPageAmexConfig</argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageConfigValueHandlerValU" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageValUConfig</argument>
+        </arguments>
+    </virtualType>
+
 
     <type name="PayTabs\PayPage\Block\Info">
         <arguments>
@@ -608,5 +709,22 @@
     <type name="Magento\Framework\App\Request\CsrfValidator">
         <plugin name="csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
+
+
+    <!-- Logger, initialized with PayPageCreditCardConfig -->
+
+    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="PayTabs\PayPage\Gateway\Http\Client\ClientMock">
+        <arguments>
+            <argument name="logger" xsi:type="object">PayPageLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
 
 </config>

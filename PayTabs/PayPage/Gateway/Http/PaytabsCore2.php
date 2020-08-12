@@ -34,17 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.0.3
- * 
- * Features:
- *  1- Create paypage
- *  2- Tokenization payment
- *  3- Verify payment
- *  4- Validate secret key
- * 
- * To-Do:
- *  1- Capture / Void transactions
- *  2- Refund transactions
+ * Version: 1.1.0
  */
 
 
@@ -950,6 +940,66 @@ class PaytabsHolder2
 
 
 /**
+ * Holder class that holds PayTabs's request's values
+ */
+class PaytabsRefundHolder
+{
+
+    /**
+     * refund_amount
+     */
+    private $refundInfo;
+
+    /**
+     * transaction_id
+     */
+    private $transaction_id;
+
+
+    //
+
+    /**
+     * @return array
+     */
+    public function pt_build()
+    {
+        $all = array_merge(
+            [
+                'tran_type' => 'refund',
+                'tran_class' => 'ecom'
+            ],
+            $this->refundInfo,
+            $this->transaction_id
+        );
+
+        return $all;
+    }
+
+    //
+
+    public function set01RefundInfo($amount, $cart_currency)
+    {
+        $this->refundInfo = [
+            'cart_amount' => (float) $amount,
+            'cart_currency' => $cart_currency,
+        ];
+
+        return $this;
+    }
+
+    public function set02Transaction($cart_id, $transaction_id, $reason)
+    {
+        $this->transaction_id = [
+            'tran_ref' => $transaction_id,
+            'cart_id'  => "{$cart_id}",
+            'cart_description' => $reason,
+        ];
+
+        return $this;
+    }
+}
+
+/**
  * API class which contacts PayTabs server's API
  */
 class PaytabsApi
@@ -967,9 +1017,13 @@ class PaytabsApi
         '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR']],
         '11' => ['name' => 'valu', 'title' => 'PayTabs - valU', 'currencies' => ['EGP']],
     ];
-    const URL_REQUEST = 'https://secure.paytabs.com/payment/request';
-    const URL_QUERY   = 'https://secure.paytabs.com/payment/query';
-    const URL_AUTHENTICATION = 'https://www.paytabs.com/apiv2/validate_secret_key';
+    const BASE_URL = 'https://secure.paytabs.com/';
+
+    const URL_REQUEST = PaytabsApi::BASE_URL . 'payment/request';
+    const URL_QUERY   = PaytabsApi::BASE_URL . 'payment/query';
+
+    const URL_TOKEN        = PaytabsApi::BASE_URL . 'payment/token';
+    const URL_TOKEN_DELETE = PaytabsApi::BASE_URL . 'payment/token/delete';
 
     //
 
@@ -982,10 +1036,10 @@ class PaytabsApi
 
     //
 
-    public static function getInstance($profile_id, $server_key)
+    public static function getInstance($merchant_id, $key)
     {
         if (self::$instance == null) {
-            self::$instance = new PaytabsApi($profile_id, $server_key);
+            self::$instance = new PaytabsApi($merchant_id, $key);
         }
 
         // self::$instance->setAuth($merchant_email, $secret_key);
@@ -1004,24 +1058,14 @@ class PaytabsApi
         $this->server_key = $server_key;
     }
 
+
     /** start: API calls */
-
-    function authentication()
-    {
-        $obj = json_decode($this->sendRequest(self::URL_AUTHENTICATION, array("merchant_email" => $this->merchant_email, "secret_key" =>  $this->secret_key)), TRUE);
-
-        if ($obj->response_code == "4000") {
-            return TRUE;
-        }
-        return FALSE;
-    }
 
     function create_pay_page($values)
     {
         // $serverIP = getHostByName(getHostName());
         // $values['ip_merchant'] = PaytabsHelper::getNonEmpty($serverIP, $_SERVER['SERVER_ADDR'], 'NA');
 
-        // $values['ip_customer'] = PaytabsHelper::getNonEmpty($values['ip_customer'], $_SERVER['REMOTE_ADDR'], 'NA');
 
         $res = json_decode($this->sendRequest(self::URL_REQUEST, $values));
         $paypage = $this->enhance($res);
@@ -1037,6 +1081,14 @@ class PaytabsApi
         $verify = $this->enhanceVerify($verify);
 
         return $verify;
+    }
+
+    function refund($values)
+    {
+        $res = json_decode($this->sendRequest(self::URL_REQUEST, $values));
+        $refund = $this->enhanceRefund($res);
+
+        return $refund;
     }
 
     function is_valid_redirect($post_values)
@@ -1083,6 +1135,8 @@ class PaytabsApi
             $_paypage->message = 'Create paytabs payment failed';
         } else {
             $_paypage->success = isset($paypage->tran_ref, $paypage->redirect_url) && !empty($paypage->redirect_url);
+
+            $_paypage->payment_url = @$paypage->redirect_url;
         }
 
         return $_paypage;
@@ -1105,7 +1159,31 @@ class PaytabsApi
             $_verify->message = $verify->payment_result->response_message;
         }
 
+        $_verify->reference_no = @$verify->cart_id;
+        $_verify->transaction_id = @$verify->tran_ref;
+
         return $_verify;
+    }
+
+    private function enhanceRefund($refund)
+    {
+        $_refund = $refund;
+
+        if (!$refund) {
+            $_refund = new stdClass();
+            $_refund->success = false;
+            $_refund->message = 'Verifying paytabs Refund failed';
+        } else {
+            if (isset($refund->payment_result)) {
+                $_refund->success = $refund->payment_result->response_status == "A";
+                $_refund->message = $refund->payment_result->response_message;
+            } else {
+                $_refund->success = false;
+            }
+            $_refund->pending_success = false;
+        }
+
+        return $_refund;
     }
 
     /** end: Local calls */

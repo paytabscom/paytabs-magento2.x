@@ -13,11 +13,12 @@ class Api
     {
         // $paymentType = $paymentMethod->getCode();
 
-        $profileId = $paymentMethod->getConfigData('profile_id');
-        $serverKey = $paymentMethod->getConfigData('server_key');
+        // PT
+        $merchant_id = $paymentMethod->getConfigData('profile_id');
+        $merchant_key = $paymentMethod->getConfigData('server_key');
 
         new PaytabsCore2();
-        $pt = PaytabsApi::getInstance($profileId, $serverKey);
+        $pt = PaytabsApi::getInstance($merchant_id, $merchant_key);
 
         return $pt;
     }
@@ -29,9 +30,13 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentType)
+    public function prepare_order($order, $paymentMethod)
     {
         /** 1. Read required Params */
+
+        $paymentType = $paymentMethod->getCode(); //'creditcard';
+
+        $hide_shipping = $paymentMethod->getConfigData('hide_shipping') == '1';
 
         $orderId = $order->getIncrementId();
 
@@ -46,48 +51,61 @@ class Api
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
         $lang_code = $localeResolver->getLocale();
+        // $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
 
         // Compute Prices
 
         $amount = $order->getGrandTotal();
-        $discountAmount = abs($order->getDiscountAmount());
+        // $discountAmount = abs($order->getDiscountAmount());
         // $shippingAmount = $order->getShippingAmount();
         // $taxAmount = $order->getTaxAmount();
+
+        // $amount += $discountAmount;
         // $otherCharges = $shippingAmount + $taxAmount;
 
-        $amount += $discountAmount;
         $amount = number_format((float) $amount, 2, '.', '');
 
 
         /** 1.2. Read BillingAddress info */
 
         $billingAddress = $order->getBillingAddress();
+        // $firstName = $billingAddress->getFirstname();
+        // $lastName = $billingAddress->getlastname();
+
+        // $email = $billingAddress->getEmail();
+        // $city = $billingAddress->getCity();
 
         $postcode = trim($billingAddress->getPostcode());
 
+        // $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
         $country = PaytabsHelper::countryGetiso3($country_iso2);
 
+        // $telephone = $billingAddress->getTelephone();
         $streets = $billingAddress->getStreet();
-        $billing_address = array_reduce($streets, function ($acc, $street) {
-            return $acc . ', ' . $street;
-        }, '');
+        $billing_address = implode(', ', $streets);
 
+        // $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
+        // $phoneext = $cdetails['phone'];
+
+        // $country = PaytabsHelper::countryGetiso3($country_iso2);
 
         $hasShipping = false;
         $shippingAddress = $order->getShippingAddress();
         if ($shippingAddress) {
             $hasShipping = true;
+            // $s_firstName = $shippingAddress->getFirstname();
+            // $s_lastName = $shippingAddress->getlastname();
+            // $s_city = $shippingAddress->getCity();
 
             $s_postcode = trim($shippingAddress->getPostcode());
 
+            // $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
             $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
 
             $s_streets = $shippingAddress->getStreet();
-            $shipping_address = array_reduce($s_streets, function ($acc, $street) {
-                return $acc . ', ' . $street;
-            }, '');
+            $shipping_address = implode(', ', $s_streets);
         }
 
         /** 1.3. Read Products */
@@ -107,6 +125,9 @@ class Api
 
         // System Parameters
         // $systemVersion = "Magento {$versionMagento}";
+
+        // Computed Parameters
+        // $title = $firstName . " " . $lastName;
 
 
         /** 2. Fill post array */
@@ -143,7 +164,7 @@ class Api
         }
 
         $pt_holder
-            ->set06HideShipping(false)
+            ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
             ->set08Lang($lang_code);
 

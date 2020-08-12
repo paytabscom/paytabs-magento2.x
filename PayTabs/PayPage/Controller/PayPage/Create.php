@@ -120,7 +120,7 @@ class Create extends Action
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
-        $values = $this->paytabs->prepare_order($order, $paymentMethod->getCode());
+        $values = $this->paytabs->prepare_order($order, $paymentMethod);
 
         $res = $ptApi->create_pay_page($values);
         return $res;

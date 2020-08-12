@@ -48,6 +48,8 @@ class AuthorizationRequest implements BuilderInterface
         // $order = $payment->getOrder();
         // $address = $order->getShippingAddress();
 
+        // $transactionResult = $payment->getAdditionalInformation('transaction_result');
+
         // $values = $this->prepare_order($order, 'creditcard');
 
         // return $values;

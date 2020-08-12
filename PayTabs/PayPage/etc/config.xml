@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <!--
 /**
  * Copyright © 2015 Magento. All rights reserved.
@@ -12,148 +12,224 @@
                 <active>0</active>
                 <title>PayTabs - CreditCard</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageCreditCardFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
+
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>FRAUD_MSG_LIST</paymentInfoKeys>
                 <privateInfoKeys>FRAUD_MSG_LIST</privateInfoKeys> -->
             </creditcard>
 
+
             <stcpay>
                 <active>0</active>
                 <title>PayTabs - STCPay</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageStcPayFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </stcpay>
+
 
             <applepay>
                 <active>0</active>
                 <title>PayTabs - ApplePay</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageApplePayFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </applepay>
+
 
             <omannet>
                 <active>0</active>
                 <title>PayTabs - OmanNet</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageOmanNetFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </omannet>
+
 
             <mada>
                 <active>0</active>
                 <title>PayTabs - Mada</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageMadaFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </mada>
+
 
             <sadad>
                 <active>0</active>
                 <title>PayTabs - Sadad</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageSadadFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </sadad>
+
 
             <atfawry>
                 <active>0</active>
                 <title>PayTabs - @Fawry</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageAtFawryFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </atfawry>
+
 
             <knpay>
                 <active>0</active>
                 <title>PayTabs - KNPay</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageKnPayFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </knpay>
+
 
             <amex>
                 <active>0</active>
                 <title>PayTabs - Amex</title>
                 <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
+
                 <model>PayPageAmexFacade</model>
-                <group>offline</group>
+
+                <hide_shipping>0</hide_shipping>
+
                 <payment_action>authorize</payment_action>
-                <!-- <merchant_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" /> -->
+
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>1</can_void>
+                <can_refund>1</can_refund>
                 <can_use_checkout>1</can_use_checkout>
+
                 <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
             </amex>
+
+
+            <valu>
+                <active>0</active>
+                <title>PayTabs - valU</title>
+                <order_status>pending_payment</order_status>
+
+                <model>PayPageValUFacade</model>
+
+                <hide_shipping>0</hide_shipping>
+
+                <payment_action>authorize</payment_action>
+
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_void>1</can_void>
+                <can_refund>1</can_refund>
+                <can_use_checkout>1</can_use_checkout>
+
+                <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
+            </valu>
 
         </payment>
     </default>

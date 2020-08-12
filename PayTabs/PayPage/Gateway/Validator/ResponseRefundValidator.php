@@ -9,9 +9,9 @@ namespace PayTabs\PayPage\Gateway\Validator;
 
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
-use PayTabs\PayPage\Gateway\Http\Client\ClientMock;
 
-class ResponseCodeValidator extends AbstractValidator
+
+class ResponseRefundValidator extends AbstractValidator
 {
     const RESULT_CODE = 'RESULT_CODE';
 
@@ -29,25 +29,13 @@ class ResponseCodeValidator extends AbstractValidator
 
         $response = $validationSubject['response'];
 
-        if ($this->isSuccessfulTransaction($response)) {
-            return $this->createResult(
-                true,
-                []
-            );
-        } else {
-            return $this->createResult(
-                false,
-                [__('Gateway rejected the transaction.')]
-            );
-        }
-    }
+        $success = $response['success'];
+        // $pending_success = $response['pending_success'];
+        $message = $response['message'];
 
-    /**
-     * @param array $response
-     * @return bool
-     */
-    private function isSuccessfulTransaction(array $response)
-    {
-        return true;
+        return $this->createResult(
+            $success,
+            [$message]
+        );
     }
 }

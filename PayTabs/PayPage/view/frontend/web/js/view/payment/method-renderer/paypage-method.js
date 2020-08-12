@@ -58,7 +58,7 @@ define(
                         console.log(result);
                         if (result && result.success) {
                             if (!result.had_paid) {
-                                $.mage.redirect(result.redirect_url);
+                                $.mage.redirect(result.payment_url);
                             } else {
                                 alert({
                                     title: 'Previous paid amount detected',
@@ -69,14 +69,14 @@ define(
                                             text: 'Pay anyway',
                                             class: 'action primary accept',
                                             click: function () {
-                                                $.mage.redirect(result.redirect_url);
+                                                $.mage.redirect(result.payment_url);
                                             }
                                         },
                                         {
                                             text: 'Order details',
                                             class: 'action secondary',
                                             click: function () {
-                                                $.mage.redirect(_urlBuilder.build('sales/order/view/order_id/' + result.cart_id + '/'));
+                                                $.mage.redirect(_urlBuilder.build('sales/order/view/order_id/' + result.order_id + '/'));
                                             }
                                         }
                                     ]

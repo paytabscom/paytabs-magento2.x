@@ -19,6 +19,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_ATFAWRY = 'atfawry';
     const CODE_KNPAY = 'knpay';
     const CODE_AMEX = 'amex';
+    const CODE_VALU = 'valu';
 
     /**
      * Retrieve assoc array of checkout configuration
@@ -82,7 +83,13 @@ final class ConfigProvider implements ConfigProviderInterface
                         ClientMock::SUCCESS => __('Success'),
                         ClientMock::FAILURE => __('Fraud')
                     ]
-                ]
+                ],
+                self::CODE_VALU => [
+                    'transactionResults' => [
+                        ClientMock::SUCCESS => __('Success'),
+                        ClientMock::FAILURE => __('Fraud')
+                    ]
+                ],
             ]
         ];
     }
