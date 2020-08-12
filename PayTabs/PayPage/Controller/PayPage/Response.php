@@ -69,7 +69,7 @@ class Response extends Action
         }
 
         // Get the params that were passed from our Router
-        $orderId = $this->getRequest()->getParam('p', null);
+        $pOrderId = $this->getRequest()->getParam('p', null);
 
         // PayTabs "Invoice ID"
         $transactionId = $this->getRequest()->getParam('payment_reference', null);
@@ -78,7 +78,7 @@ class Response extends Action
 
         //
 
-        if (!$orderId || !$transactionId) {
+        if (!$pOrderId || !$transactionId) {
             paytabs_error_log("Paytabs: OrderId/TransactionId data did not receive in callback");
             return;
         }
@@ -86,10 +86,10 @@ class Response extends Action
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($orderId);
+        $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing, Order param = [{$orderId}]");
+            paytabs_error_log("Paytabs: Order is missing, Order param = [{$pOrderId}]");
             return;
         }
 
@@ -106,11 +106,14 @@ class Response extends Action
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->verify_payment($transactionId);
+
         $success = $verify_response->success;
-        $res_msg = $verify_response->result;
+        $res_msg = $verify_response->message;
+        $orderId = @$verify_response->reference_no;
+        $transaction_ref = @$verify_response->transaction_id;
 
         if (!$success) {
-            paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$orderId}");
+            paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
 
             $payment->deny();
 
@@ -124,9 +127,8 @@ class Response extends Action
             return $resultRedirect;
         }
 
-        // $orderId = $verify_response->reference_no;
-        if ($orderId != $verify_response->reference_no) {
-            paytabs_error_log("Paytabs Response: Order reference number is mismatch, Order = [{$orderId}], ReferenceId = [{$verify_response->reference_no}] ");
+        if ($pOrderId != $orderId) {
+            paytabs_error_log("Paytabs Response: Order reference number is mismatch, Order = [{$pOrderId}], ReferenceId = [{$verify_response->reference_no}] ");
             $this->messageManager->addWarningMessage('Order reference number is mismatch');
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
@@ -138,13 +140,12 @@ class Response extends Action
         }
 
         // PayTabs "Transaction ID"
-        $txnId = $verify_response->transaction_id;
         $paymentAmount = $verify_response->amount;
         $paymentCurrency = $verify_response->currency;
 
         $payment
-            ->setTransactionId($txnId)
-            ->setLastTransId($txnId)
+            ->setTransactionId($transaction_ref)
+            ->setLastTransId($transaction_ref)
             ->setIsTransactionClosed(true)
             ->setShouldCloseParentTransaction(true)
             ->setAdditionalInformation("payment_amount", $paymentAmount)

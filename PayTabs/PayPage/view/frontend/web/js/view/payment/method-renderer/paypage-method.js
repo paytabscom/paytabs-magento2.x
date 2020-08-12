@@ -56,7 +56,7 @@ define(
                 )
                     .done(function (result) {
                         console.log(result);
-                        if (result && result.response_code == 4012) {
+                        if (result && result.success) {
                             if (!result.had_paid) {
                                 $.mage.redirect(result.payment_url);
                             } else {
@@ -84,7 +84,7 @@ define(
                             }
 
                         } else {
-                            let msg = result.details || result.result;
+                            let msg = result.message;
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),

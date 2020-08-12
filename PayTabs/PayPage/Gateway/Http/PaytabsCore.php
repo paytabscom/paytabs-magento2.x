@@ -33,7 +33,7 @@ class PaytabsCore
 
 /**
  * PayTabs PHP SDK
- * Version: 1.2.0
+ * Version: 1.2.1
  */
 
 
@@ -1423,10 +1423,10 @@ class PaytabsApi
 
     //
 
-    public static function getInstance($merchant_email, $secret_key)
+    public static function getInstance($merchant_id, $key)
     {
         if (self::$instance == null) {
-            self::$instance = new PaytabsApi($merchant_email, $secret_key);
+            self::$instance = new PaytabsApi($merchant_id, $key);
         }
 
         // self::$instance->setAuth($merchant_email, $secret_key);
@@ -1520,7 +1520,7 @@ class PaytabsApi
 
     /**
      * paypage structure: null || stdClass->[result | details, response_code, payment_url, p_id]
-     * @return paypage structure: stdClass->[success, result, response_code, payment_url, p_id]
+     * @return paypage structure: stdClass->[success, result|message, response_code, payment_url, p_id]
      */
     private function enhance($paypage)
     {
@@ -1540,6 +1540,8 @@ class PaytabsApi
             $_paypage->result = $msg;
         }
 
+        $_paypage->message = $_paypage->result;
+
         return $_paypage;
     }
 
@@ -1555,6 +1557,8 @@ class PaytabsApi
 
             $_verify->success = isset($verify->response_code) && $verify->response_code == 100;
         }
+
+        $_verify->message = $_verify->result;
 
         return $_verify;
     }
@@ -1575,6 +1579,8 @@ class PaytabsApi
                 $_refund->success = false;
             }
         }
+
+        $_refund->message = $_refund->result;
 
         return $_refund;
     }

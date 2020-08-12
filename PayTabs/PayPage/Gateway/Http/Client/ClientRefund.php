@@ -39,7 +39,7 @@ class ClientRefund implements ClientInterface
         $values = $req_data['params'];
         $auth = $req_data['auth'];
 
-        $ptApi = PaytabsApi::getInstance($auth['username'], $auth['key']);
+        $ptApi = PaytabsApi::getInstance($auth['merchant_id'], $auth['merchant_key']);
 
         $response = $ptApi->refund($values);
 

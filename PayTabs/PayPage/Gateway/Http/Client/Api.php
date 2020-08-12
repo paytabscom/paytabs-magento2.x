@@ -13,11 +13,11 @@ class Api
     {
         // $paymentType = $paymentMethod->getCode();
 
-        $Email = $paymentMethod->getConfigData('merchant_email');
-        $secretKey = $paymentMethod->getConfigData('merchant_secret');
+        $merchant_id = $paymentMethod->getConfigData('merchant_email');
+        $merchant_key = $paymentMethod->getConfigData('merchant_secret');
 
         new PaytabsCore();
-        $pt = PaytabsApi::getInstance($Email, $secretKey);
+        $pt = PaytabsApi::getInstance($merchant_id, $merchant_key);
 
         return $pt;
     }

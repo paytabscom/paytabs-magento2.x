@@ -57,8 +57,8 @@ class RefundRequest implements BuilderInterface
         }
 
         $paymentMethod = $payment->getMethodInstance();
-        $merchant_email = $paymentMethod->getConfigData('merchant_email');
-        $secretKey = $paymentMethod->getConfigData('merchant_secret');
+        $merchant_id = $paymentMethod->getConfigData('merchant_email');
+        $merchant_key = $paymentMethod->getConfigData('merchant_secret');
 
         // $this->config->getValue('merchant_email');
 
@@ -77,8 +77,8 @@ class RefundRequest implements BuilderInterface
         $req_data = [
             'params' => $values,
             'auth' => [
-                'username' => $merchant_email,
-                'key'      => $secretKey
+                'merchant_id'  => $merchant_id,
+                'merchant_key' => $merchant_key
             ]
         ];
 

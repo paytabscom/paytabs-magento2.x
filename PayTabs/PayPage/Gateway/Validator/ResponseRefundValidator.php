@@ -29,8 +29,9 @@ class ResponseRefundValidator extends AbstractValidator
 
         $response = $validationSubject['response'];
 
-        $success = $response['success']; // || $response['pending_success'];
-        $message = $response['result'];
+        $success = $response['success'];
+        // $pending_success = $response['pending_success'];
+        $message = $response['message'];
 
         return $this->createResult(
             $success,
