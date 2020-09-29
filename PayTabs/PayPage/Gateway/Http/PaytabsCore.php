@@ -33,7 +33,7 @@ class PaytabsCore
 
 /**
  * PayTabs PHP SDK
- * Version: 1.2.1
+ * Version: 1.2.5
  */
 
 
@@ -700,7 +700,7 @@ class PaytabsHelper
 class PaytabsHolder
 {
     const GLUE = ' || ';
-    const THRESHOLD = 1.0;
+    const THRESHOLD = -1.0;
 
     /**
      * payment_type
@@ -829,11 +829,11 @@ class PaytabsHolder
 
         $sums += $other_charges;
 
-        $diff = $amount - $sums;
+        $diff = round($amount - $sums, 2);
         if ($diff != 0) {
             $_logParams = json_encode($pay);
 
-            if (abs($diff) > self::THRESHOLD) {
+            if (self::THRESHOLD >= 0 && abs($diff) > self::THRESHOLD) {
                 PaytabsHelper::log("PaytabsHelper::round_amount: diff = {$diff}, [{$_logParams}]", 3);
             } else {
                 PaytabsHelper::log("PaytabsHelper::round_amount: diff = {$diff} added to 'other_charges', [{$_logParams}]", 2);
@@ -926,9 +926,9 @@ class PaytabsHolder
     {
         $this->payment = [
             'currency'      => $currency,
-            'amount'        => $amount,
-            'other_charges' => $other_charges,
-            'discount'      => $discount,
+            'amount'        => round($amount, 3),
+            'other_charges' => round($other_charges, 3),
+            'discount'      => round($discount, 3),
         ];
 
         return $this;
@@ -972,6 +972,9 @@ class PaytabsHolder
         PaytabsHelper::pt_fillIfEmpty($firstname);
         PaytabsHelper::pt_fillIfEmpty($lastname);
 
+        PaytabsHelper::pt_fillIfEmpty($phone_prefix);
+        PaytabsHelper::pt_fillIfEmpty($phone_number);
+
         //
 
         $this->customer_info = [
@@ -995,6 +998,8 @@ class PaytabsHolder
 
         $this->_fill($postal_code, '11111');
         $postal_code = PaytabsHelper::convertAr2En($postal_code);
+
+        $this->_fill($country, 'SAU');
 
         //
 
