@@ -17,6 +17,12 @@
                 <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
                 </field>
+
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <!-- PT -->
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
@@ -61,7 +67,7 @@
             </group>
 
 
-            <group id="stcpay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="stcpay" translate="label" type="text" sortOrder="105" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - STCPay</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -71,6 +77,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -109,7 +120,7 @@
             </group>
 
 
-            <group id="applepay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="applepay" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - ApplePay</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -119,6 +130,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -157,7 +173,7 @@
             </group>
 
 
-            <group id="omannet" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="omannet" translate="label" type="text" sortOrder="115" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - OmanNet</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -167,6 +183,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -205,7 +226,7 @@
             </group>
 
 
-            <group id="mada" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="mada" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Mada</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -215,6 +236,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -253,7 +279,7 @@
             </group>
 
 
-            <group id="sadad" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="sadad" translate="label" type="text" sortOrder="125" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Sadad</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -263,6 +289,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -301,7 +332,7 @@
             </group>
 
 
-            <group id="atfawry" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="atfawry" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - @Fawry</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -311,6 +342,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -349,7 +385,7 @@
             </group>
 
 
-            <group id="knpay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="knpay" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - KNPay</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -359,6 +395,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -397,7 +438,7 @@
             </group>
 
 
-            <group id="amex" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="amex" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Amex</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -407,6 +448,11 @@
                     <label>Title</label>
                 </field>
 
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Profile ID</label>
                 </field>
@@ -445,7 +491,7 @@
             </group>
 
 
-            <group id="valu" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="valu" translate="label" type="text" sortOrder="145" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - valU</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -453,6 +499,11 @@
                 </field>
                 <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Title</label>
+                </field>
+
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
                 </field>
 
                 <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
