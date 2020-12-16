@@ -29,9 +29,9 @@ class Response extends Action
     private $paytabs;
 
     /**
-     * @var Magento\Sales\Model\Order\Email\Sender\OrderSender
+     * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
-    private $_orderSender;
+    private $_invoiceSender;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -45,13 +45,13 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
-        $this->_orderSender = $orderSender;
+        $this->_invoiceSender = $invoiceSender;
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -161,22 +161,25 @@ class Response extends Action
             $payment->registerCaptureNotification($paymentAmount, true)->save();
 
             $invoice = $payment->getCreatedInvoice();
-            if ($invoice && !$order->getEmailSent()) {
-                $this->_orderSender->send($order);
-                $order->addStatusHistoryComment(
-                    __('You notified customer about invoice #%1.', $invoice->getIncrementId())
-                )
-                    ->setIsCustomerNotified(true)
-                    ->save();
+            if ($invoice) { //} && !$order->getEmailSent()) {
+                $sent = $this->_invoiceSender->send($invoice);
+                if ($sent) {
+                    $order
+                        ->addStatusHistoryComment(
+                            __('You notified customer about invoice #%1.', $invoice->getIncrementId())
+                        )
+                        ->setIsCustomerNotified(true)
+                        ->save();
+                } else {
+                    $order
+                        ->addStatusHistoryComment(
+                            __('Failed to notify the customer about invoice #%1.', $invoice->getIncrementId())
+                        )
+                        ->setIsCustomerNotified(false)
+                        ->save();
+                }
             }
         }
-
-        $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
-        $transaction = $payment->addTransaction($transType, null, false);
-        $transaction
-            ->setIsClosed(true)
-            ->setParentTxnId(null)
-            ->save();
 
 
         if ($paymentSuccess != Order::STATE_PROCESSING) {
