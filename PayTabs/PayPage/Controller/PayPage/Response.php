@@ -128,7 +128,7 @@ class Response extends Action
             }
             $order->save();
 
-            $this->messageManager->addErrorMessage($res_msg);
+            $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
         }
@@ -192,7 +192,7 @@ class Response extends Action
         }
         $order->save();
 
-        $this->messageManager->addSuccessMessage($res_msg);
+        $this->messageManager->addSuccessMessage('The payment has been completed successfully - ' . $res_msg);
         $resultRedirect->setPath('checkout/onepage/success');
 
         return $resultRedirect;

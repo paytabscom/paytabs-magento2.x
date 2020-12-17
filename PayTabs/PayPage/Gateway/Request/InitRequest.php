@@ -45,7 +45,7 @@ class InitRequest implements BuilderInterface
         /** @var PaymentDataObjectInterface $paymentDO */
         $paymentDO = $buildSubject['payment'];
 
-        $order = $paymentDO->getOrder();
+        // $order = $paymentDO->getOrder();
 
         $payment = $paymentDO->getPayment();
 
@@ -53,13 +53,6 @@ class InitRequest implements BuilderInterface
             throw new \LogicException('Order payment should be provided.');
         }
 
-        return [
-            'TXN_TYPE' => 'S',
-            'TXN_ID' => $payment->getLastTransId(),
-            'MERCHANT_KEY' => $this->config->getValue(
-                'merchant_gateway_key',
-                $order->getStoreId()
-            )
-        ];
+        return [];
     }
 }
