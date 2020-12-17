@@ -29,9 +29,9 @@ class Response extends Action
     private $paytabs;
 
     /**
-     * @var Magento\Sales\Model\Order\Email\Sender\OrderSender
+     * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
-    private $_orderSender;
+    private $_invoiceSender;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -45,13 +45,13 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
-        $this->_orderSender = $orderSender;
+        $this->_invoiceSender = $invoiceSender;
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -71,6 +71,7 @@ class Response extends Action
         // Get the params that were passed from our Router
         $pOrderId = $this->getRequest()->getParam('p', null);
 
+        // PT
         // PayTabs "Invoice ID"
         $transactionId = $this->getRequest()->getParam('payment_reference', null);
 
@@ -115,14 +116,19 @@ class Response extends Action
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
 
-            $payment->deny();
+            // $payment->deny();
+            $payment->cancel();
+
+            $order->addStatusHistoryComment(__('Payment failed: [%1].', $res_msg));
 
             if ($paymentFailed != Order::STATE_CANCELED) {
                 $this->setNewStatus($order, $paymentFailed);
+            } else {
+                $order->cancel();
             }
             $order->save();
 
-            $this->messageManager->addErrorMessage($res_msg);
+            $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
             $resultRedirect->setPath('checkout/onepage/failure');
             return $resultRedirect;
         }
@@ -154,28 +160,31 @@ class Response extends Action
 
         $payment->accept();
 
-        $payment->capture();
+        // $payment->capture();
+        $payment->registerCaptureNotification($paymentAmount, true)->save();
 
         if ($sendInvoice) {
-            $payment->registerCaptureNotification($paymentAmount, true)->save();
 
             $invoice = $payment->getCreatedInvoice();
-            if ($invoice && !$order->getEmailSent()) {
-                $this->_orderSender->send($order);
-                $order->addStatusHistoryComment(
-                    __('You notified customer about invoice #%1.', $invoice->getIncrementId())
-                )
-                    ->setIsCustomerNotified(true)
-                    ->save();
+            if ($invoice) { //} && !$order->getEmailSent()) {
+                $sent = $this->_invoiceSender->send($invoice);
+                if ($sent) {
+                    $order
+                        ->addStatusHistoryComment(
+                            __('You notified customer about invoice #%1.', $invoice->getIncrementId())
+                        )
+                        ->setIsCustomerNotified(true)
+                        ->save();
+                } else {
+                    $order
+                        ->addStatusHistoryComment(
+                            __('Failed to notify the customer about invoice #%1.', $invoice->getIncrementId())
+                        )
+                        ->setIsCustomerNotified(false)
+                        ->save();
+                }
             }
         }
-
-        $transType = \Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE;
-        $transaction = $payment->addTransaction($transType, null, false);
-        $transaction
-            ->setIsClosed(true)
-            ->setParentTxnId(null)
-            ->save();
 
 
         if ($paymentSuccess != Order::STATE_PROCESSING) {
