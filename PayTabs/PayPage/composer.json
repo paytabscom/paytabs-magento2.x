@@ -10,7 +10,7 @@
         "magento/magento-composer-installer": "100.0.*"
     },
     "type": "magento2-module",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "license": [
         "OSL-3.0",
         "AFL-3.0"

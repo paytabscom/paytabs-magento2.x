@@ -116,10 +116,15 @@ class Response extends Action
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
 
-            $payment->deny();
+            // $payment->deny();
+            $payment->cancel();
+
+            $order->addStatusHistoryComment(__('Payment failed: [%1].', $res_msg));
 
             if ($paymentFailed != Order::STATE_CANCELED) {
                 $this->setNewStatus($order, $paymentFailed);
+            } else {
+                $order->cancel();
             }
             $order->save();
 
@@ -155,10 +160,10 @@ class Response extends Action
 
         $payment->accept();
 
-        $payment->capture();
+        // $payment->capture();
+        $payment->registerCaptureNotification($paymentAmount, true)->save();
 
         if ($sendInvoice) {
-            $payment->registerCaptureNotification($paymentAmount, true)->save();
 
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
