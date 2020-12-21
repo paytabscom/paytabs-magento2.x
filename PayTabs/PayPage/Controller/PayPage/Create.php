@@ -123,6 +123,10 @@ class Create extends Action
         $values = $this->paytabs->prepare_order($order, $paymentMethod);
 
         $res = $ptApi->create_pay_page($values);
+
+        $framed_mode = $paymentMethod->getConfigData('iframe_mode');
+        $res->framed_mode = $framed_mode;
+
         return $res;
     }
 

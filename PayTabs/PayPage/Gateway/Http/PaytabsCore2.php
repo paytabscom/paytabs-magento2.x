@@ -34,7 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.3.0
+ * Version: 1.3.1
  */
 
 
@@ -802,7 +802,8 @@ class PaytabsHolder2
             $this->customer_details,
             $this->shipping_details,
             $this->hide_shipping,
-            $this->lang
+            $this->lang,
+            $this->framed
         );
 
         return $all;
@@ -946,6 +947,8 @@ class PaytabsHolder2
     {
         $this->framed = [
             'framed' => $on,
+            'framedReturnParent' => true,
+            'framedReturnTop' => true
         ];
 
         return $this;

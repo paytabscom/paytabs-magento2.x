@@ -20,6 +20,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -53,6 +55,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -77,6 +81,8 @@
 
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
+
+                <iframe_mode>0</iframe_mode>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
@@ -103,6 +109,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -127,6 +135,8 @@
 
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
+
+                <iframe_mode>0</iframe_mode>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
@@ -153,6 +163,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -177,6 +189,8 @@
 
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
+
+                <iframe_mode>0</iframe_mode>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
@@ -203,6 +217,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -228,6 +244,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <iframe_mode>0</iframe_mode>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -252,6 +270,8 @@
 
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
+
+                <iframe_mode>0</iframe_mode>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>

@@ -38,6 +38,7 @@ class Api
         $paymentType = $paymentMethod->getCode(); //'creditcard';
 
         $hide_shipping = $paymentMethod->getConfigData('hide_shipping') == '1';
+        $framed_mode = $paymentMethod->getConfigData('iframe_mode') == '1';
 
         $orderId = $order->getIncrementId();
 
@@ -167,7 +168,8 @@ class Api
         $pt_holder
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
-            ->set08Lang($lang_code);
+            ->set08Lang($lang_code)
+            ->set09Framed($framed_mode);
 
         $post_arr = $pt_holder->pt_build();
 
