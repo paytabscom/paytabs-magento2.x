@@ -17,7 +17,7 @@ class CsrfValidatorSkip
         $action
     ) {
         if ($request->getModuleName() == 'paypage') {
-            if ($request->getActionName() == 'response') {
+            if ($request->getActionName() == 'response' || $request->getActionName() == 'ipn') {
                 return; // Skip CSRF check
             }
         }

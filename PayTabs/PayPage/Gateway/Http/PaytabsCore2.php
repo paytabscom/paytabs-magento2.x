@@ -34,7 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.3.1
+ * Version: 1.3.2
  */
 
 
@@ -1223,6 +1223,15 @@ class PaytabsApi
             // INVALID Redirect
             return false;
         }
+    }
+
+    function verify_response_local($post_values)
+    {
+        $_verify = new stdClass();
+        $_verify->success = $post_values['respStatus'] == 'A';
+        $_verify->message = $post_values['respMessage'];
+
+        return $_verify;
     }
 
     /** end: API calls */
