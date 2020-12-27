@@ -34,7 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.3.2
+ * Version: 1.3.3
  */
 
 
@@ -947,8 +947,8 @@ class PaytabsHolder2
     {
         $this->framed = [
             'framed' => $on,
-            'framedReturnParent' => true,
-            'framedReturnTop' => true
+            'framed_return_parent' => true,
+            'framed_return_top' => true
         ];
 
         return $this;
