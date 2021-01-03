@@ -39,6 +39,7 @@ class Api
 
         $hide_shipping = $paymentMethod->getConfigData('hide_shipping') == '1';
         $framed_mode = $paymentMethod->getConfigData('iframe_mode') == '1';
+        $test_local_mode = false;
 
         $orderId = $order->getIncrementId();
 
@@ -50,8 +51,14 @@ class Api
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $returnUrl = $baseurl . "paypage/paypage/response";
-        $callbackUrl = $baseurl . "paypage/paypage/ipn";
+        $returnUrl = "{$baseurl}paypage/paypage/response";
+        $callbackUrl = "{$baseurl}paypage/paypage/ipn";
+
+        if ($test_local_mode) {
+            // PayTabs' server does not post data to local addresses on callback_url
+            $public_ip = 'https://72bdf9d9dc04.ngrok.io/magento241/'; // Public IP address
+            $callbackUrl = "{$public_ip}paypage/paypage/ipn";
+        }
 
         $lang_code = $localeResolver->getLocale();
         // $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
