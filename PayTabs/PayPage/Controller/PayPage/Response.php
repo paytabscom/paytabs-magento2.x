@@ -133,19 +133,23 @@ class Response extends Action
             }
             $order->save();
 
+            $redirect_page = 'checkout/onepage/failure';
+
             if ($cart_refill) {
                 try {
                     // Payment failed, Save the Quote (user's Cart)
                     $quoteId = $order->getQuoteId();
                     $quote = $this->quoteRepository->get($quoteId);
                     $quote->setIsActive(true)->removePayment()->save();
+
+                    $redirect_page = 'checkout/cart';
                 } catch (\Throwable $th) {
                     paytabs_error_log("Paytabs: load Quote by ID failed!, OrderId = [{$orderId}], QuoteId = [{$quoteId}] ");
                 }
             }
 
             $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
-            $resultRedirect->setPath('checkout/onepage/failure');
+            $resultRedirect->setPath($redirect_page);
             return $resultRedirect;
         }
 
