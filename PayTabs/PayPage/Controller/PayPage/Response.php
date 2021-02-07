@@ -33,6 +33,8 @@ class Response extends Action
      */
     private $_invoiceSender;
 
+    protected $quoteRepository;
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -45,13 +47,15 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
         $this->_invoiceSender = $invoiceSender;
+        $this->quoteRepository = $quoteRepository;
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -103,6 +107,7 @@ class Response extends Action
             $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
         $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
+        $cart_refill = $paymentMethod->getConfigData('order_failed_reorder') ?? false;
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
@@ -128,8 +133,23 @@ class Response extends Action
             }
             $order->save();
 
+            $redirect_page = 'checkout/onepage/failure';
+
+            if ($cart_refill) {
+                try {
+                    // Payment failed, Save the Quote (user's Cart)
+                    $quoteId = $order->getQuoteId();
+                    $quote = $this->quoteRepository->get($quoteId);
+                    $quote->setIsActive(true)->removePayment()->save();
+
+                    $redirect_page = 'checkout/cart';
+                } catch (\Throwable $th) {
+                    paytabs_error_log("Paytabs: load Quote by ID failed!, OrderId = [{$orderId}], QuoteId = [{$quoteId}] ");
+                }
+            }
+
             $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
-            $resultRedirect->setPath('checkout/onepage/failure');
+            $resultRedirect->setPath($redirect_page);
             return $resultRedirect;
         }
 
@@ -161,9 +181,9 @@ class Response extends Action
         $payment->accept();
 
         // $payment->capture();
-        $payment->registerCaptureNotification($paymentAmount, true)->save();
-
+        
         if ($sendInvoice) {
+            $payment->registerCaptureNotification($paymentAmount, true)->save();
 
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {

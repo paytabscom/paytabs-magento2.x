@@ -20,6 +20,8 @@
                 <endpoint>ARE</endpoint>
                 <payment_action>capture</payment_action>
 
+                <order_failed_reorder>0</order_failed_reorder>
+
                 <iframe_mode>0</iframe_mode>
 
                 <can_initialize>1</can_initialize>
