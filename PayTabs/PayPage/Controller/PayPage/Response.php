@@ -181,9 +181,9 @@ class Response extends Action
         $payment->accept();
 
         // $payment->capture();
-        $payment->registerCaptureNotification($paymentAmount, true)->save();
-
+        
         if ($sendInvoice) {
+            $payment->registerCaptureNotification($paymentAmount, true)->save();
 
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
