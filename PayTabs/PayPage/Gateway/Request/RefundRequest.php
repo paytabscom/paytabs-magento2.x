@@ -60,6 +60,7 @@ class RefundRequest implements BuilderInterface
         // PT
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
+        $endpoint = $paymentMethod->getConfigData('endpoint');
 
         // $this->config->getValue('merchant_email');
 
@@ -82,7 +83,8 @@ class RefundRequest implements BuilderInterface
             'params' => $values,
             'auth' => [
                 'merchant_id'  => $merchant_id,
-                'merchant_key' => $merchant_key
+                'merchant_key' => $merchant_key,
+                'endpoint'     => $endpoint,
             ]
         ];
 

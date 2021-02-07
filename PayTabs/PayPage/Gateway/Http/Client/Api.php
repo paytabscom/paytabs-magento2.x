@@ -16,9 +16,10 @@ class Api
         // PT
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
+        $endpoint = $paymentMethod->getConfigData('endpoint');
 
         new PaytabsCore2();
-        $pt = PaytabsApi::getInstance($merchant_id, $merchant_key);
+        $pt = PaytabsApi::getInstance($endpoint, $merchant_id, $merchant_key);
 
         return $pt;
     }
