@@ -32,6 +32,7 @@ class Response extends Action
      * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
     private $_invoiceSender;
+    protected $quoteRepository;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -45,13 +46,17 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
         $this->_invoiceSender = $invoiceSender;
+        $this->quoteRepository = $quoteRepository;
+
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -97,6 +102,8 @@ class Response extends Action
 
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
+        
+        $cart_refill = $paymentMethod->getConfigData('order_failed_reorder') ?? false;
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
@@ -115,7 +122,20 @@ class Response extends Action
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
 
             $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
-            $resultRedirect->setPath('checkout/onepage/failure');
+            $redirect_page = 'checkout/onepage/failure';
+            if ($cart_refill) {
+                try {
+                    // Payment failed, Save the Quote (user's Cart)
+                    $quoteId = $order->getQuoteId();
+                    $quote = $this->quoteRepository->get($quoteId);
+                    $quote->setIsActive(true)->removePayment()->save();
+            
+                    $redirect_page = 'checkout/cart';
+                } catch (\Throwable $th) {
+                    paytabs_error_log("Paytabs: load Quote by ID failed!, OrderId = [{$orderId}], QuoteId = [{$quoteId}] ");
+                }
+            }
+            $resultRedirect->setPath($redirect_page);
             return $resultRedirect;
         }
 
