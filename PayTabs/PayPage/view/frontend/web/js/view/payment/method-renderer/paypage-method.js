@@ -9,6 +9,7 @@ define(
         'jquery',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/quote',
+        // 'Magento_Checkout/js/action/place-order',
         'mage/url',
         'Magento_Ui/js/modal/alert'
     ],
@@ -16,6 +17,7 @@ define(
         $,
         Component,
         quote,
+        // placeOrderAction,
         _urlBuilder,
         alert
     ) {
@@ -32,6 +34,8 @@ define(
             getMailingAddress: function () {
                 return window.checkoutConfig.payment.checkmo.mailingAddress;
             },
+
+            // placeOrder: function (data, event) { },
 
             afterPlaceOrder: function () {
                 try {
@@ -57,8 +61,16 @@ define(
                     .done(function (result) {
                         console.log(result);
                         if (result && result.success) {
+                            var redirectURL = result.payment_url;
+                            let framed_mode = result.framed_mode == '1';
+                            if (framed_mode) {
+                                redirectURL = _urlBuilder.build('paypage/paypage/pay?payment_url=' + result.payment_url);
+                            } else {
+                                redirectURL = result.payment_url;
+                            }
+
                             if (!result.had_paid) {
-                                $.mage.redirect(result.payment_url);
+                                $.mage.redirect(redirectURL);
                             } else {
                                 alert({
                                     title: 'Previous paid amount detected',
@@ -69,7 +81,7 @@ define(
                                             text: 'Pay anyway',
                                             class: 'action primary accept',
                                             click: function () {
-                                                $.mage.redirect(result.payment_url);
+                                                $.mage.redirect(redirectURL);
                                             }
                                         },
                                         {
