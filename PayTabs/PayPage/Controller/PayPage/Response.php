@@ -32,8 +32,8 @@ class Response extends Action
      * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
     private $_invoiceSender;
-
     protected $quoteRepository;
+
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -49,6 +49,7 @@ class Response extends Action
         PageFactory $pageFactory,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
@@ -56,6 +57,7 @@ class Response extends Action
         $this->pageFactory = $pageFactory;
         $this->_invoiceSender = $invoiceSender;
         $this->quoteRepository = $quoteRepository;
+
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
@@ -181,10 +183,9 @@ class Response extends Action
         $payment->accept();
 
         // $payment->capture();
-        
+
         if ($sendInvoice) {
             $payment->registerCaptureNotification($paymentAmount, true)->save();
-
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
                 $sent = $this->_invoiceSender->send($invoice);
