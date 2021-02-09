@@ -34,7 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.3.3
+ * Version: 1.3.4
  */
 
 
@@ -902,9 +902,11 @@ class PaytabsHolder2
         return $this;
     }
 
-    public function set05ShippingDetails($name, $email, $phone, $address, $city, $state, $country, $zip, $ip)
+    public function set05ShippingDetails($same_as_billing, $name = null, $email = null, $phone = null, $address = null, $city = null, $state = null, $country = null, $zip = null, $ip = null)
     {
-        $infos = $this->setCustomerDetails($name, $email, $phone, $address, $city, $state, $country, $zip, $ip);
+        $infos = $same_as_billing
+            ? $this->customer_details['customer_details']
+            : $this->setCustomerDetails($name, $email, $phone, $address, $city, $state, $country, $zip, $ip);
 
         //
 
@@ -943,12 +945,15 @@ class PaytabsHolder2
         return $this;
     }
 
-    public function set09Framed($on = false)
+    /**
+     * @param string $redirect_target "parent" or "top" or "iframe"
+     */
+    public function set09Framed($on = false, $redirect_target = 'iframe')
     {
         $this->framed = [
             'framed' => $on,
-            'framed_return_parent' => true,
-            'framed_return_top' => true
+            'framed_return_parent' => $redirect_target == 'parent',
+            'framed_return_top' => $redirect_target == 'top'
         ];
 
         return $this;

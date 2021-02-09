@@ -27,5 +27,5 @@ class Stcpay extends \Magento\Payment\Model\Method\AbstractMethod
      *
      * @var bool
      */
-    protected $_isOffline = true;
+    protected $_isOffline = false;
 }
