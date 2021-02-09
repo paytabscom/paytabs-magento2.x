@@ -152,6 +152,7 @@ class Api
 
         if ($hasShipping) {
             $pt_holder->set05ShippingDetails(
+                false,
                 $shippingAddress->getName(),
                 $shippingAddress->getEmail(),
                 $shippingAddress->getTelephone(),
@@ -162,13 +163,15 @@ class Api
                 $s_postcode,
                 null
             );
+        } else if (!$hide_shipping) {
+            $pt_holder->set05ShippingDetails(true);
         }
 
         $pt_holder
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
             ->set08Lang($lang_code)
-            ->set09Framed($framed_mode);
+            ->set09Framed($framed_mode, 'top');
 
         $post_arr = $pt_holder->pt_build();
 
