@@ -2,7 +2,7 @@
 
 namespace PayTabs\PayPage\Plugin;
 
-class  OrderServicePlugin
+class OrderServicePlugin
 {
     /**
      * @param \Magento\Sales\Api\OrderManagementInterface $orderManagementInterface

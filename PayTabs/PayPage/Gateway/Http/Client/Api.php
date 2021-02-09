@@ -37,8 +37,8 @@ class Api
 
         $paymentType = $paymentMethod->getCode(); //'creditcard';
 
-        $hide_shipping = $paymentMethod->getConfigData('hide_shipping') == '1';
-        $framed_mode = $paymentMethod->getConfigData('iframe_mode') == '1';
+        $hide_shipping = (bool) $paymentMethod->getConfigData('hide_shipping');
+        $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
 
         $orderId = $order->getIncrementId();
 
@@ -58,14 +58,14 @@ class Api
         // Compute Prices
 
         $amount = $order->getGrandTotal();
+        $amount = number_format((float) $amount, 2, '.', '');
+
         // $discountAmount = abs($order->getDiscountAmount());
         // $shippingAmount = $order->getShippingAmount();
         // $taxAmount = $order->getTaxAmount();
 
         // $amount += $discountAmount;
         // $otherCharges = $shippingAmount + $taxAmount;
-
-        $amount = number_format((float) $amount, 2, '.', '');
 
 
         /** 1.2. Read BillingAddress info */
@@ -81,7 +81,7 @@ class Api
 
         // $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
-        $country = PaytabsHelper::countryGetiso3($country_iso2);
+        // $country = PaytabsHelper::countryGetiso3($country_iso2);
 
         // $telephone = $billingAddress->getTelephone();
         $streets = $billingAddress->getStreet();
@@ -104,7 +104,7 @@ class Api
 
             // $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
-            $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
+            // $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
 
             $s_streets = $shippingAddress->getStreet();
             $shipping_address = implode(', ', $s_streets);
@@ -117,12 +117,11 @@ class Api
         $items = $order->getAllVisibleItems();
 
         $items_arr = array_map(function ($p) {
-            return [
-                'name' => $p->getName(),
-                'quantity' => $p->getQtyOrdered(),
-                'price' => $p->getPrice()
-            ];
+            $q = (int)$p->getQtyOrdered();
+            return "{$p->getName()} ({$q})";
         }, $items);
+
+        $cart_desc = implode(', ', $items_arr);
 
 
         // System Parameters
@@ -138,7 +137,7 @@ class Api
         $pt_holder
             ->set01PaymentCode($paymentType)
             ->set02Transaction('sale', 'ecom')
-            ->set03Cart($orderId, $currency, $amount, json_encode($items_arr))
+            ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(
                 $billingAddress->getName(),
                 $billingAddress->getEmail(),
@@ -146,7 +145,7 @@ class Api
                 $billing_address,
                 $billingAddress->getCity(),
                 $billingAddress->getRegionCode(),
-                $country,
+                $country_iso2,
                 $postcode,
                 null
             );
@@ -159,7 +158,7 @@ class Api
                 $shipping_address,
                 $shippingAddress->getCity(),
                 $shippingAddress->getRegionCode(),
-                $s_country,
+                $s_country_iso2,
                 $s_postcode,
                 null
             );
