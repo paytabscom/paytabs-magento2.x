@@ -39,6 +39,7 @@ class Api
 
         $hide_shipping = (bool) $paymentMethod->getConfigData('hide_shipping');
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
+        $payment_action = $paymentMethod->getConfigData('payment_action');
 
         $orderId = $order->getIncrementId();
 
@@ -130,13 +131,23 @@ class Api
         // Computed Parameters
         // $title = $firstName . " " . $lastName;
 
+        $tran_type = 'sale';
+        switch ($payment_action) {
+            case 'authorize':
+                $tran_type = 'auth';
+                break;
+
+            case 'authorize_capture':
+                $tran_type = 'sale';
+                break;
+        }
 
         /** 2. Fill post array */
 
         $pt_holder = new PaytabsHolder2();
         $pt_holder
             ->set01PaymentCode($paymentType)
-            ->set02Transaction('sale', 'ecom')
+            ->set02Transaction($tran_type, 'ecom')
             ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(
                 $billingAddress->getName(),

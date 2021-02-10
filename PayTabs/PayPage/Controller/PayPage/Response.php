@@ -119,6 +119,7 @@ class Response extends Action
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
         $transaction_ref = @$verify_response->transaction_id;
+        $transaction_type = @$verify_response->tran_type;
 
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
@@ -182,10 +183,16 @@ class Response extends Action
 
         $payment->accept();
 
-        // $payment->capture();
+        if ($transaction_type == 'Sale') {
+            // $payment->capture();
+            $payment->registerCaptureNotification($paymentAmount, true);
+        } else {
+            $payment->registerAuthorizationNotification($paymentAmount);
+            // $payment->authorize(false, $paymentAmount);
+            // $payment->setAmountAuthorized(11)
+        }
 
         if ($sendInvoice) {
-            $payment->registerCaptureNotification($paymentAmount, true)->save();
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
                 $sent = $this->_invoiceSender->send($invoice);
