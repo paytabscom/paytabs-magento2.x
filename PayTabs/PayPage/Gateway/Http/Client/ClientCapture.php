@@ -12,7 +12,7 @@ use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
 
-class ClientRefund implements ClientInterface
+class ClientCapture implements ClientInterface
 {
     /**
      * @var Logger

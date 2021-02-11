@@ -119,6 +119,7 @@ class Response extends Action
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
         $transaction_ref = @$verify_response->transaction_id;
+        $transaction_type = @$verify_response->tran_type;
 
         if (!$success) {
             paytabs_error_log("Paytabs Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
@@ -143,6 +144,9 @@ class Response extends Action
                     $quoteId = $order->getQuoteId();
                     $quote = $this->quoteRepository->get($quoteId);
                     $quote->setIsActive(true)->removePayment()->save();
+
+                    $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
+                    $_checkoutSession->replaceQuote($quote);
 
                     $redirect_page = 'checkout/cart';
                 } catch (\Throwable $th) {
@@ -174,18 +178,24 @@ class Response extends Action
         $payment
             ->setTransactionId($transaction_ref)
             ->setLastTransId($transaction_ref)
-            ->setIsTransactionClosed(true)
-            ->setShouldCloseParentTransaction(true)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
 
         $payment->accept();
 
-        // $payment->capture();
+        if ($transaction_type == 'Sale') {
+            // $payment->capture();
+            $payment->registerCaptureNotification($paymentAmount, true);
+        } else {
+            $payment
+                ->setIsTransactionClosed(false)
+                ->registerAuthorizationNotification($paymentAmount);
+            // $payment->authorize(false, $paymentAmount);
+            // $payment->setAmountAuthorized(11)
+        }
 
         if ($sendInvoice) {
-            $payment->registerCaptureNotification($paymentAmount, true)->save();
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
                 $sent = $this->_invoiceSender->send($invoice);

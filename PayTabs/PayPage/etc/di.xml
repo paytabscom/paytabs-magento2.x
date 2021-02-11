@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
@@ -171,7 +171,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommand</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
-                <!-- <item name="void" xsi:type="string">PayPageVoidCommand</item> -->
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -182,6 +182,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandStcPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -192,6 +193,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandApplePay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -202,6 +204,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandOmanNet</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -212,6 +215,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandMada</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -222,6 +226,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandSadad</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -232,6 +237,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAtFawry</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -242,6 +248,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandKnPay</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -252,6 +259,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAmex</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -262,6 +270,7 @@
                 <item name="initialize" xsi:type="string">PayPageInitCommand</item>
                 <item name="authorize" xsi:type="string">PayPageAuthorizeCommandValU</item>
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -528,9 +537,10 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\CaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
-            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientCapture</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
@@ -546,11 +556,12 @@
 
     <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\VoidRequest</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\TxnIdHandler</argument> -->
-            <!-- <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument> -->
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientVoid</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
@@ -567,11 +578,11 @@
 
     <virtualType name="PayPageRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
             <argument name="requestBuilder" xsi:type="object">PayTabs\PayPage\Gateway\Request\RefundRequest</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientRefund</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseRefundValidator</argument>
-            <!-- <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\RefundHandler</argument> -->
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayTabs\PayPage\Gateway\Response\FollowupHandler</argument>
             <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>

@@ -34,7 +34,7 @@ class PaytabsCore2
 
 /**
  * PayTabs 2 PHP SDK
- * Version: 1.3.4
+ * Version: 1.3.6
  */
 
 
@@ -1049,6 +1049,131 @@ class PaytabsRefundHolder
     }
 }
 
+
+/**
+ * Holder class that holds PayTabs's request's values
+ */
+class PaytabsCaptureHolder
+{
+
+    /**
+     * cart_amount
+     * cart_currency
+     */
+    private $captureInfo;
+
+    /**
+     * transaction_id
+     */
+    private $transaction_id;
+
+
+    //
+
+    /**
+     * @return array
+     */
+    public function pt_build()
+    {
+        $all = array_merge(
+            [
+                'tran_type' => 'capture',
+                'tran_class' => 'ecom'
+            ],
+            $this->captureInfo,
+            $this->transaction_id
+        );
+
+        return $all;
+    }
+
+    //
+
+    public function set01CaptureInfo($amount, $cart_currency)
+    {
+        $this->captureInfo = [
+            'cart_amount' => (float) $amount,
+            'cart_currency' => $cart_currency,
+        ];
+
+        return $this;
+    }
+
+    public function set02Transaction($cart_id, $transaction_id, $reason)
+    {
+        $this->transaction_id = [
+            'tran_ref' => $transaction_id,
+            'cart_id'  => "{$cart_id}",
+            'cart_description' => $reason,
+        ];
+
+        return $this;
+    }
+}
+
+
+/**
+ * Holder class that holds PayTabs's request's values
+ */
+class PaytabsVoidHolder
+{
+
+    /**
+     * cart_amount
+     * cart_currency
+     */
+    private $voidInfo;
+
+    /**
+     * transaction_id
+     */
+    private $transaction_id;
+
+
+    //
+
+    /**
+     * @return array
+     */
+    public function pt_build()
+    {
+        $all = array_merge(
+            [
+                'tran_type' => 'void',
+                'tran_class' => 'ecom'
+            ],
+            $this->voidInfo,
+            $this->transaction_id
+        );
+
+        return $all;
+    }
+
+    //
+
+    public function set01VoidInfo($amount, $cart_currency)
+    {
+        $this->voidInfo = [
+            'cart_amount' => (float) $amount,
+            'cart_currency' => $cart_currency,
+        ];
+
+        return $this;
+    }
+
+    public function set02Transaction($cart_id, $transaction_id, $reason)
+    {
+        $this->transaction_id = [
+            'tran_ref' => $transaction_id,
+            'cart_id'  => "{$cart_id}",
+            'cart_description' => $reason,
+        ];
+
+        return $this;
+    }
+}
+
+
 /**
  * API class which contacts PayTabs server's API
  */
@@ -1178,7 +1303,7 @@ class PaytabsApi
         return $verify;
     }
 
-    function refund($values)
+    function request_followup($values)
     {
         $res = json_decode($this->sendRequest(self::URL_REQUEST, $values));
         $refund = $this->enhanceRefund($res);
