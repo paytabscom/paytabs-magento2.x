@@ -54,7 +54,7 @@ class Api
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
         $lang_code = $localeResolver->getLocale();
-        // $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'Arabic' : 'English';
+        $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
 
         // Compute Prices
 
@@ -181,7 +181,7 @@ class Api
         $pt_holder
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
-            ->set08Lang($lang_code)
+            ->set08Lang($lang)
             ->set09Framed($framed_mode, 'top');
 
         $post_arr = $pt_holder->pt_build();
