@@ -11,7 +11,7 @@ use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
 
 
-class ResponseRefundValidator extends AbstractValidator
+class FollowupValidator extends AbstractValidator
 {
     const RESULT_CODE = 'RESULT_CODE';
 

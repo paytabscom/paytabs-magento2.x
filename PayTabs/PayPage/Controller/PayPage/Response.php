@@ -175,8 +175,6 @@ class Response extends Action
         $payment
             ->setTransactionId($transaction_ref)
             ->setLastTransId($transaction_ref)
-            ->setIsTransactionClosed(true)
-            ->setShouldCloseParentTransaction(true)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
@@ -187,7 +185,9 @@ class Response extends Action
             // $payment->capture();
             $payment->registerCaptureNotification($paymentAmount, true);
         } else {
-            $payment->registerAuthorizationNotification($paymentAmount);
+            $payment
+                ->setIsTransactionClosed(false)
+                ->registerAuthorizationNotification($paymentAmount);
             // $payment->authorize(false, $paymentAmount);
             // $payment->setAmountAuthorized(11)
         }
