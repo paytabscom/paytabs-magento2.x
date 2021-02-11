@@ -145,6 +145,9 @@ class Response extends Action
                     $quote = $this->quoteRepository->get($quoteId);
                     $quote->setIsActive(true)->removePayment()->save();
 
+                    $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
+                    $_checkoutSession->replaceQuote($quote);
+
                     $redirect_page = 'checkout/cart';
                 } catch (\Throwable $th) {
                     paytabs_error_log("Paytabs: load Quote by ID failed!, OrderId = [{$orderId}], QuoteId = [{$quoteId}] ");
