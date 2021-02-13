@@ -13,6 +13,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
 use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
@@ -29,9 +30,15 @@ class Response extends Action
     private $paytabs;
 
     /**
+     * @var Magento\Sales\Model\Order\Email\Sender\OrderSender
+     */
+    private $_orderSender;
+
+    /**
      * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
     private $_invoiceSender;
+
     protected $quoteRepository;
 
 
@@ -47,6 +54,7 @@ class Response extends Action
     public function __construct(
         Context $context,
         PageFactory $pageFactory,
+        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
 
@@ -55,6 +63,7 @@ class Response extends Action
         parent::__construct($context);
 
         $this->pageFactory = $pageFactory;
+        $this->_orderSender = $orderSender;
         $this->_invoiceSender = $invoiceSender;
         $this->quoteRepository = $quoteRepository;
 
@@ -109,6 +118,7 @@ class Response extends Action
             $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
         $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
+        $emailConfig = $paymentMethod->getConfigData('email_config');
         $cart_refill = $paymentMethod->getConfigData('order_failed_reorder') ?? false;
 
         $ptApi = $this->paytabs->pt($paymentMethod);
@@ -195,21 +205,28 @@ class Response extends Action
             // $payment->setAmountAuthorized(11)
         }
 
+        $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
+        if ($canSendEmail) {
+            $order->setCanSendNewEmailFlag(true);
+            $this->_orderSender->send($order);
+        }
+
         if ($sendInvoice) {
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
                 $sent = $this->_invoiceSender->send($invoice);
+                $invoiceId = $invoice->getIncrementId();
                 if ($sent) {
                     $order
                         ->addStatusHistoryComment(
-                            __('You notified customer about invoice #%1.', $invoice->getIncrementId())
+                            __('You notified customer about invoice #%1.', $invoiceId)
                         )
                         ->setIsCustomerNotified(true)
                         ->save();
                 } else {
                     $order
                         ->addStatusHistoryComment(
-                            __('Failed to notify the customer about invoice #%1.', $invoice->getIncrementId())
+                            __('Failed to notify the customer about invoice #%1.', $invoiceId)
                         )
                         ->setIsCustomerNotified(false)
                         ->save();
