@@ -33,6 +33,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -46,16 +51,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -103,6 +107,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -112,11 +121,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -163,6 +176,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -172,11 +190,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -223,6 +245,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -232,11 +259,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -283,6 +314,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -292,11 +328,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -343,6 +383,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -352,11 +397,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -403,6 +452,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -412,11 +466,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -463,6 +521,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -472,11 +535,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -523,6 +590,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -532,11 +604,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -583,6 +659,11 @@
                     <label>Server Key</label>
                 </field>
 
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>valU product ID</label>
                 </field>
@@ -596,11 +677,15 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
                 <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

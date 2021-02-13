@@ -745,9 +745,9 @@
     </type>
 
 
-    <!-- <type name="Magento\Sales\Api\OrderManagementInterface">
+    <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="MyOrderPlaceAfterPlugin" type="PayTabs\PayPage\Plugin\OrderServicePlugin" sortOrder="99" />
-    </type> -->
+    </type>
     <type name="Magento\Framework\App\Request\CsrfValidator">
         <plugin name="csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
