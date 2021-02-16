@@ -102,6 +102,8 @@ class Response extends Action
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
+
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$order) {
@@ -155,7 +157,6 @@ class Response extends Action
                     $quote = $this->quoteRepository->get($quoteId);
                     $quote->setIsActive(true)->removePayment()->save();
 
-                    $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
                     $_checkoutSession->replaceQuote($quote);
 
                     $redirect_page = 'checkout/cart';
@@ -241,6 +242,10 @@ class Response extends Action
         $order->save();
 
         $this->messageManager->addSuccessMessage('The payment has been completed successfully - ' . $res_msg);
+
+        $quoteId = $order->getQuoteId();
+        $this->tempFix_GuestSuccessPage($_checkoutSession, $orderId, $quoteId);
+
         $resultRedirect->setPath('checkout/onepage/success');
 
         return $resultRedirect;
@@ -254,6 +259,22 @@ class Response extends Action
     {
         $order->setState($newStatus)->setStatus($newStatus);
         $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
+    }
+
+
+    private function tempFix_GuestSuccessPage($session, $orderId, $quoteId)
+    {
+        if (
+            $session->getLastSuccessQuoteId() &&
+            $session->getLastQuoteId() &&
+            $session->getLastOrderId()
+        ) {
+            return;
+        }
+
+        $session->setLastSuccessQuoteId($quoteId);
+        $session->setLastQuoteId($quoteId);
+        $session->setLastOrderId($orderId);
     }
 }
 
