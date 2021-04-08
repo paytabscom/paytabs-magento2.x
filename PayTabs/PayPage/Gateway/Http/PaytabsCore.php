@@ -35,7 +35,7 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.0.4
+ * Version: 2.0.5
  */
 
 
@@ -151,6 +151,11 @@ abstract class PaytabsHelper
         $string = $_SERVER['REMOTE_ADDR'];
     }
 
+    /**
+     * <b>paytabs_error_log<b> should be defined,
+     * Main functionality: use the platform logger to log the error messages
+     * If not found: create a new log file and log the messages
+     */
     public static function log($msg, $severity = 1)
     {
         try {
@@ -914,10 +919,19 @@ class PaytabsApi
         @curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         @curl_setopt($ch, CURLOPT_VERBOSE, true);
         // @curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
         $result = @curl_exec($ch);
-        if (!$result) {
-            die(curl_error($ch));
+
+        $error_num = curl_errno($ch);
+        if ($error_num) {
+            $error_msg = curl_error($ch);
+            PaytabsHelper::log("Paytabs Admin: Response [($error_num) $error_msg], [$result]", 3);
+
+            $result = json_encode([
+                'message' => 'Sorry, unable to process your transaction, Contact the site Administrator'
+            ]);
         }
+
         @curl_close($ch);
 
         return $result;
