@@ -86,10 +86,10 @@
                                                                     </item>
                                                                 </item>
 
-                                                                <item name="paypage-knpay" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/knpay</item>
+                                                                <item name="paypage-knet" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/knet</item>
                                                                     <item name="methods" xsi:type="array">
-                                                                        <item name="knpay" xsi:type="array">
+                                                                        <item name="knet" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>

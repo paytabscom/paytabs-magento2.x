@@ -497,7 +497,7 @@
             </group>
 
 
-            <group id="knpay" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="knet" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - KNPay</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">

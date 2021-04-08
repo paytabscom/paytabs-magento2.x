@@ -17,7 +17,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_MADA       = 'mada';
     const CODE_SADAD      = 'sadad';
     const CODE_ATFAWRY    = 'atfawry';
-    const CODE_KNPAY      = 'knpay';
+    const CODE_KNPAY      = 'knet';
     const CODE_AMEX       = 'amex';
     const CODE_VALU       = 'valu';
 

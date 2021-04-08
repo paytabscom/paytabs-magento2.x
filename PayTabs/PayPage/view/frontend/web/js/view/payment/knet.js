@@ -16,7 +16,7 @@ define(
         'use strict';
         rendererList.push(
             {
-                type: 'knpay',
+                type: 'knet',
                 component: 'PayTabs_PayPage/js/view/payment/method-renderer/paypage-method'
             }
         );

@@ -207,7 +207,7 @@
             </atfawry>
 
 
-            <knpay>
+            <knet>
                 <active>0</active>
                 <title>PayTabs - KNPay</title>
                 <order_status>pending_payment</order_status>
@@ -231,7 +231,7 @@
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
-            </knpay>
+            </knet>
 
 
             <amex>
