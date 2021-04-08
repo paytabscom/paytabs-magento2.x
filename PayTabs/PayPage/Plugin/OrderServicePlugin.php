@@ -2,7 +2,7 @@
 
 namespace PayTabs\PayPage\Plugin;
 
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
@@ -52,7 +52,7 @@ class OrderServicePlugin
             $paymentMethod = $payment->getMethodInstance();
             $paymentCode = $paymentMethod->getCode();
 
-            new PaytabsCore2();
+            new PaytabsCore();
             $isPaytabs = PaytabsHelper::isPayTabsPayment($paymentCode);
             if (!$isPaytabs) return;
 

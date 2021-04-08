@@ -11,8 +11,9 @@ use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
-use PayTabs\PayPage\Gateway\Http\PaytabsRefundHolder;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
 
 class RefundRequest implements BuilderInterface
 {
@@ -26,7 +27,7 @@ class RefundRequest implements BuilderInterface
      */
     public function __construct(ConfigInterface $config)
     {
-        new PaytabsCore2();
+        new PaytabsCore();
         $this->config = $config;
     }
 
@@ -72,10 +73,11 @@ class RefundRequest implements BuilderInterface
         $currency = $payment->getOrder()->getOrderCurrencyCode();
         $order_id = $payment->getOrder()->getIncrementId();
 
-        $pt_holder = new PaytabsRefundHolder();
+        $pt_holder = new PaytabsFollowupHolder();
         $pt_holder
-            ->set01RefundInfo($amount, $currency)
-            ->set02Transaction($order_id, $transaction_id, $reason);
+            ->set02Transaction(PaytabsEnum::TRAN_TYPE_REFUND, PaytabsEnum::TRAN_CLASS_ECOM)
+            ->set03Cart($order_id, $currency, $amount, $reason)
+            ->set30TransactionInfo($transaction_id);
 
         $values = $pt_holder->pt_build();
 

@@ -8,7 +8,7 @@
 namespace PayTabs\PayPage\Model\Adminhtml\Source;
 
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 
 /**
  * Class Endpoints
@@ -20,7 +20,7 @@ class Endpoints implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        new PaytabsCore2();
+        new PaytabsCore();
         $endpoints = PaytabsApi::getEndpoints();
 
         $endpoints1 = array_map(function ($key, $value) {

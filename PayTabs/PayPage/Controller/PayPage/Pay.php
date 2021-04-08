@@ -12,7 +12,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 
 use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
@@ -55,7 +55,7 @@ class Pay extends Action
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
-        new PaytabsCore2();
+        new PaytabsCore();
     }
 
     /**

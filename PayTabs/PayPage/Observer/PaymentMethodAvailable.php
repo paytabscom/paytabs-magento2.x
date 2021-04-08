@@ -9,7 +9,7 @@ namespace PayTabs\PayPage\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 class PaymentMethodAvailable implements ObserverInterface
@@ -23,7 +23,7 @@ class PaymentMethodAvailable implements ObserverInterface
     {
         $code = $observer->getEvent()->getMethodInstance()->getCode();
 
-        new PaytabsCore2();
+        new PaytabsCore();
         $isPaytabs = PaytabsHelper::isPayTabsPayment($code);
 
         if ($isPaytabs) {
