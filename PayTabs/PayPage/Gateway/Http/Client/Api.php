@@ -46,8 +46,8 @@ class Api
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
         $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
-        // $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        // $versionMagento = $productMetadata->getVersion();
+        $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        $versionMagento = $productMetadata->getVersion();
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
@@ -173,7 +173,8 @@ class Api
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
             ->set08Lang($lang)
-            ->set09Framed($framed_mode, 'top');
+            ->set09Framed($framed_mode, 'top')
+            ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         $post_arr = $pt_holder->pt_build();
 
