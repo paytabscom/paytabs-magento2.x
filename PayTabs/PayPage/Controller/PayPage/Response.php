@@ -13,6 +13,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
 use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
@@ -194,7 +195,7 @@ class Response extends Action
 
         $payment->accept();
 
-        if ($transaction_type == 'Sale') {
+        if (PaytabsEnum::TranIsSale($transaction_type)) {
             // $payment->capture();
             $payment->registerCaptureNotification($paymentAmount, true);
         } else {
@@ -211,28 +212,8 @@ class Response extends Action
             $this->_orderSender->send($order);
         }
 
-        $canInvoice = $order->canInvoice();
-        if ($sendInvoice && $canInvoice) {
-            $invoice = $payment->getCreatedInvoice();
-            if ($invoice) { //} && !$order->getEmailSent()) {
-                $sent = $this->_invoiceSender->send($invoice);
-                $invoiceId = $invoice->getIncrementId();
-                if ($sent) {
-                    $order
-                        ->addStatusHistoryComment(
-                            __('You notified customer about invoice #%1.', $invoiceId)
-                        )
-                        ->setIsCustomerNotified(true)
-                        ->save();
-                } else {
-                    $order
-                        ->addStatusHistoryComment(
-                            __('Failed to notify the customer about invoice #%1.', $invoiceId)
-                        )
-                        ->setIsCustomerNotified(false)
-                        ->save();
-                }
-            }
+        if ($sendInvoice) {
+            $this->invoice($order, $payment);
         }
 
 
@@ -255,6 +236,34 @@ class Response extends Action
     {
         $order->setState($newStatus)->setStatus($newStatus);
         $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
+    }
+
+
+    private function invoice($order, $payment)
+    {
+        $canInvoice = $order->canInvoice();
+        if (!$canInvoice) return;
+
+        $invoice = $payment->getCreatedInvoice();
+        if ($invoice) { //} && !$order->getEmailSent()) {
+            $sent = $this->_invoiceSender->send($invoice);
+            $invoiceId = $invoice->getIncrementId();
+            if ($sent) {
+                $order
+                    ->addStatusHistoryComment(
+                        __('You notified customer about invoice #%1.', $invoiceId)
+                    )
+                    ->setIsCustomerNotified(true)
+                    ->save();
+            } else {
+                $order
+                    ->addStatusHistoryComment(
+                        __('Failed to notify the customer about invoice #%1.', $invoiceId)
+                    )
+                    ->setIsCustomerNotified(false)
+                    ->save();
+            }
+        }
     }
 }
 

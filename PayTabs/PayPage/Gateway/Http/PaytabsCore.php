@@ -35,7 +35,7 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.0.5
+ * Version: 2.0.6
  */
 
 
@@ -211,6 +211,15 @@ abstract class PaytabsEnum
 
     //
 
+    static function TranIsAuth($tran_type)
+    {
+        return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_AUTH) == 0;
+    }
+
+    static function TranIsSale($tran_type)
+    {
+        return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_SALE) == 0;
+    }
 }
 
 
