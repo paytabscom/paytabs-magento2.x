@@ -117,9 +117,9 @@ class Response extends Action
         $paymentFailed =
             $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
-        $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
+        $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        $cart_refill = $paymentMethod->getConfigData('order_failed_reorder') ?? false;
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
@@ -211,7 +211,8 @@ class Response extends Action
             $this->_orderSender->send($order);
         }
 
-        if ($sendInvoice) {
+        $canInvoice = $order->canInvoice();
+        if ($sendInvoice && $canInvoice) {
             $invoice = $payment->getCreatedInvoice();
             if ($invoice) { //} && !$order->getEmailSent()) {
                 $sent = $this->_invoiceSender->send($invoice);
@@ -258,7 +259,7 @@ class Response extends Action
 }
 
 /**
- * move CRSF verification to Plugin
+ * move CSRF verification to Plugin
  * compitable with old Magento version >=2.0 && <2.3
  * compitable with PHP version 5.6
  */

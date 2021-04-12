@@ -65,7 +65,7 @@ class RefundRequest implements BuilderInterface
 
         // $this->config->getValue('merchant_email');
 
-        $transaction_id = $payment->getLastTransId();
+        $transaction_id = $payment->getParentTransactionId();
         $reason = 'Admin request';
 
         //

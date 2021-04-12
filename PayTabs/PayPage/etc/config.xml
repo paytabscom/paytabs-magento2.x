@@ -27,6 +27,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -62,6 +63,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -89,6 +91,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -116,6 +119,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -143,6 +147,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -170,6 +175,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -197,6 +203,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -224,6 +231,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -251,6 +259,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
@@ -278,6 +287,7 @@
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
                 <can_refund>1</can_refund>
 
