@@ -23,6 +23,15 @@
                                                         <item name="renders" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <!-- merge payment method renders here -->
+                                                                <item name="paypage-all" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/all</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="all" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
                                                                 <item name="paypage-creditcard" xsi:type="array">
                                                                     <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/creditcard</item>
                                                                     <item name="methods" xsi:type="array">

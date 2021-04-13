@@ -10,6 +10,7 @@ use PayTabs\PayPage\Gateway\Http\Client\ClientMock;
  */
 final class ConfigProvider implements ConfigProviderInterface
 {
+    const CODE_ALL        = 'all';
     const CODE_CREDITCARD = 'creditcard';
     const CODE_STCPAY     = 'stcpay';
     const CODE_APPLEPAY   = 'applepay';
@@ -30,6 +31,7 @@ final class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'payment' => [
+                self::CODE_ALL => [],
                 self::CODE_CREDITCARD => [],
                 self::CODE_STCPAY => [],
                 self::CODE_APPLEPAY => [],
