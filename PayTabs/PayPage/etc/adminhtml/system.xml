@@ -8,6 +8,81 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
+
+            <group id="all" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>PayTabs - All</label>
+
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Title</label>
+                </field>
+
+                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Select Endpoint region</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
+                </field>
+
+                <!-- PT -->
+                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Profile ID</label>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Server Key</label>
+                </field>
+
+                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode (Beta)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>New Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field> -->
+                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Successful payment order status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Failed to pay order status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+
+                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Re-Fill the Cart if Payment failed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> -->
+
+                <!-- PT -->
+                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Hide Shipping info</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Action</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+            </group>
+
             <group id="creditcard" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - CreditCard</label>
 
@@ -60,10 +135,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <!-- PT -->
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -130,10 +205,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -199,10 +274,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -268,10 +343,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -337,10 +412,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -406,10 +481,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -475,10 +550,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -497,7 +572,7 @@
             </group>
 
 
-            <group id="knpay" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="knet" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - KNPay</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -544,10 +619,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -613,10 +688,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
@@ -686,10 +761,10 @@
                     <label>Order confirmation email</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
-                <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
+                </field> -->
 
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>

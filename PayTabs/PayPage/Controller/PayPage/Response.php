@@ -12,7 +12,8 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
 use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
@@ -70,7 +71,7 @@ class Response extends Action
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
-        new PaytabsCore2();
+        new PaytabsCore();
     }
 
     /**
@@ -117,9 +118,9 @@ class Response extends Action
         $paymentFailed =
             $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
-        $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
+        $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        $cart_refill = $paymentMethod->getConfigData('order_failed_reorder') ?? false;
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
@@ -194,7 +195,7 @@ class Response extends Action
 
         $payment->accept();
 
-        if ($transaction_type == 'Sale') {
+        if (PaytabsEnum::TranIsSale($transaction_type)) {
             // $payment->capture();
             $payment->registerCaptureNotification($paymentAmount, true);
         } else {
@@ -212,26 +213,7 @@ class Response extends Action
         }
 
         if ($sendInvoice) {
-            $invoice = $payment->getCreatedInvoice();
-            if ($invoice) { //} && !$order->getEmailSent()) {
-                $sent = $this->_invoiceSender->send($invoice);
-                $invoiceId = $invoice->getIncrementId();
-                if ($sent) {
-                    $order
-                        ->addStatusHistoryComment(
-                            __('You notified customer about invoice #%1.', $invoiceId)
-                        )
-                        ->setIsCustomerNotified(true)
-                        ->save();
-                } else {
-                    $order
-                        ->addStatusHistoryComment(
-                            __('Failed to notify the customer about invoice #%1.', $invoiceId)
-                        )
-                        ->setIsCustomerNotified(false)
-                        ->save();
-                }
-            }
+            $this->invoice($order, $payment);
         }
 
 
@@ -255,10 +237,38 @@ class Response extends Action
         $order->setState($newStatus)->setStatus($newStatus);
         $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
     }
+
+
+    private function invoice($order, $payment)
+    {
+        $canInvoice = $order->canInvoice();
+        if (!$canInvoice) return;
+
+        $invoice = $payment->getCreatedInvoice();
+        if ($invoice) { //} && !$order->getEmailSent()) {
+            $sent = $this->_invoiceSender->send($invoice);
+            $invoiceId = $invoice->getIncrementId();
+            if ($sent) {
+                $order
+                    ->addStatusHistoryComment(
+                        __('You notified customer about invoice #%1.', $invoiceId)
+                    )
+                    ->setIsCustomerNotified(true)
+                    ->save();
+            } else {
+                $order
+                    ->addStatusHistoryComment(
+                        __('Failed to notify the customer about invoice #%1.', $invoiceId)
+                    )
+                    ->setIsCustomerNotified(false)
+                    ->save();
+            }
+        }
+    }
 }
 
 /**
- * move CRSF verification to Plugin
+ * move CSRF verification to Plugin
  * compitable with old Magento version >=2.0 && <2.3
  * compitable with PHP version 5.6
  */

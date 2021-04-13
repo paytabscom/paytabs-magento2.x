@@ -3,9 +3,9 @@
 namespace PayTabs\PayPage\Gateway\Http\Client;
 
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
-use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
-use PayTabs\PayPage\Gateway\Http\PaytabsHolder2;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsRequestHolder;
 
 class Api
 {
@@ -18,7 +18,7 @@ class Api
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
 
-        new PaytabsCore2();
+        new PaytabsCore();
         $pt = PaytabsApi::getInstance($endpoint, $merchant_id, $merchant_key);
 
         return $pt;
@@ -46,8 +46,8 @@ class Api
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
         $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
-        // $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        // $versionMagento = $productMetadata->getVersion();
+        $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        $versionMagento = $productMetadata->getVersion();
 
         $currency = $order->getOrderCurrencyCode();
         $baseurl = $storeManager->getStore()->getBaseUrl();
@@ -82,16 +82,10 @@ class Api
 
         // $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
-        // $country = PaytabsHelper::countryGetiso3($country_iso2);
 
         // $telephone = $billingAddress->getTelephone();
         $streets = $billingAddress->getStreet();
         $billing_address = implode(', ', $streets);
-
-        // $cdetails = PaytabsHelper::getCountryDetails($country_iso2);
-        // $phoneext = $cdetails['phone'];
-
-        // $country = PaytabsHelper::countryGetiso3($country_iso2);
 
         $hasShipping = false;
         $shippingAddress = $order->getShippingAddress();
@@ -105,7 +99,6 @@ class Api
 
             // $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
-            // $s_country = PaytabsHelper::countryGetiso3($s_country_iso2);
 
             $s_streets = $shippingAddress->getStreet();
             $shipping_address = implode(', ', $s_streets);
@@ -128,26 +121,24 @@ class Api
         // System Parameters
         // $systemVersion = "Magento {$versionMagento}";
 
-        // Computed Parameters
-        // $title = $firstName . " " . $lastName;
 
-        $tran_type = 'sale';
+        $tran_type = PaytabsEnum::TRAN_TYPE_SALE;
         switch ($payment_action) {
             case 'authorize':
-                $tran_type = 'auth';
+                $tran_type = PaytabsEnum::TRAN_TYPE_AUTH;
                 break;
 
             case 'authorize_capture':
-                $tran_type = 'sale';
+                $tran_type = PaytabsEnum::TRAN_TYPE_SALE;
                 break;
         }
 
         /** 2. Fill post array */
 
-        $pt_holder = new PaytabsHolder2();
+        $pt_holder = new PaytabsRequestHolder();
         $pt_holder
             ->set01PaymentCode($paymentType)
-            ->set02Transaction($tran_type, 'ecom')
+            ->set02Transaction($tran_type, PaytabsEnum::TRAN_CLASS_ECOM)
             ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(
                 $billingAddress->getName(),
@@ -182,7 +173,8 @@ class Api
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, null)
             ->set08Lang($lang)
-            ->set09Framed($framed_mode, 'top');
+            ->set09Framed($framed_mode, 'top')
+            ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         $post_arr = $pt_holder->pt_build();
 

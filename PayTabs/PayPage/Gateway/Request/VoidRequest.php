@@ -11,8 +11,9 @@ use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
-use PayTabs\PayPage\Gateway\Http\PaytabsCore2;
-use PayTabs\PayPage\Gateway\Http\PaytabsVoidHolder;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
 
 class VoidRequest implements BuilderInterface
 {
@@ -26,7 +27,7 @@ class VoidRequest implements BuilderInterface
      */
     public function __construct(ConfigInterface $config)
     {
-        new PaytabsCore2();
+        new PaytabsCore();
         $this->config = $config;
     }
 
@@ -64,7 +65,7 @@ class VoidRequest implements BuilderInterface
 
         // $this->config->getValue('merchant_email');
 
-        $transaction_id = $payment->getLastTransId();
+        $transaction_id = $payment->getParentTransactionId();
         $reason = 'Admin request';
 
         //
@@ -73,10 +74,11 @@ class VoidRequest implements BuilderInterface
         $order_id = $payment->getOrder()->getIncrementId();
         $amount   = $payment->getOrder()->getGrandTotal();
 
-        $pt_holder = new PaytabsVoidHolder();
+        $pt_holder = new PaytabsFollowupHolder();
         $pt_holder
-            ->set01VoidInfo($amount, $currency)
-            ->set02Transaction($order_id, $transaction_id, $reason);
+            ->set02Transaction(PaytabsEnum::TRAN_TYPE_VOID, PaytabsEnum::TRAN_CLASS_ECOM)
+            ->set03Cart($order_id, $currency, $amount, $reason)
+            ->set30TransactionInfo($transaction_id);
 
         $values = $pt_holder->pt_build();
 
