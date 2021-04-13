@@ -30,6 +30,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -64,6 +65,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -100,6 +102,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -128,6 +131,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -156,6 +160,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -184,6 +189,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -212,6 +218,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -240,6 +247,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -268,6 +276,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -296,6 +305,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -324,6 +334,7 @@
                 <can_capture>1</can_capture>
                 <can_capture_partial>1</can_capture_partial>
                 <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
 
                 <can_use_checkout>1</can_use_checkout>

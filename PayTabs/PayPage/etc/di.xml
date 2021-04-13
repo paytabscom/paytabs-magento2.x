@@ -188,6 +188,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -200,6 +201,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -212,6 +214,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -224,6 +227,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -236,6 +240,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -248,6 +253,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -260,6 +266,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -272,6 +279,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -284,6 +292,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -296,6 +305,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
@@ -308,6 +318,7 @@
                 <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
                 <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
                 <item name="refund" xsi:type="string">PayPageRefundCommand</item>
             </argument>
         </arguments>
