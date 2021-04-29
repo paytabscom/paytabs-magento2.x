@@ -22,13 +22,19 @@ class VoidRequest implements BuilderInterface
      */
     private $config;
 
+    private $productMetadata;
+
     /**
      * @param ConfigInterface $config
      */
-    public function __construct(ConfigInterface $config)
-    {
+    public function __construct(
+        ConfigInterface $config,
+        \Magento\Framework\App\ProductMetadataInterface $productMetadata
+    ) {
         new PaytabsCore();
         $this->config = $config;
+
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -70,6 +76,10 @@ class VoidRequest implements BuilderInterface
 
         //
 
+        $versionMagento = $this->productMetadata->getVersion();
+
+        //
+
         $currency = $payment->getOrder()->getOrderCurrencyCode();
         $order_id = $payment->getOrder()->getIncrementId();
         $amount   = $payment->getOrder()->getGrandTotal();
@@ -78,7 +88,8 @@ class VoidRequest implements BuilderInterface
         $pt_holder
             ->set02Transaction(PaytabsEnum::TRAN_TYPE_VOID, PaytabsEnum::TRAN_CLASS_ECOM)
             ->set03Cart($order_id, $currency, $amount, $reason)
-            ->set30TransactionInfo($transaction_id);
+            ->set30TransactionInfo($transaction_id)
+            ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         $values = $pt_holder->pt_build();
 

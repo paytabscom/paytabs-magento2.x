@@ -32,6 +32,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
                 <!-- <can_use_internal>1</can_use_internal> -->
@@ -67,6 +68,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
                 <!-- <can_use_internal>1</can_use_internal> -->
@@ -104,6 +106,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -133,6 +136,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -162,6 +166,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -191,6 +196,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -220,6 +226,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -249,6 +256,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -278,6 +286,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -307,6 +316,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
@@ -336,6 +346,7 @@
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
                 <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
 
