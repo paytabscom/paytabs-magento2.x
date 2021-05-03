@@ -1,6 +1,6 @@
-# PayTabs - Magento
+# ClickPay - Magento
 
-The Official Magento2 plugin for PayTabs
+The Official Magento2 plugin for ClickPay
 
 - - -
 
@@ -8,10 +8,10 @@ The Official Magento2 plugin for PayTabs
 
 ### Install using FTP method
 
-*Note: Delete any previous PayTabs plugin.*
+*Note: Delete any previous ClickPay plugin.*
 
 1. Download the latest release of the plugin
-2. Upload the folder `PayTabs` to the magento2 installation directory: `app/code/`
+2. Upload the folder `ClickPay` to the magento2 installation directory: `app/code/`
 3. Run the following Magento commands:
    1. `php bin/magento setup:upgrade`
    2. `php bin/magento setup:static-content:deploy`
@@ -26,11 +26,11 @@ To Disable/Enable the module:
 
 ### Enable
 
-`php bin/magento module:enable PayTabs_PayPage`
+`php bin/magento module:enable ClickPay_PayPage`
 
 ### Disable
 
-`php bin/magento module:disable PayTabs_PayPage`
+`php bin/magento module:disable ClickPay_PayPage`
 
 - - -
 
@@ -38,10 +38,10 @@ To Disable/Enable the module:
 
 1. Navigate to `"Magento admin panel" >> Stores >> Configuration`
 2. Open `"Sales >> Payment Methods`
-3. Select the preferred payment method from the available list of PayTabs payment methods
+3. Select the preferred payment method from the available list of ClickPay payment methods
 4. Enable the `Payment Gateway`
 5. Enter the primary credentials:
-   - **Profile ID**: Enter the Profile ID of your PayTabs account
+   - **Profile ID**: Enter the Profile ID of your ClickPay account
    - **Server Key**: `Merchant’s Dashboard >> Developers >> Key management >> Server Key`
 6. Click `Save Config`
 
@@ -49,9 +49,9 @@ To Disable/Enable the module:
 
 ## Log Access
 
-### PayTabs custome log
+### ClickPay custome log
 
-1. Access `debug_paytabs.log` file found at: `/var/log/debug_paytabs.log`
+1. Access `debug_Clickpay.log` file found at: `/var/log/debug_Clickpay.log`
 
 - - -
 
