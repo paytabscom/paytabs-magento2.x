@@ -189,6 +189,7 @@ class Response extends Action
         $payment
             ->setTransactionId($transaction_ref)
             ->setLastTransId($transaction_ref)
+            ->setAmountAuthorized($paymentAmount)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
@@ -203,7 +204,6 @@ class Response extends Action
                 ->setIsTransactionClosed(false)
                 ->registerAuthorizationNotification($paymentAmount);
             // $payment->authorize(false, $paymentAmount);
-            // $payment->setAmountAuthorized(11)
         }
 
         $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
