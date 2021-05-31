@@ -189,6 +189,7 @@ class Response extends Action
         $payment
             ->setTransactionId($transaction_ref)
             ->setLastTransId($transaction_ref)
+            ->setAmountAuthorized($paymentAmount)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
