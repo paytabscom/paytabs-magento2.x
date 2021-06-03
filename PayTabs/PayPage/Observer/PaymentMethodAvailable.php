@@ -41,7 +41,8 @@ class PaymentMethodAvailable implements ObserverInterface
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
-        $currencyCode = $storeManager->getStore()->getCurrentCurrency()->getCode();
+        // $currencyCode = $storeManager->getStore()->getCurrentCurrency()->getCode();
+        $currencyCode = $storeManager->getStore()->getBaseCurrency()->getCode();
 
         return $currencyCode;
     }

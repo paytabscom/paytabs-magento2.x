@@ -80,9 +80,12 @@ class VoidRequest implements BuilderInterface
 
         //
 
-        $currency = $payment->getOrder()->getOrderCurrencyCode();
+        // $currency = $payment->getOrder()->getOrderCurrencyCode();
+        $currency = $payment->getOrder()->getBaseCurrencyCode();
+        // $amount   = $payment->getOrder()->getGrandTotal();
+        $amount   = $payment->getOrder()->getBaseGrandTotal();
+
         $order_id = $payment->getOrder()->getIncrementId();
-        $amount   = $payment->getOrder()->getGrandTotal();
 
         $pt_holder = new PaytabsFollowupHolder();
         $pt_holder

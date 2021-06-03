@@ -80,7 +80,8 @@ class CaptureRequest implements BuilderInterface
 
         //
 
-        $currency = $payment->getOrder()->getOrderCurrencyCode();
+        // $currency = $payment->getOrder()->getOrderCurrencyCode();
+        $currency = $payment->getOrder()->getBaseCurrencyCode();
         $order_id = $payment->getOrder()->getIncrementId();
 
         $pt_holder = new PaytabsFollowupHolder();

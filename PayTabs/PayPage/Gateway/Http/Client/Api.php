@@ -49,7 +49,9 @@ class Api
         $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         $versionMagento = $productMetadata->getVersion();
 
-        $currency = $order->getOrderCurrencyCode();
+        // $currency = $order->getOrderCurrencyCode();
+        $currency = $order->getBaseCurrencyCode();
+
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
@@ -58,7 +60,8 @@ class Api
 
         // Compute Prices
 
-        $amount = $order->getGrandTotal();
+        // $amount = $order->getGrandTotal();
+        $amount = $order->getBaseGrandTotal();
         $amount = number_format((float) $amount, 2, '.', '');
 
         // $discountAmount = abs($order->getDiscountAmount());
