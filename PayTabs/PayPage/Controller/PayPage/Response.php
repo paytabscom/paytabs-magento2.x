@@ -188,13 +188,11 @@ class Response extends Action
 
         $payment
             ->setTransactionId($transaction_ref)
-            ->setLastTransId($transaction_ref)
-            ->setAmountAuthorized($paymentAmount)
             ->setAdditionalInformation("payment_amount", $paymentAmount)
             ->setAdditionalInformation("payment_currency", $paymentCurrency)
             ->save();
 
-        $payment->accept();
+        $payment->setAmountAuthorized($payment->getAmountOrdered());
 
         if (PaytabsEnum::TranIsSale($transaction_type)) {
             // $payment->capture();
@@ -203,8 +201,9 @@ class Response extends Action
             $payment
                 ->setIsTransactionClosed(false)
                 ->registerAuthorizationNotification($paymentAmount);
-            // $payment->authorize(false, $paymentAmount);
         }
+
+        $payment->accept();
 
         $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
         if ($canSendEmail) {
