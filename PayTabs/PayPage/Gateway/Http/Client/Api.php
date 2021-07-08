@@ -6,6 +6,7 @@ use PayTabs\PayPage\Gateway\Http\PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsRequestHolder;
+use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class Api
 {
@@ -41,6 +42,8 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
 
+        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod->getConfigData('currency_select'));
+
         $orderId = $order->getIncrementId();
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -49,8 +52,13 @@ class Api
         $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         $versionMagento = $productMetadata->getVersion();
 
-        // $currency = $order->getOrderCurrencyCode();
-        $currency = $order->getBaseCurrencyCode();
+        if ($use_order_currency) {
+            $currency = $order->getOrderCurrencyCode();
+            $amount = $order->getGrandTotal();
+        } else {
+            $currency = $order->getBaseCurrencyCode();
+            $amount = $order->getBaseGrandTotal();
+        }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
@@ -60,9 +68,8 @@ class Api
 
         // Compute Prices
 
-        // $amount = $order->getGrandTotal();
-        $amount = $order->getBaseGrandTotal();
-        $amount = number_format((float) $amount, 2, '.', '');
+        $amount = number_format((float) $amount, 3, '.', '');
+        // $amount = $order->getPayment()->formatAmount($amount, true);
 
         // $discountAmount = abs($order->getDiscountAmount());
         // $shippingAmount = $order->getShippingAmount();

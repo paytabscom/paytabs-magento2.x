@@ -25,6 +25,8 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <currency_select>base_currency</currency_select>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -60,6 +62,8 @@
                 <order_failed_reorder>0</order_failed_reorder>
 
                 <iframe_mode>0</iframe_mode>
+
+                <currency_select>base_currency</currency_select>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
@@ -158,6 +162,8 @@
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
+
+                <currency_select>base_currency</currency_select>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
@@ -278,6 +284,8 @@
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
+
+                <currency_select>base_currency</currency_select>
 
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
