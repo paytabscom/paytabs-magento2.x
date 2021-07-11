@@ -39,6 +39,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -111,6 +116,11 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -187,6 +197,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -257,6 +272,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field> -->
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -324,6 +344,11 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -395,6 +420,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -462,6 +492,11 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -533,6 +568,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -600,6 +640,11 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -671,6 +716,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -738,6 +788,11 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
                 <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">

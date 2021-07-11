@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
+use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class VoidRequest implements BuilderInterface
 {
@@ -68,6 +69,7 @@ class VoidRequest implements BuilderInterface
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         // $this->config->getValue('merchant_email');
 
@@ -80,9 +82,15 @@ class VoidRequest implements BuilderInterface
 
         //
 
-        $currency = $payment->getOrder()->getOrderCurrencyCode();
+        if ($use_order_currency) {
+            $currency = $payment->getOrder()->getOrderCurrencyCode();
+            $amount   = $payment->getOrder()->getGrandTotal();
+        } else {
+            $currency = $payment->getOrder()->getBaseCurrencyCode();
+            $amount   = $payment->getOrder()->getBaseGrandTotal();
+        }
+
         $order_id = $payment->getOrder()->getIncrementId();
-        $amount   = $payment->getOrder()->getGrandTotal();
 
         $pt_holder = new PaytabsFollowupHolder();
         $pt_holder
