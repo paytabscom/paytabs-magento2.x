@@ -55,7 +55,7 @@ class CurrencySelect implements \Magento\Framework\Option\ArrayInterface
     }
 
     /**
-     * @param \PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect $currency_used
+     * @param $paymentMethod
      * @return bool
      */
     static function IsOrderCurrency($paymentMethod)
