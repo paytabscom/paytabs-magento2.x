@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
+use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class RefundRequest implements BuilderInterface
 {
@@ -68,6 +69,7 @@ class RefundRequest implements BuilderInterface
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         // $this->config->getValue('merchant_email');
 
@@ -80,8 +82,14 @@ class RefundRequest implements BuilderInterface
 
         //
 
-        // $currency = $payment->getOrder()->getOrderCurrencyCode();
-        $currency = $payment->getOrder()->getBaseCurrencyCode();
+        if ($use_order_currency) {
+            $currency = $payment->getOrder()->getOrderCurrencyCode();
+            $amount = $payment->getOrder()->getBaseCurrency()->convert($amount, $currency);
+            $amount = $payment->formatAmount($amount, true);
+        } else {
+            $currency = $payment->getOrder()->getBaseCurrencyCode();
+        }
+
         $order_id = $payment->getOrder()->getIncrementId();
 
         $pt_holder = new PaytabsFollowupHolder();
