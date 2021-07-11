@@ -39,11 +39,28 @@ class CurrencySelect implements \Magento\Framework\Option\ArrayInterface
     //
 
     /**
+     * @param $payment
+     * @return bool
+     */
+    static function UseOrderCurrency($payment)
+    {
+        $paymentMethod = $payment->getMethodInstance();
+        $order = $payment->getOrder();
+
+        if ($order->getOrderCurrencyCode() == $order->getBaseCurrencyCode()) {
+            return false;
+        }
+
+        return CurrencySelect::IsOrderCurrency($paymentMethod);
+    }
+
+    /**
      * @param \PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect $currency_used
      * @return bool
      */
-    static function IsOrderCurrency($currency_used)
+    static function IsOrderCurrency($paymentMethod)
     {
+        $currency_used = $paymentMethod->getConfigData('currency_select');
         return $currency_used == CurrencySelect::CURRENCY_ORDER;
     }
 

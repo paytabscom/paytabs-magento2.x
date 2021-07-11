@@ -122,7 +122,7 @@ class Response extends Action
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
         $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
-        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod->getConfigData('currency_select'));
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 

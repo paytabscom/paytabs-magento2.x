@@ -42,7 +42,7 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
 
-        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod->getConfigData('currency_select'));
+        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 
         $orderId = $order->getIncrementId();
 

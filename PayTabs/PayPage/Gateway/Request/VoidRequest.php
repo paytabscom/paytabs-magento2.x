@@ -69,7 +69,7 @@ class VoidRequest implements BuilderInterface
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
-        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod->getConfigData('currency_select'));
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         // $this->config->getValue('merchant_email');
 

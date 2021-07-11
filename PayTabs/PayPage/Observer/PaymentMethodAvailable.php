@@ -32,7 +32,7 @@ class PaymentMethodAvailable implements ObserverInterface
             $checkResult = $observer->getEvent()->getResult();
 
             if ($checkResult->getData('is_available')) {
-                $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod->getConfigData('currency_select'));
+                $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
                 $currency = $this->getCurrency($use_order_currency);
                 $isAllowed = PaytabsHelper::paymentAllowed($code, $currency);
                 $checkResult->setData('is_available', $isAllowed);
