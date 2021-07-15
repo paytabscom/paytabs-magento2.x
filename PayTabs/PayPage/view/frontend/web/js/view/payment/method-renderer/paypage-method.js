@@ -131,8 +131,8 @@ define(
                 //hide the place order button
                 document.getElementById('place_order_button').style.visibility = 'hidden';
 
-                // ToDo: Append the iFrame to correct payment method
-                document.getElementsByName('pnl_iframe')[0].appendChild(ifrm);
+                //Append the iFrame to correct payment method
+                document.querySelector('.payment-method._active .paytabs_iframe').appendChild(ifrm);
             }
 
         });

@@ -21,16 +21,19 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
+
+
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
                 <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
-        </div>
-        
-        <!-- ToDo: Dispaly the PayTabs iFrame here -->
-        <div name="pnl_iframe" data-bind="attr: {id: 'pnl_' + getCode()}">
 
+            <!-- Dispaly the PayTabs iFrame here -->
+            <div class="paytabs_iframe">
+
+            </div>
         </div>
+
         <div class="actions-toolbar">
             <div class="primary">
                 <button class="action primary checkout"
