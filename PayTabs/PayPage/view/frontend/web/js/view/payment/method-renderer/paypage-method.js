@@ -54,6 +54,7 @@ define(
 
             payPage: function (quoteId) {
                 $("body").trigger('processStart');
+                var page = this;
                 $.post(
                     _urlBuilder.build('paypage/paypage/create'),
                     { quote: quoteId }
@@ -63,14 +64,13 @@ define(
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
                             let framed_mode = result.framed_mode == '1';
-                            if (framed_mode) {
-                                redirectURL = _urlBuilder.build('paypage/paypage/pay?payment_url=' + result.payment_url);
-                            } else {
-                                redirectURL = result.payment_url;
-                            }
 
                             if (!result.had_paid) {
-                                $.mage.redirect(redirectURL);
+                                if (framed_mode) {
+                                    page.displayIframe(result.payment_url);
+                                } else {
+                                    $.mage.redirect(redirectURL);
+                                }
                             } else {
                                 alert({
                                     title: 'Previous paid amount detected',
@@ -119,6 +119,17 @@ define(
                     .complete(function () {
                         $("body").trigger('processStop');
                     });
+            },
+
+            displayIframe: function (src) {
+                var ifrm = document.createElement("iframe");
+                ifrm.setAttribute("src", src);
+                ifrm.setAttribute("frameborder", 0);
+                // ifrm.style.width = "640px";
+                ifrm.style.height = "450px";
+
+                // ToDo: Append the iFrame to correct payment method
+                document.getElementsByName('pnl_iframe')[0].appendChild(ifrm);
             }
 
         });
