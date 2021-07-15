@@ -129,7 +129,7 @@ define(
                 ifrm.style.height = "450px";
 
                 //hide the place order button
-                document.getElementById('place_order_button').style.visibility = 'hidden';
+                document.querySelector('.payment-method._active .checkout').style.visibility = 'hidden';
 
                 //Append the iFrame to correct payment method
                 document.querySelector('.payment-method._active .paytabs_iframe').appendChild(ifrm);
