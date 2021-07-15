@@ -128,6 +128,9 @@ define(
                 // ifrm.style.width = "640px";
                 ifrm.style.height = "450px";
 
+                //hide the place order button
+                document.getElementById('place_order_button').style.visibility = 'hidden';
+
                 // ToDo: Append the iFrame to correct payment method
                 document.getElementsByName('pnl_iframe')[0].appendChild(ifrm);
             }
