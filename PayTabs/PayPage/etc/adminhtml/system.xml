@@ -35,7 +35,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -114,7 +114,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -193,7 +193,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -268,7 +268,7 @@
 
                 <!-- ApplyPay does not allow the iFrame option -->
                 <!-- <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field> -->
 
@@ -342,7 +342,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -416,7 +416,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -490,7 +490,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -564,7 +564,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -638,7 +638,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -712,7 +712,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -786,7 +786,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 

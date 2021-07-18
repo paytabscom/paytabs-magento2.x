@@ -21,14 +21,20 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
+
+
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
                 <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
+
+            <!-- Dispaly the PayTabs iFrame here -->
+            <div class="paytabs_iframe"></div>
         </div>
+
         <div class="actions-toolbar">
             <div class="primary">
-                <button class="action primary checkout"
+                <button class="action primary checkout btn_place_order"
                         type="submit"
                         data-bind="
                         click: placeOrder,
