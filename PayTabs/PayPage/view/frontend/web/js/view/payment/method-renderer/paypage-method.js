@@ -122,18 +122,20 @@ define(
             },
 
             displayIframe: function (src) {
-                var ifrm = document.createElement("iframe");
-                ifrm.setAttribute("src", src);
-                ifrm.setAttribute("frameborder", 0);
-                // ifrm.style.width = "640px";
-                ifrm.style.minWidth = '400px';
-                ifrm.style.height = "450px";
+                let pt_iframe = $('<iframe>', {
+                    src: src,
+                    frameborder: 0,
+                }).css({
+                    'min-width': '400px',
+                    height: '450px'
+                });
 
-                //hide the place order button
-                document.querySelector('.payment-method._active .btn_place_order').style.visibility = 'hidden';
+                // Hide the Address & Actions sections
+                $('.payment-method._active .payment-method-billing-address').hide('fast');
+                $('.payment-method._active .actions-toolbar').hide('fast');
 
-                //Append the iFrame to correct payment method
-                document.querySelector('.payment-method._active .paytabs_iframe').appendChild(ifrm);
+                // Append the iFrame to correct payment method
+                $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
             }
 
         });

@@ -3,7 +3,6 @@
 namespace PayTabs\PayPage\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use PayTabs\PayPage\Gateway\Http\Client\ClientMock;
 
 /**
  * Class ConfigProvider
