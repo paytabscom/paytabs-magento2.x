@@ -40,6 +40,10 @@ define(
             afterPlaceOrder: function () {
                 try {
                     let quoteId = quote.getQuoteId();
+
+                    $('.payment-method._active .btn_place_order').hide('fast');
+                    $('.payment-method._active .btn_pay').show('fast');
+
                     this.payPage(quoteId);
                 } catch (error) {
                     alert({
