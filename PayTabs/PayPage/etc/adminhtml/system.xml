@@ -539,7 +539,7 @@
             </group>
 
 
-            <group id="atfawry" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="fawry" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - @Fawry</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
