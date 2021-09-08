@@ -86,10 +86,10 @@
                                                                     </item>
                                                                 </item>
 
-                                                                <item name="paypage-atfawry" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/atfawry</item>
+                                                                <item name="paypage-fawry" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/fawry</item>
                                                                     <item name="methods" xsi:type="array">
-                                                                        <item name="atfawry" xsi:type="array">
+                                                                        <item name="fawry" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>
