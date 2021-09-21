@@ -35,10 +35,10 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.3.0
+ * Version: 2.3.1
  */
 
-define('PAYTABS_SDK_VERSION', '2.3.0');
+define('PAYTABS_SDK_VERSION', '2.3.1');
 
 
 abstract class PaytabsHelper
@@ -708,6 +708,8 @@ class PaytabsApi
         '13' => ['name' => 'meezaqr', 'title' => 'PayTabs - Meeza (QR)', 'currencies' => ['EGP'], 'groups' => []],
         '14' => ['name' => 'unionpay', 'title' => 'PayTabs - UnionPay', 'currencies' => ['AED'], 'groups' => []],
         '15' => ['name' => 'samsungpay', 'title' => 'PayTabs - SamsungPay', 'currencies' => ['AED', 'SAR'], 'groups' => []],
+        '16' => ['name' => 'knetdebit', 'title' => 'PayTabs - KnPay (Debit)', 'currencies' => ['KWD'], 'groups' => []],
+        '17' => ['name' => 'knetcredit', 'title' => 'PayTabs - KnPay (Credit)', 'currencies' => ['KWD'], 'groups' => []],
     ];
 
     const BASE_URLS = [
