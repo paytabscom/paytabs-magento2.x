@@ -17,7 +17,9 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_MADA       = 'mada';
     const CODE_SADAD      = 'sadad';
     const CODE_FAWRY      = 'fawry';
-    const CODE_KNPAY      = 'knet';
+    const CODE_KNPAY        = 'knet';
+    const CODE_KNPAY_DEBIT  = 'knetdebit';
+    const CODE_KNPAY_CREDIT = 'knetcredit';
     const CODE_AMEX       = 'amex';
     const CODE_VALU       = 'valu';
 
@@ -39,6 +41,8 @@ final class ConfigProvider implements ConfigProviderInterface
                 self::CODE_SADAD => [],
                 self::CODE_FAWRY => [],
                 self::CODE_KNPAY => [],
+                self::CODE_KNPAY_DEBIT => [],
+                self::CODE_KNPAY_CREDIT => [],
                 self::CODE_AMEX => [],
                 self::CODE_VALU => [],
             ]

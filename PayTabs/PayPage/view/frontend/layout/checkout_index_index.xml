@@ -104,6 +104,24 @@
                                                                     </item>
                                                                 </item>
 
+                                                                <item name="paypage-knetdebit" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/knetdebit</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="knetdebit" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
+                                                                <item name="paypage-knetcredit" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/knetcredit</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="knetcredit" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
                                                                 <item name="paypage-amex" xsi:type="array">
                                                                     <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/amex</item>
                                                                     <item name="methods" xsi:type="array">
