@@ -44,6 +44,8 @@ class Api
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 
+        $allow_associated_methods = (bool) $paymentMethod->getConfigData('allow_associated_methods');
+
         $orderId = $order->getIncrementId();
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -147,7 +149,7 @@ class Api
 
         $pt_holder = new PaytabsRequestHolder();
         $pt_holder
-            ->set01PaymentCode($paymentType)
+            ->set01PaymentCode($paymentType, $allow_associated_methods, $currency)
             ->set02Transaction($tran_type, PaytabsEnum::TRAN_CLASS_ECOM)
             ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(
