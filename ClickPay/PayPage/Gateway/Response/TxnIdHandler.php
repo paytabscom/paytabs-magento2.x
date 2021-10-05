@@ -38,9 +38,9 @@ class TxnIdHandler implements HandlerInterface
         /** @var $payment \Magento\Sales\Model\Order\Payment */
         // $payment->setTransactionId($response[self::TXN_ID]);
 
-        $payment
+        /*$payment
             ->setIsTransactionPending(true)
-            ->setIsTransactionClosed(false);
+            ->setIsTransactionClosed(false);*/
 
         // $payment->setIsFraudDetected(true);
     }

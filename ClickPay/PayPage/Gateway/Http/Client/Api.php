@@ -6,6 +6,7 @@ use ClickPay\PayPage\Gateway\Http\ClickpayApi;
 use ClickPay\PayPage\Gateway\Http\ClickpayCore;
 use ClickPay\PayPage\Gateway\Http\ClickpayEnum;
 use ClickPay\PayPage\Gateway\Http\ClickpayRequestHolder;
+use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class Api
 {
@@ -40,6 +41,9 @@ class Api
         $hide_shipping = (bool) $paymentMethod->getConfigData('hide_shipping');
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
+        $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
+        $allow_associated_methods = (bool) $paymentMethod->getConfigData('allow_associated_methods');
+        
 
         $orderId = $order->getIncrementId();
 
@@ -49,7 +53,14 @@ class Api
         $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         $versionMagento = $productMetadata->getVersion();
 
-        $currency = $order->getOrderCurrencyCode();
+         if ($use_order_currency) {
+            $currency = $order->getOrderCurrencyCode();
+            $amount = $order->getGrandTotal();
+        } else {
+            $currency = $order->getBaseCurrencyCode();
+            $amount = $order->getBaseGrandTotal();
+        }
+
         $baseurl = $storeManager->getStore()->getBaseUrl();
         $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
 
@@ -58,8 +69,8 @@ class Api
 
         // Compute Prices
 
-        $amount = $order->getGrandTotal();
-        $amount = number_format((float) $amount, 2, '.', '');
+        $amount = number_format((float) $amount, 3, '.', '');
+        // $amount = $order->getPayment()->formatAmount($amount, true);
 
         // $discountAmount = abs($order->getDiscountAmount());
         // $shippingAmount = $order->getShippingAmount();
@@ -137,7 +148,7 @@ class Api
 
         $pt_holder = new ClickpayRequestHolder();
         $pt_holder
-            ->set01PaymentCode($paymentType)
+            ->set01PaymentCode($paymentType, $allow_associated_methods, $currency)
             ->set02Transaction($tran_type, ClickpayEnum::TRAN_CLASS_ECOM)
             ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(

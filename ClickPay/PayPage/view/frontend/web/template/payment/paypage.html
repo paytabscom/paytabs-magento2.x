@@ -26,9 +26,13 @@
                 <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
+
+        <!-- Dispaly the PayTabs iFrame here -->
+        <div class="paytabs_iframe"></div>
+
         <div class="actions-toolbar">
             <div class="primary">
-                <button class="action primary checkout"
+                <button class="action primary checkout btn_place_order"
                         type="submit"
                         data-bind="
                         click: placeOrder,
@@ -38,6 +42,12 @@
                         "
                         disabled>
                     <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+                 <button class="action primary checkout btn_pay"
+                        type="submit"
+                        disabled
+                        style="display: none;">
+                    <span data-bind="i18n: 'Continue to Payment'"></span>
                 </button>
             </div>
         </div>

@@ -35,7 +35,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -81,6 +81,11 @@
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
 
             <group id="creditcard" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -109,9 +114,16 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+
 
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
@@ -183,7 +195,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -223,6 +235,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -253,7 +270,7 @@
 
                 <!-- ApplyPay does not allow the iFrame option -->
                 <!-- <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field> -->
 
@@ -293,6 +310,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -322,7 +344,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -362,6 +384,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -391,7 +418,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -431,6 +458,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -460,7 +492,7 @@
                 </field>
 
                 <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode (Beta)</label>
+                    <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -500,6 +532,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 

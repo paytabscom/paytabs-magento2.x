@@ -14,6 +14,7 @@ use Magento\Sales\Model\Order;
 use ClickPay\PayPage\Gateway\Http\Client\Api;
 use ClickPay\PayPage\Gateway\Http\ClickpayCore;
 use ClickPay\PayPage\Gateway\Http\ClickpayEnum;
+use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig;
 
 use function ClickPay\PayPage\Gateway\Http\clickpay_error_log;
@@ -121,6 +122,7 @@ class Response extends Action
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
         $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         $ptApi = $this->clickpay->pt($paymentMethod);
 
@@ -183,18 +185,18 @@ class Response extends Action
         }
 
         // ClickPay "Transaction ID"
-        $paymentAmount = $verify_response->cart_amount;
-        $paymentCurrency = $verify_response->cart_currency;
+        $tranAmount = $verify_response->cart_amount;
+        $tranCurrency = $verify_response->cart_currency;
 
         $payment
             ->setTransactionId($transaction_ref)
-            ->setLastTransId($transaction_ref)
-            ->setAmountAuthorized($paymentAmount)
-            ->setAdditionalInformation("payment_amount", $paymentAmount)
-            ->setAdditionalInformation("payment_currency", $paymentCurrency)
+             ->setAdditionalInformation("payment_amount", $tranAmount)
+            ->setAdditionalInformation("payment_currency", $tranCurrency)
             ->save();
 
-        $payment->accept();
+        $payment->setAmountAuthorized($payment->getAmountOrdered());
+
+        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         if (ClickpayEnum::TranIsSale($transaction_type)) {
             // $payment->capture();
@@ -206,6 +208,8 @@ class Response extends Action
             // $payment->authorize(false, $paymentAmount);
             // $payment->setAmountAuthorized(11)
         }
+
+        $payment->accept();
 
         $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
         if ($canSendEmail) {
@@ -266,10 +270,45 @@ class Response extends Action
             }
         }
     }
+
+    public function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency)
+    {
+        $amount = null;
+
+        $orderCurrency = strtoupper($payment->getOrder()->getOrderCurrencyCode());
+        $baseCurrency  = strtoupper($payment->getOrder()->getBaseCurrencyCode());
+        $tranCurrency  = strtoupper($tranCurrency);
+
+        if ($use_order_currency) {
+            if ($orderCurrency != $tranCurrency) {
+                throw Exception('Diff Currency');
+            }
+
+            if ($tranCurrency == $baseCurrency) {
+                $amount = $tranAmount;
+            } else {
+                // Convert Amount to Base
+                $amount = CurrencySelect::convertOrderToBase($payment, $tranAmount);
+
+                $payment->getOrder()
+                    ->addStatusHistoryComment(
+                        __(
+                            'Transaction amount converted to base currency: (%1) = (%2)',
+                            $payment->getOrder()->getOrderCurrency()->format($tranAmount, [], false),
+                            $payment->formatPrice($amount)
+                        )
+                    )
+                    ->setIsCustomerNotified(false)
+                    ->save();
+            }
+        } else {
+            if ($baseCurrency != $tranCurrency) {
+                throw Exception('Diff Currency');
+            }
+            $amount = $tranAmount;
+        }
+
+        return $amount;
+    }
 }
 
-/**
- * move CSRF verification to Plugin
- * compitable with old Magento version >=2.0 && <2.3
- * compitable with PHP version 5.6
- */

@@ -3,7 +3,7 @@
     <policies>
         <policy id="frame-src">
             <values>
-                <value id="ClickPay-iframe" type="host">https://*.ClickPay.com</value>
+                <value id="ClickPay-iframe" type="host">*.ClickPay.com</value>
             </values>
         </policy>
     </policies>

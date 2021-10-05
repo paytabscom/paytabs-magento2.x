@@ -25,6 +25,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -61,6 +62,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -99,6 +101,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -129,6 +132,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -159,6 +163,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -189,6 +194,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -219,6 +225,7 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <allow_associated_methods>1</allow_associated_methods>
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>

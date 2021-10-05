@@ -3,7 +3,7 @@
 namespace ClickPay\PayPage\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use ClickPay\PayPage\Gateway\Http\Client\ClientMock;
+
 
 /**
  * Class ConfigProvider
@@ -17,6 +17,12 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_APPLEPAY   = 'applepay';
     const CODE_MADA       = 'mada';
     const CODE_SADAD      = 'sadad';
+    const CODE_FAWRY      = 'fawry';
+    const CODE_KNPAY        = 'knet';
+    const CODE_KNPAY_DEBIT  = 'knetdebit';
+    const CODE_KNPAY_CREDIT = 'knetcredit';
+    const CODE_AMEX       = 'amex';
+    const CODE_VALU       = 'valu';
 
 
     /**
@@ -35,6 +41,8 @@ final class ConfigProvider implements ConfigProviderInterface
                 self::CODE_MADA => [],
                 self::CODE_SADAD => [],
                 self::CODE_AMEX => [],
+                self::CODE_KNPAY_DEBIT => [],
+                self::CODE_KNPAY_CREDIT => [],
             ]
         ];
     }

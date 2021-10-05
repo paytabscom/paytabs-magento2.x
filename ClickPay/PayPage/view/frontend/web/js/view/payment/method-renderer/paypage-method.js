@@ -40,6 +40,10 @@ define(
             afterPlaceOrder: function () {
                 try {
                     let quoteId = quote.getQuoteId();
+
+                    $('.payment-method._active .btn_place_order').hide('fast');
+                    $('.payment-method._active .btn_pay').show('fast');
+                    
                     this.payPage(quoteId);
                 } catch (error) {
                     alert({
@@ -54,6 +58,7 @@ define(
 
             payPage: function (quoteId) {
                 $("body").trigger('processStart');
+                var page = this;
                 $.post(
                     _urlBuilder.build('paypage/paypage/create'),
                     { quote: quoteId }
@@ -63,14 +68,13 @@ define(
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
                             let framed_mode = result.framed_mode == '1';
-                            if (framed_mode) {
-                                redirectURL = _urlBuilder.build('paypage/paypage/pay?payment_url=' + result.payment_url);
-                            } else {
-                                redirectURL = result.payment_url;
-                            }
 
                             if (!result.had_paid) {
-                                $.mage.redirect(redirectURL);
+                                if (framed_mode) {
+                                    page.displayIframe(result.payment_url);
+                                } else {
+                                    $.mage.redirect(redirectURL);
+                                }
                             } else {
                                 alert({
                                     title: 'Previous paid amount detected',
@@ -119,6 +123,24 @@ define(
                     .complete(function () {
                         $("body").trigger('processStop');
                     });
+                     },
+
+                displayIframe: function (src) {
+                let pt_iframe = $('<iframe>', {
+                    src: src,
+                    frameborder: 0,
+                }).css({
+                    'min-width': '400px',
+                    height: '450px'
+                });
+
+                //hide the place order button
+                $('.payment-method._active .payment-method-billing-address').hide('fast');
+                $('.payment-method._active .actions-toolbar').hide('fast');
+
+                // Append the iFrame to correct payment method
+                $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
+            }
             }
 
         });
