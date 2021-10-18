@@ -22,6 +22,9 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_KNPAY_CREDIT = 'knetcredit';
     const CODE_AMEX       = 'amex';
     const CODE_VALU       = 'valu';
+    const CODE_MEEZA      = 'meeza';
+    const CODE_MEEZAQR    = 'meezaqr';
+    const CODE_UNIONPAY   = 'unionpay';
 
     /**
      * Retrieve assoc array of checkout configuration
@@ -45,6 +48,9 @@ final class ConfigProvider implements ConfigProviderInterface
                 self::CODE_KNPAY_CREDIT => [],
                 self::CODE_AMEX => [],
                 self::CODE_VALU => [],
+                self::CODE_MEEZA => [],
+                self::CODE_MEEZAQR => [],
+                self::CODE_UNIONPAY => [],
             ]
         ];
     }

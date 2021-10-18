@@ -140,6 +140,33 @@
                                                                     </item>
                                                                 </item>
 
+                                                                <item name="paypage-meeza" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/meeza</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="meeza" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
+                                                                <item name="paypage-meezaqr" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/meezaqr</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="meezaqr" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
+                                                                <item name="paypage-unionpay" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/unionpay</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="unionpay" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
                                                                 <!-- item-renderer -->
                                                             </item>
                                                         </item>
