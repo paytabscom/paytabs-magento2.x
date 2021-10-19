@@ -5,7 +5,7 @@ namespace PayTabs\PayPage\Gateway\Http;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', BP . "/var/log/debug_paytabs.log");
-define('PAYTABS_PAYPAGE_VERSION', '3.5.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.5.1');
 
 function paytabs_error_log($msg, $severity = 3)
 {
