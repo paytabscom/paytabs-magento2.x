@@ -6,6 +6,7 @@
             <values>
                 <value id="paytabs-iframe" type="host">*.paytabs.com</value>
                 <value id="paytabs-sa-iframe" type="host">*.paytabs.sa</value>
+                <value id="paytabs-3ds" type="host">*</value>
             </values>
         </policy>
 
