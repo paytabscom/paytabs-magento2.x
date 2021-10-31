@@ -2,16 +2,15 @@
 
 namespace PayTabs\PayPage\Gateway\Http;
 
+use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
-define('PAYTABS_DEBUG_FILE', BP . "/var/log/debug_paytabs.log");
+define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
 define('PAYTABS_PAYPAGE_VERSION', '3.5.2');
 
 function paytabs_error_log($msg, $severity = 3)
 {
-    $writer = new \Zend\Log\Writer\Stream(PAYTABS_DEBUG_FILE);
-    $logger = new \Zend\Log\Logger();
-    $logger->addWriter($writer);
+    $logger = PayTabsLogger::getInstance();
 
     switch ($severity) {
         case 2:

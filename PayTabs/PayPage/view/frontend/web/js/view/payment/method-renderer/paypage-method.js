@@ -64,7 +64,7 @@ define(
                     { quote: quoteId }
                 )
                     .done(function (result) {
-                        console.log(result);
+                        // console.log(result);
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
                             let framed_mode = result.framed_mode == '1';
