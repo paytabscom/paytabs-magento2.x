@@ -86,11 +86,12 @@ class Response extends Action
         }
 
         // Get the params that were passed from our Router
-        $pOrderId = $this->getRequest()->getParam('p', null);
+        // $pOrderId = $this->getRequest()->getParam('p', null);
 
         // PT
         // PayTabs "Invoice ID"
         $transactionId = $this->getRequest()->getParam('tranRef', null);
+        $pOrderId = $this->getRequest()->getParam('cartId', null);
 
         $resultRedirect = $this->resultRedirectFactory->create();
 

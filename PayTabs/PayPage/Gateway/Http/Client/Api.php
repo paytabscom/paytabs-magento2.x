@@ -63,7 +63,8 @@ class Api
         }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
+        $returnUrl = $baseurl . "paypage/paypage/response";
+        $callbackUrl = $baseurl . "paypage/paypage/ipn";
 
         $lang_code = $localeResolver->getLocale();
         $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
@@ -183,7 +184,7 @@ class Api
 
         $pt_holder
             ->set06HideShipping($hide_shipping)
-            ->set07URLs($returnUrl, null)
+            ->set07URLs($returnUrl, $callbackUrl)
             ->set08Lang($lang)
             ->set09Framed($framed_mode, 'top')
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
