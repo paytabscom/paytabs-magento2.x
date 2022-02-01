@@ -17,7 +17,8 @@ class CsrfValidatorSkip
         $action
     ) {
         if ($request->getModuleName() == 'paypage') {
-            if ($request->getActionName() == 'response') {
+            $arr_actions = ['response', 'callback'];
+            if (in_array($request->getActionName(), $arr_actions)) {
                 return; // Skip CSRF check
             }
         }
