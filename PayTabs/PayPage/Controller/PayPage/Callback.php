@@ -90,6 +90,9 @@ class Callback extends Action
         // Get the params that were passed from our Router
 
         $data = PaytabsHelper::read_ipn_response();
+        if (!$data) {
+            return;
+        }
         $_p_tran_ref = 'tran_ref';
         $_p_cart_id = 'cart_id';
 
