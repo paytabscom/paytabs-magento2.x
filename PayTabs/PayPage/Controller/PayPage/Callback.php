@@ -93,8 +93,8 @@ class Callback extends Action
         $_p_tran_ref = 'tran_ref';
         $_p_cart_id = 'cart_id';
 
-        $transactionId = $data->$_p_tran_ref;
-        $pOrderId = $data->$_p_cart_id;
+        $transactionId = @$data->$_p_tran_ref;
+        $pOrderId = @$data->$_p_cart_id;
 
         //
 
