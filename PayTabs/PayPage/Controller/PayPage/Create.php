@@ -80,7 +80,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing!, Quote = [{$quoteId}]");
+            paytabs_error_log("Paytabs: Order is missing!, Quote [{$quoteId}]");
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -90,15 +90,16 @@ class Create extends Action
         $paypage = $this->prepare($order);
         if ($paypage->success) {
             // Create paypage success
+            paytabs_error_log("Paytabs: create paypage success!, Order [{$order->getIncrementId()}]", 1);
         } else {
-            paytabs_error_log("Paytabs: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
+            paytabs_error_log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage));
 
             try {
                 // Create paypage failed, Save the Quote (user's Cart)
                 $quote = $this->quoteRepository->get($quoteId);
                 $quote->setIsActive(true)->removePayment()->save();
             } catch (\Throwable $th) {
-                paytabs_error_log("Paytabs: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
+                paytabs_error_log("Paytabs: load Quote by ID failed!, QuoteId [{$quoteId}]");
             }
             $order->cancel()->save();
         }
@@ -112,6 +113,7 @@ class Create extends Action
 
         return $result;
     }
+
 
     function prepare($order)
     {
@@ -129,6 +131,7 @@ class Create extends Action
 
         return $res;
     }
+
 
     public function getOrder()
     {
