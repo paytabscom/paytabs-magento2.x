@@ -156,7 +156,9 @@ class Ipn extends Action
                 /**
                  * Check if the trx has been deliveried before
                  * If success: register the transaction
-                 * If fail: cancel the Payment
+                 * If fail:
+                 *  - If full amount: cancel the Payment
+                 *  - Else: Hold the Order
                  */
                 $this->handleCapture($order, $ipn_data);
 
@@ -164,6 +166,8 @@ class Ipn extends Action
 
             case PaytabsEnum::TRAN_TYPE_VOID:
             case PaytabsEnum::TRAN_TYPE_RELEASE:
+
+                $this->handleVoid($order, $ipn_data);
 
                 break;
 
@@ -263,6 +267,39 @@ class Ipn extends Action
                 ->setTransactionId($pt_tran_ref)
                 ->setParentTransactionId($pt_prev_tran_ref)
                 ->registerRefundNotification($paymentAmount)
+                ->save();
+        } else {
+        }
+
+        $order->save();
+    }
+
+
+    function handleVoid($order, $ipn_data)
+    {
+        $pt_success = $ipn_data->success;
+        $pt_message = $ipn_data->message;
+
+        $pt_tran_ref = $ipn_data->tran_ref;
+        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
+
+        $payment = $order->getPayment();
+        $paymentMethod = $payment->getMethodInstance();
+
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
+
+
+        if ($pt_success) {
+
+            $tranAmount = $ipn_data->cart_amount;
+            $tranCurrency = $ipn_data->cart_currency;
+
+            $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
+
+            $payment
+                ->setTransactionId($pt_tran_ref)
+                ->setParentTransactionId($pt_prev_tran_ref)
+                ->registerVoidNotification($paymentAmount)
                 ->save();
         } else {
         }
