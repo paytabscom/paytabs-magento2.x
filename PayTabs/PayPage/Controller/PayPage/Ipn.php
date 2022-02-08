@@ -195,23 +195,23 @@ class Ipn extends Action
             $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
 
+        $tranAmount = $ipn_data->cart_amount;
+        $tranCurrency = $ipn_data->cart_currency;
+        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
+
+        $payment
+            ->setTransactionId($pt_tran_ref)
+            ->setParentTransactionId($pt_prev_tran_ref);
+
         if ($pt_success) {
 
-            $tranAmount = $ipn_data->cart_amount;
-            $tranCurrency = $ipn_data->cart_currency;
-
-            $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
             $payment
-                ->setTransactionId($pt_tran_ref)
-                ->setParentTransactionId($pt_prev_tran_ref)
                 ->registerCaptureNotification($paymentAmount, true)
                 ->save();
 
             /*if ($paymentSuccess != Order::STATE_PROCESSING) {
                 $this->setNewStatus($order, $paymentSuccess);
             }*/
-            $order->save();
         } else {
 
             paytabs_error_log("Paytabs Response: Payment verify failed [$pt_message] for Order {$order->getId()}");
@@ -226,12 +226,13 @@ class Ipn extends Action
             } else {
                 $order->cancel();
             }
-            $order->save();
         }
+
+        $order->save();
     }
 
 
-    public function handleRefund($order, $ipn_data)
+    function handleRefund($order, $ipn_data)
     {
         $pt_success = $ipn_data->success;
         $pt_message = $ipn_data->message;

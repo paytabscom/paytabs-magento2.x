@@ -218,7 +218,7 @@ class Callback extends Action
         }
 
         if ($sendInvoice) {
-            $this->invoice($order, $payment);
+            $this->invoiceSend($order, $payment);
         }
 
 

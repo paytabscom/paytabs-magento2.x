@@ -49,7 +49,7 @@ trait PaytabsHelpers
     }
 
 
-    private function invoice($order, $payment)
+    private function invoiceSend($order, $payment)
     {
         $canInvoice = $order->canInvoice();
         if (!$canInvoice) return;
