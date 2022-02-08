@@ -214,18 +214,22 @@ class Ipn extends Action
             }*/
         } else {
 
-            paytabs_error_log("Paytabs Response: Payment verify failed [$pt_message] for Order {$order->getId()}");
+            paytabs_error_log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]");
 
-            // $payment->deny();
-            $payment->cancel();
+            if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
+                // $payment->deny();
+                $payment->cancel();
+            } else {
+                $order->hold();
+            }
 
-            $order->addStatusHistoryComment(__('Payment failed: [%1].', $pt_message));
+            $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
 
-            if ($paymentFailed != Order::STATE_CANCELED) {
+            /*if ($paymentFailed != Order::STATE_CANCELED) {
                 $this->setNewStatus($order, $paymentFailed);
             } else {
                 $order->cancel();
-            }
+            }*/
         }
 
         $order->save();

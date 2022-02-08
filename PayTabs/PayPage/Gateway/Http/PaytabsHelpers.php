@@ -48,6 +48,18 @@ trait PaytabsHelpers
         return $amount;
     }
 
+    function isSameGrandAmount($order, $use_order_currency, $amount_to_check)
+    {
+        if ($use_order_currency) {
+            $amount = $order->getGrandTotal();
+        } else {
+            $amount = $order->getBaseGrandTotal();
+        }
+
+        $diff = abs($amount - $amount_to_check);
+
+        return $diff < 0.0001;
+    }
 
     private function invoiceSend($order, $payment)
     {
