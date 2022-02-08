@@ -134,6 +134,12 @@ class Ipn extends Action
 
         $pt_tran_type = strtolower($ipn_data->tran_type);
 
+        //
+
+        if (!$pt_success) {
+            paytabs_error_log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]");
+            $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
+        }
 
         //
 
@@ -214,16 +220,12 @@ class Ipn extends Action
             }*/
         } else {
 
-            paytabs_error_log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]");
-
             if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
                 // $payment->deny();
                 $payment->cancel();
             } else {
                 $order->hold();
             }
-
-            $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
 
             /*if ($paymentFailed != Order::STATE_CANCELED) {
                 $this->setNewStatus($order, $paymentFailed);
@@ -262,15 +264,9 @@ class Ipn extends Action
                 ->setParentTransactionId($pt_prev_tran_ref)
                 ->registerRefundNotification($paymentAmount)
                 ->save();
-
-            $order->save();
         } else {
-
-            paytabs_error_log("Paytabs Response: Payment verify failed [$pt_message] for Order {$order->getId()}");
-
-            $order->addStatusHistoryComment(__('Payment failed: [%1].', $pt_message));
-
-            $order->save();
         }
+
+        $order->save();
     }
 }
