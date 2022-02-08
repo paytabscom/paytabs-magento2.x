@@ -81,4 +81,18 @@ trait PaytabsHelpers
         $order->setState($newStatus)->setStatus($newStatus);
         $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
     }
+
+
+    function getInvoiceByTransaction($order, $transaction_id)
+    {
+        $invoices = $order->getInvoiceCollection();
+
+        foreach ($invoices as $_invoice) {
+            if ($_invoice->getTransactionId() == $transaction_id) {
+                return $_invoice;
+            }
+        }
+
+        return null;
+    }
 }
