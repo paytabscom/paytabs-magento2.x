@@ -131,7 +131,8 @@ define(
                     frameborder: 0,
                 }).css({
                     'min-width': '400px',
-                    height: '450px'
+                    'width': '100%',
+                    'height': '450px'
                 });
 
                 // Hide the Address & Actions sections
