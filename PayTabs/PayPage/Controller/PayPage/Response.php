@@ -122,6 +122,13 @@ class Response extends Action
         // $transaction_ref = @$verify_response->transaction_id;
 
         if ($success) {
+            if ($quote = $this->getQuoteFromOrder($order)) {
+                $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
+                $_checkoutSession->setLastQuoteId($quote->getId())->setLastSuccessQuoteId($quote->getId());
+                $_checkoutSession->setLastOrderId($order->getId())
+                    ->setLastRealOrderId($order->getIncrementId())
+                    ->setLastOrderStatus($order->getStatus());
+            }
             $this->messageManager->addSuccessMessage('The payment has been completed successfully - ' . $res_msg);
             $redirect_page = 'checkout/onepage/success';
             /*
@@ -135,23 +142,30 @@ class Response extends Action
             $redirect_page = 'checkout/onepage/failure';
 
             if ($cart_refill) {
-                try {
-                    // Payment failed, Save the Quote (user's Cart)
-                    $quoteId = $order->getQuoteId();
-                    $quote = $this->quoteRepository->get($quoteId);
+                // Payment failed, Save the Quote (user's Cart)
+                if ($quote = $this->getQuoteFromOrder($order)) {
                     $quote->setIsActive(true)->removePayment()->save();
 
                     $_checkoutSession = $objectManager->create('\Magento\Checkout\Model\Session');
                     $_checkoutSession->replaceQuote($quote);
 
                     $redirect_page = 'checkout/cart';
-                } catch (\Throwable $th) {
-                    paytabs_error_log("Paytabs: load Quote by ID failed!, Order [{$orderId}], QuoteId = [{$quoteId}]");
                 }
             }
         }
 
         $resultRedirect->setPath($redirect_page);
         return $resultRedirect;
+    }
+
+    private function getQuoteFromOrder($order)
+    {
+        try {
+            $quoteId = $order->getQuoteId();
+            return $this->quoteRepository->get($quoteId);
+        } catch (\Throwable $th) {
+            paytabs_error_log("Paytabs: load Quote by ID failed!, Order [{$order->getId()}], QuoteId = [{$quoteId}]");
+        }
+        return false;
     }
 }
