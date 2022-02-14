@@ -133,6 +133,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -217,6 +222,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -292,6 +302,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -364,6 +379,11 @@
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Currency</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -445,6 +465,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -524,6 +549,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -598,6 +628,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -670,6 +705,11 @@
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Currency</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -751,6 +791,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -825,6 +870,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -897,6 +947,11 @@
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Currency</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -978,6 +1033,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>valU product ID</label>
                 </field>
@@ -1054,6 +1114,11 @@
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Currency</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -1135,6 +1200,11 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
                 </field>
 
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
@@ -1207,6 +1277,11 @@
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Currency</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
