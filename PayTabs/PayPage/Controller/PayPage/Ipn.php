@@ -106,6 +106,12 @@ class Ipn extends Action
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
 
+        $ipnAllowed = $paymentMethod->getConfigData('ipn_allow') ?? false;
+        if (!$ipnAllowed) {
+            paytabs_error_log("PayTabs: [{$paymentMethod->getCode()}] IPN is not allowed", 2);
+            return;
+        }
+
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $verify_response = $ptApi->read_response(true);

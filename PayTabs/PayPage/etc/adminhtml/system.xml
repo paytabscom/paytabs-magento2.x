@@ -53,6 +53,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
@@ -136,6 +144,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -226,6 +242,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -306,6 +330,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -384,6 +416,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -469,6 +509,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
@@ -553,6 +601,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -632,6 +688,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -710,6 +774,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -795,6 +867,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -874,6 +954,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -952,6 +1040,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -1037,6 +1133,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>valU product ID</label>
@@ -1119,6 +1223,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -1204,6 +1316,14 @@
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -1282,6 +1402,14 @@
                 <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Allow IPN notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>PayTabs\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
