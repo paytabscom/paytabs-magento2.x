@@ -11,7 +11,6 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
-use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
@@ -19,7 +18,6 @@ use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
 /**
  * Class Index
@@ -86,7 +84,7 @@ class Callback extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            paytabs_error_log("Paytabs: no post back data received in callback");
+            PaytabsHelper::log("Paytabs: no post back data received in callback", 3);
             return;
         }
 
@@ -105,13 +103,13 @@ class Callback extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            paytabs_error_log("Paytabs: OrderId/TransactionId data did not receive in callback");
+            PaytabsHelper::log("Paytabs: OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
         //
 
-        paytabs_error_log("Callback triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
+        PaytabsHelper::log("Callback triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
 
         //
 
@@ -119,7 +117,7 @@ class Callback extends Action
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing, Order [{$pOrderId}]");
+            PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
@@ -168,7 +166,7 @@ class Callback extends Action
         //
 
         if (!$success) {
-            paytabs_error_log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
+            PaytabsHelper::log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
 
             // $payment->deny();
             $payment->cancel();
@@ -227,6 +225,6 @@ class Callback extends Action
         }
         $order->save();
 
-        paytabs_error_log("Order {$orderId}, Message [$res_msg]", 1);
+        PaytabsHelper::log("Order {$orderId}, Message [$res_msg]", 1);
     }
 }

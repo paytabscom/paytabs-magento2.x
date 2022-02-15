@@ -12,8 +12,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
-
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 /**
  * Class Index
@@ -70,7 +69,7 @@ class Create extends Action
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getParam('quote', null);
         if (!$quoteId) {
-            paytabs_error_log("Paytabs: Quote ID is missing!");
+            PaytabsHelper::log("Paytabs: Quote ID is missing!", 3);
             $result->setData([
                 'result' => 'Quote ID is missing!'
             ]);
@@ -80,7 +79,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing!, Quote [{$quoteId}]");
+            PaytabsHelper::log("Paytabs: Order is missing!, Quote [{$quoteId}]", 3);
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -90,16 +89,16 @@ class Create extends Action
         $paypage = $this->prepare($order);
         if ($paypage->success) {
             // Create paypage success
-            paytabs_error_log("Paytabs: create paypage success!, Order [{$order->getIncrementId()}]", 1);
+            PaytabsHelper::log("Paytabs: create paypage success!, Order [{$order->getIncrementId()}]", 1);
         } else {
-            paytabs_error_log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage));
+            PaytabsHelper::log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
 
             try {
                 // Create paypage failed, Save the Quote (user's Cart)
                 $quote = $this->quoteRepository->get($quoteId);
                 $quote->setIsActive(true)->removePayment()->save();
             } catch (\Throwable $th) {
-                paytabs_error_log("Paytabs: load Quote by ID failed!, QuoteId [{$quoteId}]");
+                PaytabsHelper::log("Paytabs: load Quote by ID failed!, QuoteId [{$quoteId}]", 3);
             }
             $order->cancel()->save();
         }

@@ -6,7 +6,6 @@ use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
 class OrderServicePlugin
 {
@@ -64,7 +63,7 @@ class OrderServicePlugin
                 $order->setCanSendNewEmailFlag(false);
             }
         } catch (\Throwable $th) {
-            paytabs_error_log('PayTabs: Handle email configuration failed');
+            PaytabsHelper::log('PayTabs: Handle email configuration failed', 3);
         }
     }
 }

@@ -10,16 +10,12 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Sales\Model\Order;
-use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
-use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
 /**
  * Class IPN
@@ -69,7 +65,7 @@ class Ipn extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            paytabs_error_log("PayTabs (IPN): no post back data received");
+            PaytabsHelper::log("PayTabs (IPN): no post back data received", 3);
             return;
         }
 
@@ -85,13 +81,13 @@ class Ipn extends Action
         $pOrderId = @$data->$_p_cart_id;
 
         if (!$pOrderId || !$transactionId) {
-            paytabs_error_log("PayTabs (IPN): no TransactionRef/CartId received");
+            PaytabsHelper::log("PayTabs (IPN): no TransactionRef/CartId received", 3);
             return;
         }
 
         //
 
-        paytabs_error_log("IPN triggered, Order [{$pOrderId}], Transaction [{$transactionId}], Action [{$data->tran_type}]", 1);
+        PaytabsHelper::log("IPN triggered, Order [{$pOrderId}], Transaction [{$transactionId}], Action [{$data->tran_type}]", 1);
 
         //
 
@@ -99,7 +95,7 @@ class Ipn extends Action
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$order) {
-            paytabs_error_log("PayTabs (IPN): Order is missing, Order [{$pOrderId}]");
+            PaytabsHelper::log("PayTabs (IPN): Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
@@ -108,7 +104,7 @@ class Ipn extends Action
 
         $ipnAllowed = $paymentMethod->getConfigData('ipn_allow') ?? false;
         if (!$ipnAllowed) {
-            paytabs_error_log("PayTabs: [{$paymentMethod->getCode()}] IPN is not allowed", 2);
+            PaytabsHelper::log("PayTabs: [{$paymentMethod->getCode()}] IPN is not allowed", 2);
             return;
         }
 
@@ -143,7 +139,7 @@ class Ipn extends Action
         //
 
         if (!$pt_success) {
-            paytabs_error_log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]");
+            PaytabsHelper::log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]", 3);
             $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
         } else {
             PaytabsHelper::log("IPN handeling, Order [{$pt_order_id}], Transaction [{$pt_tran_ref}], Action [{$pt_tran_type}], Message [$pt_message]", 1);
