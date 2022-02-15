@@ -2,7 +2,7 @@
 
 // declare(strict_types=1);
 
-namespace PayTabs\PayPage\Controller\Paypage;
+namespace PayTabs\PayPage\Controller\PayPage;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;

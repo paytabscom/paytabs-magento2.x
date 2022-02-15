@@ -60,7 +60,7 @@ define(
                 $("body").trigger('processStart');
                 var page = this;
                 $.post(
-                    _urlBuilder.build('paypage/paypage/create'),
+                    _urlBuilder.build('paytabs/paypage/create'),
                     { quote: quoteId }
                 )
                     .done(function (result) {

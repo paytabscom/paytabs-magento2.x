@@ -63,8 +63,8 @@ class Api
         }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $returnUrl = $baseurl . "paypage/paypage/response";
-        $callbackUrl = $baseurl . "paypage/paypage/callback";
+        $returnUrl = $baseurl . "paytabs/paypage/response";
+        $callbackUrl = $baseurl . "paytabs/paypage/callback";
 
         $lang_code = $localeResolver->getLocale();
         $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';

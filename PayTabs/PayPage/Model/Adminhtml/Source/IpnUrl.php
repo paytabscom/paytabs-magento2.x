@@ -11,7 +11,7 @@ class IpnUrl extends \Magento\Config\Block\System\Config\Form\Field
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $ipnUrl = $baseurl . "paypage/paypage/ipn";
+        $ipnUrl = $baseurl . "paytabs/paypage/ipn";
 
         return $ipnUrl;
     }
