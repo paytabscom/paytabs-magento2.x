@@ -36,8 +36,8 @@ class Ipn extends Action
      */
     private $_invoiceSender;
 
-    private $_creditmemoFactory;
-    private $_creditmemoService;
+    // private $_creditmemoFactory;
+    // private $_creditmemoService;
 
 
     /**
@@ -46,16 +46,16 @@ class Ipn extends Action
      */
     public function __construct(
         Context $context,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
-        \Magento\Sales\Model\Order\CreditmemoFactory $_creditmemoFactory,
-        \Magento\Sales\Model\Service\CreditmemoService $_creditmemoService
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+        // \Magento\Sales\Model\Order\CreditmemoFactory $_creditmemoFactory,
+        // \Magento\Sales\Model\Service\CreditmemoService $_creditmemoService
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->_invoiceSender = $invoiceSender;
-        $this->_creditmemoFactory = $_creditmemoFactory;
-        $this->_creditmemoService = $_creditmemoService;
+        // $this->_creditmemoFactory = $_creditmemoFactory;
+        // $this->_creditmemoService = $_creditmemoService;
 
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
@@ -119,24 +119,24 @@ class Ipn extends Action
             return;
         }
 
-        $this->pt_process_ipn($order, $verify_response, $payment);
+        $this->pt_process_ipn($order, $verify_response);
 
         return;
     }
 
 
-    function pt_process_ipn($order, $ipn_data, $payment)
+    function pt_process_ipn($order, $ipn_data)
     {
         $pt_success = $ipn_data->success;
         $pt_message = $ipn_data->message;
-        $pt_token = @$ipn_data->token;
+        // $pt_token = @$ipn_data->token;
 
         $pt_tran_ref = $ipn_data->tran_ref;
-        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
+        // $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
 
         $pt_order_id = $ipn_data->cart_id;
-        $pt_tran_total = $ipn_data->tran_total;
-        $pt_tran_currency = $ipn_data->tran_currency;
+        // $pt_tran_total = $ipn_data->tran_total;
+        // $pt_tran_currency = $ipn_data->tran_currency;
 
         $pt_tran_type = strtolower($ipn_data->tran_type);
 
@@ -145,6 +145,8 @@ class Ipn extends Action
         if (!$pt_success) {
             paytabs_error_log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]");
             $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
+        } else {
+            PaytabsHelper::log("IPN handeling, Order [{$pt_order_id}], Transaction [{$pt_tran_ref}], Action [{$pt_tran_type}], Message [$pt_message]", 1);
         }
 
         //
@@ -200,15 +202,13 @@ class Ipn extends Action
         $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
 
         $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethodInstance();
+        // $paymentMethod = $payment->getMethodInstance();
 
-        $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
+        // $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-        $paymentSuccess =
-            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
-        $paymentFailed =
-            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
+        // $paymentSuccess = $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+        // $paymentFailed = $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
 
 
         $tranAmount = $ipn_data->cart_amount;
@@ -229,6 +229,8 @@ class Ipn extends Action
                 $this->setNewStatus($order, $paymentSuccess);
             }*/
         } else {
+
+            $order->addStatusHistoryComment(__('Capture failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
 
             if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
                 // $payment->deny();
@@ -256,25 +258,23 @@ class Ipn extends Action
         $pt_tran_ref = $ipn_data->tran_ref;
         $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
 
+        $tranAmount = $ipn_data->cart_amount;
+        $tranCurrency = $ipn_data->cart_currency;
+
         $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethodInstance();
 
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-
+        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         if ($pt_success) {
-
-            $tranAmount = $ipn_data->cart_amount;
-            $tranCurrency = $ipn_data->cart_currency;
-
-            $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
             $payment
                 ->setTransactionId($pt_tran_ref)
                 ->setParentTransactionId($pt_prev_tran_ref)
                 ->registerRefundNotification($paymentAmount)
                 ->save();
         } else {
+
+            $order->addStatusHistoryComment(__('Refund failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
         }
 
         $order->save();
@@ -289,25 +289,23 @@ class Ipn extends Action
         $pt_tran_ref = $ipn_data->tran_ref;
         $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
 
+        $tranAmount = $ipn_data->cart_amount;
+        $tranCurrency = $ipn_data->cart_currency;
+
         $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethodInstance();
 
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-
+        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         if ($pt_success) {
-
-            $tranAmount = $ipn_data->cart_amount;
-            $tranCurrency = $ipn_data->cart_currency;
-
-            $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
             $payment
                 ->setTransactionId($pt_tran_ref)
                 ->setParentTransactionId($pt_prev_tran_ref)
                 ->registerVoidNotification($paymentAmount)
                 ->save();
         } else {
+
+            $order->addStatusHistoryComment(__('Void failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
         }
 
         $order->save();
