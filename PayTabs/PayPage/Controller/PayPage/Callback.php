@@ -116,7 +116,7 @@ class Callback extends Action
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
-        if (!$order) {
+        if (!$this->isValidOrder($order)) {
             PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }

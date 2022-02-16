@@ -12,13 +12,14 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
-
+use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 
 /**
  * Class Index
  */
 class Response extends Action
 {
+    use PaytabsHelpers;
 
     // protected $resultRedirect;
     private $paytabs;
@@ -85,7 +86,7 @@ class Response extends Action
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
-        if (!$order) {
+        if (!$this->isValidOrder($order)) {
             PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }

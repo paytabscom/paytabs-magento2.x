@@ -8,6 +8,11 @@ use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 trait PaytabsHelpers
 {
 
+    function isValidOrder($order)
+    {
+        return $order && $order->getId();
+    }
+
     function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency)
     {
         $amount = null;
