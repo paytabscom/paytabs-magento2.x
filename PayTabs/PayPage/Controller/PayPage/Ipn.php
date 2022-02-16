@@ -35,6 +35,7 @@ class Ipn extends Action
     // private $_creditmemoFactory;
     // private $_creditmemoService;
 
+    private $_row_details = \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS;
 
     /**
      * @param Context $context
@@ -217,6 +218,12 @@ class Ipn extends Action
 
         if ($pt_success) {
 
+            $payment->setTransactionAdditionalinfo($this->_row_details, [
+                'tran_amount'   => $tranAmount,
+                'tran_currency' => $tranCurrency,
+                'amount' => $paymentAmount
+            ]);
+
             $payment
                 ->registerCaptureNotification($paymentAmount, true)
                 ->save();
@@ -232,7 +239,7 @@ class Ipn extends Action
                 // $payment->deny();
                 $payment->cancel();
             } else {
-                $order->hold();
+                // $order->hold();
             }
 
             /*if ($paymentFailed != Order::STATE_CANCELED) {
@@ -263,6 +270,12 @@ class Ipn extends Action
         $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         if ($pt_success) {
+            $payment->setTransactionAdditionalinfo($this->_row_details, [
+                'tran_amount'   => $tranAmount,
+                'tran_currency' => $tranCurrency,
+                'amount' => $paymentAmount
+            ]);
+
             $payment
                 ->setTransactionId($pt_tran_ref)
                 ->setParentTransactionId($pt_prev_tran_ref)
@@ -294,6 +307,12 @@ class Ipn extends Action
         $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         if ($pt_success) {
+            $payment->setTransactionAdditionalinfo($this->_row_details, [
+                'tran_amount'   => $tranAmount,
+                'tran_currency' => $tranCurrency,
+                'amount' => $paymentAmount
+            ]);
+
             $payment
                 ->setTransactionId($pt_tran_ref)
                 ->setParentTransactionId($pt_prev_tran_ref)
