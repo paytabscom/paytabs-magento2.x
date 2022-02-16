@@ -2,7 +2,7 @@
 
 // declare(strict_types=1);
 
-namespace PayTabs\PayPage\Controller\Paypage;
+namespace PayTabs\PayPage\Controller\PayPage;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -11,20 +11,21 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Model\Order;
-use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
 
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
 
 /**
  * Class Index
  */
 class Callback extends Action
 {
+    use PaytabsHelpers;
+
     /**
      * @var PageFactory
      */
@@ -83,7 +84,7 @@ class Callback extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            paytabs_error_log("Paytabs: no post back data received in callback");
+            PaytabsHelper::log("Paytabs: no post back data received in callback", 3);
             return;
         }
 
@@ -102,21 +103,21 @@ class Callback extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            paytabs_error_log("Paytabs: OrderId/TransactionId data did not receive in callback");
+            PaytabsHelper::log("Paytabs: OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
         //
 
-        paytabs_error_log("Callback triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
+        PaytabsHelper::log("Callback triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
 
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
-        if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing, Order [{$pOrderId}]");
+        if (!$this->isValidOrder($order)) {
+            PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
@@ -165,7 +166,7 @@ class Callback extends Action
         //
 
         if (!$success) {
-            paytabs_error_log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
+            PaytabsHelper::log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
 
             // $payment->deny();
             $payment->cancel();
@@ -215,7 +216,7 @@ class Callback extends Action
         }
 
         if ($sendInvoice) {
-            $this->invoice($order, $payment);
+            $this->invoiceSend($order, $payment);
         }
 
 
@@ -224,84 +225,6 @@ class Callback extends Action
         }
         $order->save();
 
-        paytabs_error_log("Order {$orderId}, Message [$res_msg]", 1);
-    }
-
-    //
-
-    public function setNewStatus($order, $newStatus)
-    {
-        $order->setState($newStatus)->setStatus($newStatus);
-        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
-    }
-
-
-    private function invoice($order, $payment)
-    {
-        $canInvoice = $order->canInvoice();
-        if (!$canInvoice) return;
-
-        $invoice = $payment->getCreatedInvoice();
-        if ($invoice) { //} && !$order->getEmailSent()) {
-            $sent = $this->_invoiceSender->send($invoice);
-            $invoiceId = $invoice->getIncrementId();
-            if ($sent) {
-                $order
-                    ->addStatusHistoryComment(
-                        __('You notified customer about invoice #%1.', $invoiceId)
-                    )
-                    ->setIsCustomerNotified(true)
-                    ->save();
-            } else {
-                $order
-                    ->addStatusHistoryComment(
-                        __('Failed to notify the customer about invoice #%1.', $invoiceId)
-                    )
-                    ->setIsCustomerNotified(false)
-                    ->save();
-            }
-        }
-    }
-
-    //
-
-    public function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency)
-    {
-        $amount = null;
-
-        $orderCurrency = strtoupper($payment->getOrder()->getOrderCurrencyCode());
-        $baseCurrency  = strtoupper($payment->getOrder()->getBaseCurrencyCode());
-        $tranCurrency  = strtoupper($tranCurrency);
-
-        if ($use_order_currency) {
-            if ($orderCurrency != $tranCurrency) {
-                throw Exception('Diff Currency');
-            }
-
-            if ($tranCurrency == $baseCurrency) {
-                $amount = $tranAmount;
-            } else {
-                // Convert Amount to Base
-                $amount = CurrencySelect::convertOrderToBase($payment, $tranAmount);
-
-                $payment->getOrder()
-                    ->addStatusHistoryComment(
-                        __(
-                            'Transaction amount converted to base currency: (%1) = (%2)',
-                            $payment->getOrder()->getOrderCurrency()->format($tranAmount, [], false),
-                            $payment->formatPrice($amount)
-                        )
-                    )
-                    ->setIsCustomerNotified(false)
-                    ->save();
-            }
-        } else {
-            if ($baseCurrency != $tranCurrency) {
-                throw Exception('Diff Currency');
-            }
-            $amount = $tranAmount;
-        }
-
-        return $amount;
+        PaytabsHelper::log("Order {$orderId}, Message [$res_msg]", 1);
     }
 }

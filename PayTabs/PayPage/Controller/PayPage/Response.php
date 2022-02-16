@@ -2,7 +2,7 @@
 
 // declare(strict_types=1);
 
-namespace PayTabs\PayPage\Controller\Paypage;
+namespace PayTabs\PayPage\Controller\PayPage;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -10,16 +10,16 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
-use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
-
-use function PayTabs\PayPage\Gateway\Http\paytabs_error_log;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 
 /**
  * Class Index
  */
 class Response extends Action
 {
+    use PaytabsHelpers;
 
     // protected $resultRedirect;
     private $paytabs;
@@ -58,7 +58,7 @@ class Response extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            paytabs_error_log("Paytabs: no post back data received in callback");
+            PaytabsHelper::log("Paytabs: no post back data received in callback", 3);
             return;
         }
 
@@ -73,21 +73,21 @@ class Response extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            paytabs_error_log("Paytabs: OrderId/TransactionId data did not receive in callback");
+            PaytabsHelper::log("Paytabs: OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
         //
 
-        paytabs_error_log("Return triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
+        PaytabsHelper::log("Return triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
 
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
-        if (!$order) {
-            paytabs_error_log("Paytabs: Order is missing, Order [{$pOrderId}]");
+        if (!$this->isValidOrder($order)) {
+            PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
@@ -146,7 +146,7 @@ class Response extends Action
 
                     $redirect_page = 'checkout/cart';
                 } catch (\Throwable $th) {
-                    paytabs_error_log("Paytabs: load Quote by ID failed!, Order [{$orderId}], QuoteId = [{$quoteId}]");
+                    PaytabsHelper::log("Paytabs: load Quote by ID failed!, Order [{$orderId}], QuoteId = [{$quoteId}]", 3);
                 }
             }
         }

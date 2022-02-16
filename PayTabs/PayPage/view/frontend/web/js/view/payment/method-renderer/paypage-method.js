@@ -60,7 +60,7 @@ define(
                 $("body").trigger('processStart');
                 var page = this;
                 $.post(
-                    _urlBuilder.build('paypage/paypage/create'),
+                    _urlBuilder.build('paytabs/paypage/create'),
                     { quote: quoteId }
                 )
                     .done(function (result) {
@@ -131,7 +131,8 @@ define(
                     frameborder: 0,
                 }).css({
                     'min-width': '400px',
-                    height: '450px'
+                    'width': '100%',
+                    'height': '450px'
                 });
 
                 // Hide the Address & Actions sections
