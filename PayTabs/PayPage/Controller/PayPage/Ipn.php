@@ -237,7 +237,7 @@ class Ipn extends Action
 
             if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
                 // $payment->deny();
-                $payment->cancel();
+                // $payment->cancel();
             } else {
                 // $order->hold();
             }
