@@ -118,6 +118,8 @@ class Ipn extends Action
 
         $this->pt_process_ipn($order, $verify_response);
 
+        $order->save();
+
         return;
     }
 
@@ -129,22 +131,42 @@ class Ipn extends Action
         // $pt_token = @$ipn_data->token;
 
         $pt_tran_ref = $ipn_data->tran_ref;
-        // $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
+        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
 
         $pt_order_id = $ipn_data->cart_id;
-        // $pt_tran_total = $ipn_data->tran_total;
-        // $pt_tran_currency = $ipn_data->tran_currency;
+        $pt_tran_total = $ipn_data->tran_total;
+        $pt_tran_currency = $ipn_data->tran_currency;
 
         $pt_tran_type = strtolower($ipn_data->tran_type);
 
         //
 
+        $payment = $order->getPayment();
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
+
+        $paymentAmount = $this->getAmount($payment, $pt_tran_currency, $pt_tran_total, $use_order_currency);
+
+
         if (!$pt_success) {
             PaytabsHelper::log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]", 3);
-            $order->addStatusHistoryComment(__('Payment failed: [%1], Transaction [%2].', $pt_message, $pt_tran_ref));
-        } else {
-            PaytabsHelper::log("IPN handeling, Order [{$pt_order_id}], Transaction [{$pt_tran_ref}], Action [{$pt_tran_type}], Message [$pt_message]", 1);
+            $order->addStatusHistoryComment(__('Transaction failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
+
+            return;
         }
+
+        PaytabsHelper::log("IPN handeling, Order [{$pt_order_id}], Transaction [{$pt_tran_ref}], Action [{$pt_tran_type}], Message [$pt_message]", 1);
+
+        //
+
+        $payment->setTransactionAdditionalinfo($this->_row_details, [
+            'tran_amount'   => $pt_tran_total,
+            'tran_currency' => $pt_tran_currency,
+            'amount' => $paymentAmount
+        ]);
+
+        $payment
+            ->setTransactionId($pt_tran_ref)
+            ->setParentTransactionId($pt_prev_tran_ref);
 
         //
 
@@ -162,23 +184,22 @@ class Ipn extends Action
                  * Check if the trx has been deliveried before
                  * If success: register the transaction
                  * If fail:
-                 *  - If full amount: cancel the Payment
-                 *  - Else: Hold the Order
+                 *  - Do nothing
                  */
-                $this->handleCapture($order, $ipn_data);
+                $this->handleCapture($order, $paymentAmount);
 
                 break;
 
             case PaytabsEnum::TRAN_TYPE_VOID:
             case PaytabsEnum::TRAN_TYPE_RELEASE:
 
-                $this->handleVoid($order, $ipn_data);
+                $this->handleVoid($order, $paymentAmount);
 
                 break;
 
             case PaytabsEnum::TRAN_TYPE_REFUND:
 
-                $this->handleRefund($order, $ipn_data);
+                $this->handleRefund($order, $paymentAmount);
 
                 break;
 
@@ -190,139 +211,37 @@ class Ipn extends Action
     }
 
 
-    function handleCapture($order, $ipn_data)
+    function handleCapture($order, $paymentAmount)
     {
-        $pt_success = $ipn_data->success;
-        $pt_message = $ipn_data->message;
-
-        $pt_tran_ref = $ipn_data->tran_ref;
-        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
-
         $payment = $order->getPayment();
-        // $paymentMethod = $payment->getMethodInstance();
-
-        // $sendInvoice = $paymentMethod->getConfigData('send_invoice') ?? false;
-        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-
-        // $paymentSuccess = $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
-        // $paymentFailed = $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
-
-
-        $tranAmount = $ipn_data->cart_amount;
-        $tranCurrency = $ipn_data->cart_currency;
-        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
         $payment
-            ->setTransactionId($pt_tran_ref)
-            ->setParentTransactionId($pt_prev_tran_ref);
+            ->registerCaptureNotification($paymentAmount, true);
 
-        if ($pt_success) {
-
-            $payment->setTransactionAdditionalinfo($this->_row_details, [
-                'tran_amount'   => $tranAmount,
-                'tran_currency' => $tranCurrency,
-                'amount' => $paymentAmount
-            ]);
-
-            $payment
-                ->registerCaptureNotification($paymentAmount, true)
-                ->save();
-
-            /*if ($paymentSuccess != Order::STATE_PROCESSING) {
-                $this->setNewStatus($order, $paymentSuccess);
-            }*/
+        /*
+        if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
+            // $payment->deny();
+            // $payment->cancel();
         } else {
-
-            $order->addStatusHistoryComment(__('Capture failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
-
-            if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {
-                // $payment->deny();
-                // $payment->cancel();
-            } else {
-                // $order->hold();
-            }
-
-            /*if ($paymentFailed != Order::STATE_CANCELED) {
-                $this->setNewStatus($order, $paymentFailed);
-            } else {
-                $order->cancel();
-            }*/
-        }
-
-        $order->save();
+            // $order->hold();
+        }*/
     }
 
 
-    function handleRefund($order, $ipn_data)
+    function handleRefund($order, $paymentAmount)
     {
-        $pt_success = $ipn_data->success;
-        $pt_message = $ipn_data->message;
-
-        $pt_tran_ref = $ipn_data->tran_ref;
-        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
-
-        $tranAmount = $ipn_data->cart_amount;
-        $tranCurrency = $ipn_data->cart_currency;
-
         $payment = $order->getPayment();
 
-        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
-        if ($pt_success) {
-            $payment->setTransactionAdditionalinfo($this->_row_details, [
-                'tran_amount'   => $tranAmount,
-                'tran_currency' => $tranCurrency,
-                'amount' => $paymentAmount
-            ]);
-
-            $payment
-                ->setTransactionId($pt_tran_ref)
-                ->setParentTransactionId($pt_prev_tran_ref)
-                ->registerRefundNotification($paymentAmount)
-                ->save();
-        } else {
-
-            $order->addStatusHistoryComment(__('Refund failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
-        }
-
-        $order->save();
+        $payment
+            ->registerRefundNotification($paymentAmount);
     }
 
 
-    function handleVoid($order, $ipn_data)
+    function handleVoid($order, $paymentAmount)
     {
-        $pt_success = $ipn_data->success;
-        $pt_message = $ipn_data->message;
-
-        $pt_tran_ref = $ipn_data->tran_ref;
-        $pt_prev_tran_ref = @$ipn_data->previous_tran_ref;
-
-        $tranAmount = $ipn_data->cart_amount;
-        $tranCurrency = $ipn_data->cart_currency;
-
         $payment = $order->getPayment();
 
-        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
-        if ($pt_success) {
-            $payment->setTransactionAdditionalinfo($this->_row_details, [
-                'tran_amount'   => $tranAmount,
-                'tran_currency' => $tranCurrency,
-                'amount' => $paymentAmount
-            ]);
-
-            $payment
-                ->setTransactionId($pt_tran_ref)
-                ->setParentTransactionId($pt_prev_tran_ref)
-                ->registerVoidNotification($paymentAmount)
-                ->save();
-        } else {
-
-            $order->addStatusHistoryComment(__('Void failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
-        }
-
-        $order->save();
+        $payment
+            ->registerVoidNotification($paymentAmount);
     }
 }
