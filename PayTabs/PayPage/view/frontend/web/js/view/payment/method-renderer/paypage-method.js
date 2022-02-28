@@ -11,7 +11,8 @@ define(
         'Magento_Checkout/js/model/quote',
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
-        'Magento_Ui/js/modal/alert'
+        'Magento_Ui/js/modal/alert',
+        'Magento_Customer/js/customer-data'
     ],
     function (
         $,
@@ -19,11 +20,12 @@ define(
         quote,
         // placeOrderAction,
         _urlBuilder,
-        alert
+        alert,
+        customerData
     ) {
         'use strict';
 
-        return Component.extend({
+        let obj = {
             defaults: {
                 template: 'PayTabs_PayPage/payment/paypage'
             },
@@ -141,8 +143,17 @@ define(
 
                 // Append the iFrame to correct payment method
                 $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
-            }
+            },
 
-        });
+            refreshMiniCart: function () {
+                var sections = ['cart'];
+                customerData.invalidate(sections);
+                customerData.reload(sections, true);
+            }
+        };
+
+        obj.refreshMiniCart();
+
+        return Component.extend(obj);
     }
 );
