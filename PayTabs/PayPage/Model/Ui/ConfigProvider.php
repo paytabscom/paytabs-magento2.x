@@ -26,6 +26,9 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_MEEZAQR    = 'meezaqr';
     const CODE_UNIONPAY   = 'unionpay';
 
+    const CODE_VAULT_ALL = 'paytabs_all_vault';
+
+
     /**
      * Retrieve assoc array of checkout configuration
      *
@@ -35,7 +38,9 @@ final class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'payment' => [
-                self::CODE_ALL => [],
+                self::CODE_ALL => [
+                    'vault_code' => self::CODE_VAULT_ALL
+                ],
                 self::CODE_CREDITCARD => [],
                 self::CODE_STCPAY => [],
                 self::CODE_APPLEPAY => [],
@@ -51,6 +56,10 @@ final class ConfigProvider implements ConfigProviderInterface
                 self::CODE_MEEZA => [],
                 self::CODE_MEEZAQR => [],
                 self::CODE_UNIONPAY => [],
+
+                self::CODE_VAULT_ALL => [
+                    'vault_code' => self::CODE_VAULT_ALL
+                ],
             ]
         ];
     }
