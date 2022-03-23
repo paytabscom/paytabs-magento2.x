@@ -255,7 +255,7 @@ class Callback extends Action
     public function pt_find_token($token, $customer_id, $payment_code, $token_details)
     {
         try {
-            $isCard = PaytabsHelper::isCardPayment($payment_code);
+            $isCard = ($payment_code == 'all') || PaytabsHelper::isCardPayment($payment_code);
             $tokenType = $isCard ? PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD : PaymentTokenFactoryInterface::TOKEN_TYPE_ACCOUNT;
 
             $paymentToken = $this->_paymentTokenFactory->create($tokenType);
