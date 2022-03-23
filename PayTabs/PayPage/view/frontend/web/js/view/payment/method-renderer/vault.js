@@ -31,7 +31,7 @@ define(
             },
 
             getMaskedCard: function () {
-                return this.publicHash.substr(-7);
+                return this.details.payment_description.substr(-7);
             },
 
             getCardType: function () {

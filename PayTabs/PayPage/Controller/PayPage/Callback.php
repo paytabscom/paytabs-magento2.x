@@ -258,12 +258,14 @@ class Callback extends Action
             $isCard = ($payment_code == 'all') || PaytabsHelper::isCardPayment($payment_code);
             $tokenType = $isCard ? PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD : PaymentTokenFactoryInterface::TOKEN_TYPE_ACCOUNT;
 
+            $publicHash = "$customer_id $token_details->payment_description";
+
             $paymentToken = $this->_paymentTokenFactory->create($tokenType);
             $paymentToken
                 ->setGatewayToken($token)
                 ->setCustomerId($customer_id)
                 ->setPaymentMethodCode($payment_code)
-                ->setPublicHash($token_details->payment_description)
+                ->setPublicHash($publicHash)
                 ->setExpiresAt("{$token_details->expiryYear}-{$token_details->expiryMonth}-01 00:00:00")
                 ->setTokenDetails(json_encode($token_details))
                 ->save();
