@@ -75,9 +75,7 @@ class AuthorizationRequest implements BuilderInterface
 
         // $paymentMethod = $payment->getMethodInstance();
         // PT
-        // $merchant_id = $paymentMethod->getConfigData('profile_id');
-        // $merchant_key = $paymentMethod->getConfigData('server_key');
-        // $endpoint = $paymentMethod->getConfigData('endpoint');
+        // ToDo: fix reading the main method currency option
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         //

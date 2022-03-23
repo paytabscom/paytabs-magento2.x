@@ -32,7 +32,7 @@ class AuthenticateBuilder implements BuilderInterface
         $profile_id = $this->config->getValue('profile_id');
         $server_key = $this->config->getValue('server_key');
         $endpoint = $this->config->getValue('endpoint');
-        $order_currency = $this->config->getValue('currency_select');
+        // $order_currency = $this->config->getValue('currency_select');
 
         // $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 

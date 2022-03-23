@@ -13,7 +13,6 @@ define(
         'mage/url',
         'Magento_Ui/js/modal/alert',
         'Magento_Vault/js/view/payment/vault-enabler'
-        // 'Magento_Vault/js/view/payment/method-renderer/vault'
     ],
     function (
         $,
@@ -23,14 +22,12 @@ define(
         _urlBuilder,
         alert,
         VaultEnabler
-        // VaultComponent
     ) {
         'use strict';
 
         return Component.extend({
             defaults: {
                 template: 'PayTabs_PayPage/payment/paypage'
-                // template: 'Magento_Vault/payment/form'
             },
 
             initialize: function () {
