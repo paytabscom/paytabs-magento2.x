@@ -43,7 +43,10 @@ class CardRenderer extends AbstractCardRenderer
      */
     public function getIconUrl()
     {
-        return null; // $this->getIconForType($this->getTokenDetails()['type'])['url'];
+        $card_type = $this->getTokenDetails()['card_scheme'];
+        $m_card_type = $this->pt_convertCardType($card_type);
+
+        return $this->getIconForType($m_card_type)['url'];
     }
 
     /**
@@ -60,5 +63,30 @@ class CardRenderer extends AbstractCardRenderer
     public function getIconWidth()
     {
         return null; // $this->getIconForType($this->getTokenDetails()['type'])['width'];
+    }
+
+    //
+
+    private function pt_convertCardType($pt_card_type)
+    {
+        switch ($pt_card_type) {
+            case 'Visa':
+                return 'VI';
+
+            case 'MasterCard':
+                return 'MC';
+
+            case 'AmericanExpress':
+                return 'AE';
+
+            case 'JCB':
+                return 'JCB';
+
+            case 'Discover':
+                return 'DI';
+
+            default:
+                return 'OT';
+        }
     }
 }

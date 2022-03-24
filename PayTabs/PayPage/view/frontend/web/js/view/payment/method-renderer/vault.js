@@ -35,7 +35,22 @@ define(
             },
 
             getCardType: function () {
-                return this.details.card_type;
+                var card_type = '';
+
+                try {
+                    var icons = window.checkoutConfig.payment.ccform.icons;
+                    for (let icon in icons) {
+                        var title = icons[icon].title.replace(/\s+/g, '');
+                        if (this.details.card_scheme == title) {
+                            card_type = icon;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+
+                return card_type;
             },
 
         });
