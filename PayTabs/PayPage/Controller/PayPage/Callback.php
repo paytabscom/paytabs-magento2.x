@@ -10,6 +10,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
@@ -53,6 +54,12 @@ class Callback extends Action
 
 
     /**
+     * @var EncryptorInterface
+     */
+    private $encryptor;
+
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     // protected $_logger;
@@ -67,7 +74,8 @@ class Callback extends Action
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        PaymentTokenFactoryInterface $paymentTokenFactory
+        PaymentTokenFactoryInterface $paymentTokenFactory,
+        EncryptorInterface $encryptor
 
         // \Psr\Log\LoggerInterface $logger
     ) {
@@ -78,6 +86,7 @@ class Callback extends Action
         $this->_invoiceSender = $invoiceSender;
         $this->quoteRepository = $quoteRepository;
         $this->_paymentTokenFactory = $paymentTokenFactory;
+        $this->encryptor = $encryptor;
 
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
@@ -258,16 +267,19 @@ class Callback extends Action
             $isCard = ($payment_code == 'all') || PaytabsHelper::isCardPayment($payment_code);
             $tokenType = $isCard ? PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD : PaymentTokenFactoryInterface::TOKEN_TYPE_ACCOUNT;
 
-            $publicHash = "$customer_id $token_details->payment_description";
+            $str_token_details = json_encode($token_details);
+
+            $publicHash = "$customer_id $str_token_details";
+            $publicHashEncrypted = $this->encryptor->getHash($publicHash);
 
             $paymentToken = $this->_paymentTokenFactory->create($tokenType);
             $paymentToken
                 ->setGatewayToken($token)
                 ->setCustomerId($customer_id)
                 ->setPaymentMethodCode($payment_code)
-                ->setPublicHash($publicHash)
+                ->setPublicHash($publicHashEncrypted)
                 ->setExpiresAt("{$token_details->expiryYear}-{$token_details->expiryMonth}-01 00:00:00")
-                ->setTokenDetails(json_encode($token_details))
+                ->setTokenDetails($str_token_details)
                 ->save();
 
             return $paymentToken;
