@@ -13,6 +13,7 @@ use Magento\Framework\View\Result\PageFactory;
 use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
+use Magento\Vault\Model\Ui\VaultConfigProvider;
 
 /**
  * Class Index
@@ -121,7 +122,8 @@ class Create extends Action
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
-        $values = $this->paytabs->prepare_order($order, $paymentMethod);
+        $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
+        $values = $this->paytabs->prepare_order($order, $paymentMethod, $isTokenise);
 
         $res = $ptApi->create_pay_page($values);
 

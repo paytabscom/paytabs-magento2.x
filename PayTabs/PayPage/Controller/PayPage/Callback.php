@@ -10,6 +10,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Sales\Model\Order;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
@@ -17,6 +18,8 @@ use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
+
+use Magento\Vault\Api\Data\PaymentTokenFactoryInterface;
 
 
 /**
@@ -47,6 +50,15 @@ class Callback extends Action
     protected $quoteRepository;
 
 
+    private $_paymentTokenFactory;
+
+
+    /**
+     * @var EncryptorInterface
+     */
+    private $encryptor;
+
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -61,7 +73,9 @@ class Callback extends Action
         PageFactory $pageFactory,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        PaymentTokenFactoryInterface $paymentTokenFactory,
+        EncryptorInterface $encryptor
 
         // \Psr\Log\LoggerInterface $logger
     ) {
@@ -71,6 +85,8 @@ class Callback extends Action
         $this->_orderSender = $orderSender;
         $this->_invoiceSender = $invoiceSender;
         $this->quoteRepository = $quoteRepository;
+        $this->_paymentTokenFactory = $paymentTokenFactory;
+        $this->encryptor = $encryptor;
 
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
@@ -223,8 +239,53 @@ class Callback extends Action
         if ($paymentSuccess != Order::STATE_PROCESSING) {
             $this->setNewStatus($order, $paymentSuccess);
         }
+
+        //
+
+        if (isset($verify_response->token, $verify_response->payment_info)) {
+            $token_details = $verify_response->payment_info;
+            $token_details->tran_ref = $transaction_ref;
+
+            $paymentToken = $this->pt_find_token($verify_response->token, $order->getCustomerId(), $paymentMethod->getCode(), $token_details);
+            if ($paymentToken) {
+                $extensionAttributes = $payment->getExtensionAttributes();
+                $extensionAttributes->setVaultPaymentToken($paymentToken);
+            }
+        }
+
+        //
+
         $order->save();
 
         PaytabsHelper::log("Order {$orderId}, Message [$res_msg]", 1);
+    }
+
+
+    public function pt_find_token($token, $customer_id, $payment_code, $token_details)
+    {
+        try {
+            $isCard = ($payment_code == 'all') || PaytabsHelper::isCardPayment($payment_code);
+            $tokenType = $isCard ? PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD : PaymentTokenFactoryInterface::TOKEN_TYPE_ACCOUNT;
+
+            $str_token_details = json_encode($token_details);
+
+            $publicHash = "$customer_id $str_token_details";
+            $publicHashEncrypted = $this->encryptor->getHash($publicHash);
+
+            $paymentToken = $this->_paymentTokenFactory->create($tokenType);
+            $paymentToken
+                ->setGatewayToken($token)
+                ->setCustomerId($customer_id)
+                ->setPaymentMethodCode($payment_code)
+                ->setPublicHash($publicHashEncrypted)
+                ->setExpiresAt("{$token_details->expiryYear}-{$token_details->expiryMonth}-01 00:00:00")
+                ->setTokenDetails($str_token_details)
+                ->save();
+
+            return $paymentToken;
+        } catch (\Throwable $th) {
+            PaytabsHelper::log('Save payment token: ' . $th->getMessage(), 3);
+            return null;
+        }
     }
 }

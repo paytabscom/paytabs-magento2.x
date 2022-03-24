@@ -7,10 +7,11 @@
         "magento/module-checkout": "100.0.*",
         "magento/module-payment": "100.0.*",
         "magento/framework": "100.0.*",
-        "magento/magento-composer-installer": "100.0.*"
+        "magento/magento-composer-installer": "100.0.*",
+        "magento/module-vault": "100.1.*"
     },
     "type": "magento2-module",
-    "version": "3.6.2",
+    "version": "3.7.0",
     "license": [
         "OSL-3.0",
         "AFL-3.0"

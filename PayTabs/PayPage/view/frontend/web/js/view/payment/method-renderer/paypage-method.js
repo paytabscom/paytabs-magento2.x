@@ -11,7 +11,8 @@ define(
         'Magento_Checkout/js/model/quote',
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
-        'Magento_Ui/js/modal/alert'
+        'Magento_Ui/js/modal/alert',
+        'Magento_Vault/js/view/payment/vault-enabler'
     ],
     function (
         $,
@@ -19,13 +20,45 @@ define(
         quote,
         // placeOrderAction,
         _urlBuilder,
-        alert
+        alert,
+        VaultEnabler
     ) {
         'use strict';
 
         return Component.extend({
             defaults: {
                 template: 'PayTabs_PayPage/payment/paypage'
+            },
+
+            initialize: function () {
+                var self = this;
+
+                self._super();
+                this.vaultEnabler = new VaultEnabler();
+                this.vaultEnabler.setPaymentCode(this.getVaultCode());
+
+                return self;
+            },
+
+            getData: function () {
+                var data = {
+                    'method': this.getCode(),
+                    'additional_data': {
+                    }
+                };
+
+                data['additional_data'] = _.extend(data['additional_data'], this.additionalData);
+                this.vaultEnabler.visitAdditionalData(data);
+
+                return data;
+            },
+
+            isVaultEnabled: function () {
+                return this.vaultEnabler.isVaultEnabled();
+            },
+
+            getVaultCode: function () {
+                return window.checkoutConfig.payment[this.getCode()].vault_code;
             },
 
             redirectAfterPlaceOrder: false,

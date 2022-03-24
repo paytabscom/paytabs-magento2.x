@@ -32,7 +32,7 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentMethod)
+    public function prepare_order($order, $paymentMethod, $isTokenise)
     {
         /** 1. Read required Params */
 
@@ -187,6 +187,7 @@ class Api
             ->set07URLs($returnUrl, $callbackUrl)
             ->set08Lang($lang)
             ->set09Framed($framed_mode, 'top')
+            ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         $post_arr = $pt_holder->pt_build();

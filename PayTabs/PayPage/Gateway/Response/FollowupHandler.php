@@ -9,6 +9,7 @@ namespace PayTabs\PayPage\Gateway\Response;
 
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 
 class FollowupHandler implements HandlerInterface
 {
@@ -41,9 +42,13 @@ class FollowupHandler implements HandlerInterface
         $pt_tran_amount = array_key_exists('cart_amount', $response) ? $response['cart_amount'] : 'NA';
         $pt_tran_currency = array_key_exists('cart_currency', $response) ? $response['cart_currency'] : 'NA';
 
+        $pt_tran_type = $response['tran_type'];
+        $isAuth = PaytabsEnum::TranIsAuth($pt_tran_type);
+
         $tran_ref = $response['tran_ref'];
         $payment
             ->setTransactionId($tran_ref)
+            ->setIsTransactionClosed(!$isAuth)
             ->setTransactionAdditionalinfo(
                 \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS,
                 [

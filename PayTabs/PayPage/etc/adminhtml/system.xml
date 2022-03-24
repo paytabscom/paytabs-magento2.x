@@ -104,6 +104,12 @@
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
+
+                <field id="paytabs_all_vault_active" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Tokenization</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/paytabs_all_vault/active</config_path>
+                </field>
             </group>
 
             <group id="creditcard" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">

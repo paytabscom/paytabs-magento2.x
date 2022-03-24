@@ -13,6 +13,10 @@ namespace PayTabs\PayPage\Model\Adminhtml\Source;
  */
 class PaymentAction implements \Magento\Framework\Option\ArrayInterface
 {
+    const PAYMENT_ACTION_AUTH = 'auth';
+    const PAYMENT_ACTION_SALE = 'sale';
+
+
     /**
      * {@inheritdoc}
      */
