@@ -25,9 +25,9 @@ class CardRenderer extends AbstractCardRenderer
      */
     public function getNumberLast4Digits()
     {
-        $jsonDetails = json_decode($this->getToken()->getTokenDetails() ?: '{}');
+        $tokenDetails = $this->getTokenDetails();
 
-        return substr($jsonDetails->payment_description, -4);
+        return substr($tokenDetails['payment_description'], -4);
     }
 
     /**
