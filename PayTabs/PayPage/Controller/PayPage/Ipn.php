@@ -148,7 +148,7 @@ class Ipn extends Action
 
 
         if (!$pt_success) {
-            PaytabsHelper::log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getId()}], Transaction [{$pt_tran_ref}]", 3);
+            PaytabsHelper::log("Paytabs Response: Payment failed [$pt_message], Order [{$order->getIncrementId()}], Transaction [{$pt_tran_ref}]", 3);
             $order->addStatusHistoryComment(__('Transaction failed: [%1], Transaction [%2], Amount [%3].', $pt_message, $pt_tran_ref, $paymentAmount));
 
             return;
@@ -217,6 +217,13 @@ class Ipn extends Action
 
         $payment
             ->registerCaptureNotification($paymentAmount, true);
+
+        if ($order->canUnHold()) {
+            $order->unhold();
+
+            $order->addCommentToStatusHistory("UnHold from online");
+            PaytabsHelper::log("Order {$order->getIncrementId()}, UnHold", 1);
+        }
 
         /*
         if ($this->isSameGrandAmount($order, $use_order_currency, $paymentAmount)) {

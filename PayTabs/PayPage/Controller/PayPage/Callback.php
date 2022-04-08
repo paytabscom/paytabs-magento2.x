@@ -168,12 +168,13 @@ class Callback extends Action
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        // $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         //
 
         $success = $verify_response->success;
+        $is_on_hold = $verify_response->is_on_hold;
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
         $transaction_ref = @$verify_response->transaction_id;
@@ -181,7 +182,9 @@ class Callback extends Action
 
         //
 
-        if (!$success) {
+        $_fail = !($success || $is_on_hold);
+
+        if ($_fail) {
             PaytabsHelper::log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
 
             // $payment->deny();
@@ -199,7 +202,7 @@ class Callback extends Action
             return;
         }
 
-        // Sucess
+        // Success or OnHold
 
         $tranAmount = $verify_response->cart_amount;
         $tranCurrency = $verify_response->cart_currency;
@@ -235,22 +238,29 @@ class Callback extends Action
             $this->invoiceSend($order, $payment);
         }
 
+        if ($success) {
 
-        if ($paymentSuccess != Order::STATE_PROCESSING) {
-            $this->setNewStatus($order, $paymentSuccess);
-        }
-
-        //
-
-        if (isset($verify_response->token, $verify_response->payment_info)) {
-            $token_details = $verify_response->payment_info;
-            $token_details->tran_ref = $transaction_ref;
-
-            $paymentToken = $this->pt_find_token($verify_response->token, $order->getCustomerId(), $paymentMethod->getCode(), $token_details);
-            if ($paymentToken) {
-                $extensionAttributes = $payment->getExtensionAttributes();
-                $extensionAttributes->setVaultPaymentToken($paymentToken);
+            if ($paymentSuccess != Order::STATE_PROCESSING) {
+                $this->setNewStatus($order, $paymentSuccess);
             }
+
+            //
+
+            if (isset($verify_response->token, $verify_response->payment_info)) {
+                $token_details = $verify_response->payment_info;
+                $token_details->tran_ref = $transaction_ref;
+
+                $paymentToken = $this->pt_find_token($verify_response->token, $order->getCustomerId(), $paymentMethod->getCode(), $token_details);
+                if ($paymentToken) {
+                    $extensionAttributes = $payment->getExtensionAttributes();
+                    $extensionAttributes->setVaultPaymentToken($paymentToken);
+                }
+            }
+        } elseif ($is_on_hold) {
+            $order->hold();
+
+            PaytabsHelper::log("Order {$orderId}, On-Hold", 1);
+            $order->addCommentToStatusHistory("Transaction {$transaction_ref} is On-Hold, Go to PayTabs dashboard to Approve/Decline it");
         }
 
         //
