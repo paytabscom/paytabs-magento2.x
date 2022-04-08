@@ -117,6 +117,7 @@ class Response extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
 
         $success = $verify_response->success;
+        $is_on_hold = $verify_response->is_on_hold;
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
         // $transaction_ref = @$verify_response->transaction_id;
@@ -129,6 +130,9 @@ class Response extends Action
                 $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
             }
             */
+        } else if ($is_on_hold) {
+            $this->messageManager->addWarningMessage('The payment is pending - ' . $res_msg);
+            $redirect_page = 'checkout/onepage/success';
         } else {
 
             $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
