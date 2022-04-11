@@ -13,10 +13,10 @@
     </groups>
     <methods>
         <method name="creditcard">
-            <allow_multiple_address>1</allow_multiple_address>
+            <allow_multiple_address>0</allow_multiple_address>
         </method>
         <method name="stcpay">
-            <allow_multiple_address>1</allow_multiple_address>
+            <allow_multiple_address>0</allow_multiple_address>
         </method>
 
     </methods>
