@@ -11,7 +11,8 @@ define(
         'Magento_Checkout/js/model/quote',
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
-        'Magento_Ui/js/modal/alert'
+        'Magento_Ui/js/modal/alert',
+        'Magento_Vault/js/view/payment/vault-enabler'
     ],
     function (
         $,
@@ -19,13 +20,45 @@ define(
         quote,
         // placeOrderAction,
         _urlBuilder,
-        alert
+        alert,
+        VaultEnabler
     ) {
         'use strict';
 
         return Component.extend({
             defaults: {
-                template: 'PayTabs_PayPage/payment/paypage'
+                template: 'ClickPay_PayPage/payment/paypage'
+            },
+
+            initialize: function () {
+                var self = this;
+
+                self._super();
+                this.vaultEnabler = new VaultEnabler();
+                this.vaultEnabler.setPaymentCode(this.getVaultCode());
+
+                return self;
+            },
+
+            getData: function () {
+                var data = {
+                    'method': this.getCode(),
+                    'additional_data': {
+                    }
+                };
+
+                data['additional_data'] = _.extend(data['additional_data'], this.additionalData);
+                this.vaultEnabler.visitAdditionalData(data);
+
+                return data;
+            },
+
+            isVaultEnabled: function () {
+                return this.vaultEnabler.isVaultEnabled();
+            },
+
+            getVaultCode: function () {
+                return window.checkoutConfig.payment[this.getCode()].vault_code;
             },
 
             redirectAfterPlaceOrder: false,
@@ -43,7 +76,7 @@ define(
 
                     $('.payment-method._active .btn_place_order').hide('fast');
                     $('.payment-method._active .btn_pay').show('fast');
-                    
+
                     this.payPage(quoteId);
                 } catch (error) {
                     alert({
@@ -60,11 +93,11 @@ define(
                 $("body").trigger('processStart');
                 var page = this;
                 $.post(
-                    _urlBuilder.build('paypage/paypage/create'),
+                    _urlBuilder.build('ClickPay/paypage/create'),
                     { quote: quoteId }
                 )
                     .done(function (result) {
-                        console.log(result);
+                        // console.log(result);
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
                             let framed_mode = result.framed_mode == '1';
@@ -123,24 +156,24 @@ define(
                     .complete(function () {
                         $("body").trigger('processStop');
                     });
-                     },
+            },
 
-                displayIframe: function (src) {
+            displayIframe: function (src) {
                 let pt_iframe = $('<iframe>', {
                     src: src,
                     frameborder: 0,
                 }).css({
                     'min-width': '400px',
-                    height: '450px'
+                    'width': '100%',
+                    'height': '450px'
                 });
 
-                //hide the place order button
+                // Hide the Address & Actions sections
                 $('.payment-method._active .payment-method-billing-address').hide('fast');
                 $('.payment-method._active .actions-toolbar').hide('fast');
 
                 // Append the iFrame to correct payment method
-                $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
-            }
+                $(pt_iframe).appendTo($('.payment-method._active .ClickPay_iframe'));
             }
 
         });

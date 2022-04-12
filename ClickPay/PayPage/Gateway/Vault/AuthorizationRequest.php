@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace ClickPay\PayPage\Gateway\Request;
+namespace ClickPay\PayPage\Gateway\Vault;
 
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
@@ -13,15 +13,17 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
 use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
-use ClickPay\PayPage\Gateway\Http\ClickPayFollowupHolder;
+use ClickPay\PayPage\Gateway\Http\ClickPayTokenHolder;
 use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
-class CaptureRequest implements BuilderInterface
+class AuthorizationRequest implements BuilderInterface
 {
     /**
      * @var ConfigInterface
      */
     private $config;
+
+    private $_action;
 
     private $productMetadata;
 
@@ -30,10 +32,17 @@ class CaptureRequest implements BuilderInterface
      */
     public function __construct(
         ConfigInterface $config,
+        $action = null,
         \Magento\Framework\App\ProductMetadataInterface $productMetadata
     ) {
         new ClickPayCore();
         $this->config = $config;
+
+        if ($action != null) {
+            $this->_action = $action;
+        } else {
+            $this->_action = ClickPayEnum::TRAN_TYPE_SALE;
+        }
 
         $this->productMetadata = $productMetadata;
     }
@@ -64,17 +73,10 @@ class CaptureRequest implements BuilderInterface
             throw new \LogicException('Order payment should be provided.');
         }
 
-        $paymentMethod = $payment->getMethodInstance();
+        // $paymentMethod = $payment->getMethodInstance();
         // PT
-        $merchant_id = $paymentMethod->getConfigData('profile_id');
-        $merchant_key = $paymentMethod->getConfigData('server_key');
-        $endpoint = $paymentMethod->getConfigData('endpoint');
+        // ToDo: fix reading the main method currency option
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
-
-        // $this->config->getValue('merchant_email');
-
-        $transaction_id = $payment->getParentTransactionId();
-        $reason = 'Admin request';
 
         //
 
@@ -90,25 +92,42 @@ class CaptureRequest implements BuilderInterface
             $currency = $payment->getOrder()->getBaseCurrencyCode();
         }
 
+        $order = $payment->getOrder();
         $order_id = $payment->getOrder()->getIncrementId();
-        $order_id .= ' - ' . date('U'); // prevents Duplicate request issue
 
-        $pt_holder = new ClickPayFollowupHolder();
+        //
+
+        $items = $order->getAllVisibleItems();
+
+        $items_arr = array_map(function ($p) {
+            $q = (int)$p->getQtyOrdered();
+            return "{$p->getName()} ({$q})";
+        }, $items);
+
+        $cart_desc = implode(', ', $items_arr);
+
+        //
+
+        $extensionAttributes = $payment->getExtensionAttributes();
+        $paymentToken = $extensionAttributes->getVaultPaymentToken();
+
+        $token = $paymentToken->getGatewayToken();
+        $token_details = json_decode($paymentToken->getTokenDetails());
+        $tran_ref = $token_details->tran_ref;
+
+        //
+
+        $pt_holder = new ClickPayTokenHolder();
         $pt_holder
-            ->set02Transaction(ClickPayEnum::TRAN_TYPE_CAPTURE, ClickPayEnum::TRAN_CLASS_ECOM)
-            ->set03Cart($order_id, $currency, $amount, $reason)
-            ->set30TransactionInfo($transaction_id)
+            ->set02Transaction($this->_action, ClickPayEnum::TRAN_CLASS_RECURRING)
+            ->set03Cart($order_id, $currency, $amount, $cart_desc)
+            ->set20Token($tran_ref, $token)
             ->set99PluginInfo('Magento', $versionMagento, ClickPay_PAYPAGE_VERSION);
 
         $values = $pt_holder->pt_build();
 
         $req_data = [
-            'params' => $values,
-            'auth' => [
-                'merchant_id'  => $merchant_id,
-                'merchant_key' => $merchant_key,
-                'endpoint'     => $endpoint,
-            ]
+            'params' => $values
         ];
 
         return $req_data;

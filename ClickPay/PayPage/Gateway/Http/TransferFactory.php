@@ -39,7 +39,7 @@ class TransferFactory implements TransferFactoryInterface
             ->setBody($request)
             ->setMethod('POST')
             ->setHeaders([])
-            ->setUri('https://secure.clickpay.com/')
+            ->setUri('https://secure.clickpay.com.sa')
             ->build();
     }
 }

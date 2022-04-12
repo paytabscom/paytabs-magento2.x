@@ -10,7 +10,7 @@ namespace ClickPay\PayPage\Gateway\Http\Client;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
-use ClickPay\PayPage\Gateway\Http\ClickpayApi;
+use ClickPay\PayPage\Gateway\Http\ClickPayApi;
 
 class ClientVoid implements ClientInterface
 {
@@ -39,7 +39,7 @@ class ClientVoid implements ClientInterface
         $values = $req_data['params'];
         $auth = $req_data['auth'];
 
-        $ptApi = ClickpayApi::getInstance($auth['endpoint'], $auth['merchant_id'], $auth['merchant_key']);
+        $ptApi = ClickPayApi::getInstance($auth['endpoint'], $auth['merchant_id'], $auth['merchant_key']);
 
         $response = $ptApi->request_followup($values);
 

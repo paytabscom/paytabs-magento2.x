@@ -2,7 +2,7 @@
 
 // declare(strict_types=1);
 
-namespace ClickPay\PayPage\Controller\Paypage;
+namespace ClickPay\PayPage\Controller\PayPage;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -11,9 +11,9 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use ClickPay\PayPage\Gateway\Http\Client\Api;
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
-
-use function ClickPay\PayPage\Gateway\Http\clickpay_error_log;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
+use Magento\Vault\Model\Ui\VaultConfigProvider;
 
 /**
  * Class Index
@@ -27,7 +27,7 @@ class Create extends Action
     private $jsonResultFactory;
     protected $orderRepository;
     protected $quoteRepository;
-    private $clickpay;
+    private $ClickPay;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -56,8 +56,8 @@ class Create extends Action
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
         // $this->_logger = $logger;
-        $this->clickpay = new \ClickPay\PayPage\Gateway\Http\Client\Api;
-        new ClickpayCore();
+        $this->ClickPay = new \ClickPay\PayPage\Gateway\Http\Client\Api;
+        new ClickPayCore();
     }
 
     /**
@@ -70,7 +70,7 @@ class Create extends Action
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getParam('quote', null);
         if (!$quoteId) {
-            clickpay_error_log("Clickpay: Quote ID is missing!");
+            ClickPayHelper::log("ClickPay: Quote ID is missing!", 3);
             $result->setData([
                 'result' => 'Quote ID is missing!'
             ]);
@@ -80,7 +80,7 @@ class Create extends Action
         // Create PayPage
         $order = $this->getOrder();
         if (!$order) {
-            clickpay_error_log("Clickpay: Order is missing!, Quote = [{$quoteId}]");
+            ClickPayHelper::log("ClickPay: Order is missing!, Quote [{$quoteId}]", 3);
             $result->setData([
                 'result' => 'Order is missing!'
             ]);
@@ -90,15 +90,16 @@ class Create extends Action
         $paypage = $this->prepare($order);
         if ($paypage->success) {
             // Create paypage success
+            ClickPayHelper::log("ClickPay: create paypage success!, Order [{$order->getIncrementId()}]", 1);
         } else {
-            clickpay_error_log("Clickpay: create paypage failed!, Order = [{$order->getIncrementId()}] - " . json_encode($paypage));
+            ClickPayHelper::log("ClickPay: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
 
             try {
                 // Create paypage failed, Save the Quote (user's Cart)
                 $quote = $this->quoteRepository->get($quoteId);
                 $quote->setIsActive(true)->removePayment()->save();
             } catch (\Throwable $th) {
-                clickpay_error_log("Clickpay: load Quote by ID failed!, QuoteId = [{$quoteId}] ");
+                ClickPayHelper::log("ClickPay: load Quote by ID failed!, QuoteId [{$quoteId}]", 3);
             }
             $order->cancel()->save();
         }
@@ -113,14 +114,16 @@ class Create extends Action
         return $result;
     }
 
+
     function prepare($order)
     {
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
 
-        $ptApi = $this->clickpay->pt($paymentMethod);
+        $ptApi = $this->ClickPay->pt($paymentMethod);
 
-        $values = $this->clickpay->prepare_order($order, $paymentMethod);
+        $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
+        $values = $this->ClickPay->prepare_order($order, $paymentMethod, $isTokenise);
 
         $res = $ptApi->create_pay_page($values);
 
@@ -129,6 +132,7 @@ class Create extends Action
 
         return $res;
     }
+
 
     public function getOrder()
     {

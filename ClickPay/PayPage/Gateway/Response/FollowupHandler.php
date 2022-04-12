@@ -9,6 +9,7 @@ namespace ClickPay\PayPage\Gateway\Response;
 
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
 
 class FollowupHandler implements HandlerInterface
 {
@@ -38,8 +39,23 @@ class FollowupHandler implements HandlerInterface
         /** @var $payment \Magento\Sales\Model\Order\Payment */
         // $payment->setTransactionId($response[self::TXN_ID]);
 
+        $pt_tran_amount = array_key_exists('cart_amount', $response) ? $response['cart_amount'] : 'NA';
+        $pt_tran_currency = array_key_exists('cart_currency', $response) ? $response['cart_currency'] : 'NA';
+
+        $pt_tran_type = $response['tran_type'];
+        $isAuth = ClickPayEnum::TranIsAuth($pt_tran_type);
+
         $tran_ref = $response['tran_ref'];
         $payment
-            ->setTransactionId($tran_ref);
+            ->setTransactionId($tran_ref)
+            ->setIsTransactionClosed(!$isAuth)
+            ->setTransactionAdditionalinfo(
+                \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS,
+                [
+                    'tran_amount'   => $pt_tran_amount,
+                    'tran_currency' => $pt_tran_currency,
+                    'amount' => $handlingSubject['amount']
+                ]
+            );
     }
 }

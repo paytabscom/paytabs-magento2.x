@@ -1,10 +1,20 @@
 <?xml version="1.0"?>
 <csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
     <policies>
+
         <policy id="frame-src">
             <values>
-                <value id="ClickPay-iframe" type="host">*.ClickPay.com</value>
+                <value id="ClickPay-iframe" type="host">*.clickpay.com</value>
+                <value id="ClickPay-sa-iframe" type="host">*.clickpay.com.sa</value>
+                <value id="ClickPay-3ds" type="host">*</value>
             </values>
         </policy>
+
+        <!-- <policy id="frame-ancestors">
+            <values>
+                <value id="ClickPay-iframe3" type="host">*.clickpay.com</value>
+            </values>
+        </policy> -->
+
     </policies>
 </csp_whitelist>

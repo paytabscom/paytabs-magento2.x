@@ -2,11 +2,10 @@
 
 namespace ClickPay\PayPage\Plugin;
 
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
-use ClickPay\PayPage\Gateway\Http\ClickpayHelper;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
 use ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig;
 
-use function ClickPay\PayPage\Gateway\Http\clickpay_error_log;
 
 class OrderServicePlugin
 {
@@ -52,9 +51,9 @@ class OrderServicePlugin
             $paymentMethod = $payment->getMethodInstance();
             $paymentCode = $paymentMethod->getCode();
 
-            new ClickpayCore();
-            $isClickpay = ClickpayHelper::isClickPayPayment($paymentCode);
-            if (!$isClickpay) return;
+            new ClickPayCore();
+            $isClickPay = ClickPayHelper::isClickPayPayment($paymentCode);
+            if (!$isClickPay) return;
 
             $email_config = $paymentMethod->getConfigData('email_config');
 
@@ -64,7 +63,7 @@ class OrderServicePlugin
                 $order->setCanSendNewEmailFlag(false);
             }
         } catch (\Throwable $th) {
-            Clickpay_error_log('ClickPay: Handle email configuration failed');
+            ClickPayHelper::log('ClickPay: Handle email configuration failed', 3);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 // declare(strict_types=1);
 
-namespace ClickPay\PayPage\Controller\Paypage;
+namespace ClickPay\PayPage\Controller\PayPage;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -10,36 +10,19 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Sales\Model\Order;
-use ClickPay\PayPage\Gateway\Http\Client\Api;
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
-use ClickPay\PayPage\Gateway\Http\ClickpayEnum;
-use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
-use ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig;
-
-use function ClickPay\PayPage\Gateway\Http\clickpay_error_log;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelpers;
 
 /**
  * Class Index
  */
 class Response extends Action
 {
-    /**
-     * @var PageFactory
-     */
-    private $pageFactory;
+    use ClickPayHelpers;
+
     // protected $resultRedirect;
-    private $clickpay;
-
-    /**
-     * @var Magento\Sales\Model\Order\Email\Sender\OrderSender
-     */
-    private $_orderSender;
-
-    /**
-     * @var Magento\Sales\Model\Order\Email\Sender\InvoiceSender
-     */
-    private $_invoiceSender;
+    private $ClickPay;
 
     protected $quoteRepository;
 
@@ -55,24 +38,18 @@ class Response extends Action
      */
     public function __construct(
         Context $context,
-        PageFactory $pageFactory,
-        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
 
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
-        $this->pageFactory = $pageFactory;
-        $this->_orderSender = $orderSender;
-        $this->_invoiceSender = $invoiceSender;
         $this->quoteRepository = $quoteRepository;
 
         // $this->_logger = $logger;
         // $this->resultRedirect = $context->getResultFactory();
-        $this->clickpay= new \ClickPay\PayPage\Gateway\Http\Client\Api;
-        new ClickpayCore();
+        $this->ClickPay = new \ClickPay\PayPage\Gateway\Http\Client\Api;
+        new ClickPayCore();
     }
 
     /**
@@ -81,74 +58,84 @@ class Response extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            clickpay_error_log("Clickpay: no post back data received in callback");
+            ClickPayHelper::log("ClickPay: no post back data received in callback", 3);
             return;
         }
 
         // Get the params that were passed from our Router
-        $pOrderId = $this->getRequest()->getParam('p', null);
 
-        // PT
-        // ClickPay "Invoice ID"
-        $transactionId = $this->getRequest()->getParam('tranRef', null);
+        $_p_tran_ref = 'tranRef';
+        $_p_cart_id = 'cartId';
+        $transactionId = $this->getRequest()->getParam($_p_tran_ref, null);
+        $pOrderId = $this->getRequest()->getParam($_p_cart_id, null);
 
-        $resultRedirect = $this->resultRedirectFactory->create();
 
         //
 
         if (!$pOrderId || !$transactionId) {
-            clickpay_error_log("Clickpay: OrderId/TransactionId data did not receive in callback");
+            ClickPayHelper::log("ClickPay: OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
+
+        //
+
+        ClickPayHelper::log("Return triggered, Order [{$pOrderId}], Transaction [{$transactionId}]", 1);
 
         //
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
-        if (!$order) {
-            clickpay_error_log("Clickpay: Order is missing, Order param = [{$pOrderId}]");
+        if (!$this->isValidOrder($order)) {
+            ClickPayHelper::log("ClickPay: Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
 
-        $paymentSuccess =
-            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
-        $paymentFailed =
-            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
+        $ptApi = $this->ClickPay->pt($paymentMethod);
 
-        $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
-        $emailConfig = $paymentMethod->getConfigData('email_config');
+        // $verify_response = $ptApi->verify_payment($transactionId);
+        $verify_response = $ptApi->read_response(false);
+        if (!$verify_response) {
+            return;
+        }
+
+        //
+
         $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
-        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
+        return $this->pt_handle_return($order, $verify_response, $objectManager, $cart_refill);
 
-        $ptApi = $this->clickpay->pt($paymentMethod);
+        // return $this->pageFactory->create();
+    }
 
-        $verify_response = $ptApi->verify_payment($transactionId);
+    //
+
+    private function pt_handle_return($order, $verify_response, $objectManager, $cart_refill)
+    {
+        $resultRedirect = $this->resultRedirectFactory->create();
 
         $success = $verify_response->success;
+        $is_on_hold = $verify_response->is_on_hold;
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
-        $transaction_ref = @$verify_response->transaction_id;
-        $transaction_type = @$verify_response->tran_type;
+        // $transaction_ref = @$verify_response->transaction_id;
 
-        if (!$success) {
-            clickpay_error_log("Clickpay Response: Payment verify failed [$res_msg] for Order {$pOrderId}");
-
-            // $payment->deny();
-            $payment->cancel();
-
-            $order->addStatusHistoryComment(__('Payment failed: [%1].', $res_msg));
-
-            if ($paymentFailed != Order::STATE_CANCELED) {
-                $this->setNewStatus($order, $paymentFailed);
-            } else {
-                $order->cancel();
+        if ($success) {
+            $this->messageManager->addSuccessMessage('The payment has been completed successfully - ' . $res_msg);
+            $redirect_page = 'checkout/onepage/success';
+            /*
+            if (Api::hadPaid($order)) {
+                $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
             }
-            $order->save();
+            */
+        } else if ($is_on_hold) {
+            $this->messageManager->addWarningMessage('The payment is pending - ' . $res_msg);
+            $redirect_page = 'checkout/onepage/success';
+        } else {
 
+            $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
             $redirect_page = 'checkout/onepage/failure';
 
             if ($cart_refill) {
@@ -163,152 +150,12 @@ class Response extends Action
 
                     $redirect_page = 'checkout/cart';
                 } catch (\Throwable $th) {
-                    clickpay_error_log("Clickpay: load Quote by ID failed!, OrderId = [{$orderId}], QuoteId = [{$quoteId}] ");
+                    ClickPayHelper::log("ClickPay: load Quote by ID failed!, Order [{$orderId}], QuoteId = [{$quoteId}]", 3);
                 }
             }
-
-            $this->messageManager->addErrorMessage('The payment failed - ' . $res_msg);
-            $resultRedirect->setPath($redirect_page);
-            return $resultRedirect;
         }
 
-        if ($pOrderId != $orderId) {
-            clickpay_error_log("Clickpay Response: Order reference number is mismatch, Order = [{$pOrderId}], ReferenceId = [{$verify_response->reference_no}] ");
-            $this->messageManager->addWarningMessage('Order reference number is mismatch');
-            $resultRedirect->setPath('checkout/onepage/failure');
-            return $resultRedirect;
-        }
-
-
-        if (Api::hadPaid($order)) {
-            $this->messageManager->addWarningMessage('A previous paid amount detected for this Order, please contact us for more information');
-        }
-
-        // ClickPay "Transaction ID"
-        $tranAmount = $verify_response->cart_amount;
-        $tranCurrency = $verify_response->cart_currency;
-
-        $payment
-            ->setTransactionId($transaction_ref)
-             ->setAdditionalInformation("payment_amount", $tranAmount)
-            ->setAdditionalInformation("payment_currency", $tranCurrency)
-            ->save();
-
-        $payment->setAmountAuthorized($payment->getAmountOrdered());
-
-        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
-        if (ClickpayEnum::TranIsSale($transaction_type)) {
-            // $payment->capture();
-            $payment->registerCaptureNotification($paymentAmount, true);
-        } else {
-            $payment
-                ->setIsTransactionClosed(false)
-                ->registerAuthorizationNotification($paymentAmount);
-            // $payment->authorize(false, $paymentAmount);
-            // $payment->setAmountAuthorized(11)
-        }
-
-        $payment->accept();
-
-        $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
-        if ($canSendEmail) {
-            $order->setCanSendNewEmailFlag(true);
-            $this->_orderSender->send($order);
-        }
-
-        if ($sendInvoice) {
-            $this->invoice($order, $payment);
-        }
-
-
-        if ($paymentSuccess != Order::STATE_PROCESSING) {
-            $this->setNewStatus($order, $paymentSuccess);
-        }
-        $order->save();
-
-        $this->messageManager->addSuccessMessage('The payment has been completed successfully - ' . $res_msg);
-        $resultRedirect->setPath('checkout/onepage/success');
-
+        $resultRedirect->setPath($redirect_page);
         return $resultRedirect;
-
-        // return $this->pageFactory->create();
-    }
-
-    //
-
-    public function setNewStatus($order, $newStatus)
-    {
-        $order->setState($newStatus)->setStatus($newStatus);
-        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
-    }
-
-
-    private function invoice($order, $payment)
-    {
-        $canInvoice = $order->canInvoice();
-        if (!$canInvoice) return;
-
-        $invoice = $payment->getCreatedInvoice();
-        if ($invoice) { //} && !$order->getEmailSent()) {
-            $sent = $this->_invoiceSender->send($invoice);
-            $invoiceId = $invoice->getIncrementId();
-            if ($sent) {
-                $order
-                    ->addStatusHistoryComment(
-                        __('You notified customer about invoice #%1.', $invoiceId)
-                    )
-                    ->setIsCustomerNotified(true)
-                    ->save();
-            } else {
-                $order
-                    ->addStatusHistoryComment(
-                        __('Failed to notify the customer about invoice #%1.', $invoiceId)
-                    )
-                    ->setIsCustomerNotified(false)
-                    ->save();
-            }
-        }
-    }
-
-    public function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency)
-    {
-        $amount = null;
-
-        $orderCurrency = strtoupper($payment->getOrder()->getOrderCurrencyCode());
-        $baseCurrency  = strtoupper($payment->getOrder()->getBaseCurrencyCode());
-        $tranCurrency  = strtoupper($tranCurrency);
-
-        if ($use_order_currency) {
-            if ($orderCurrency != $tranCurrency) {
-                throw Exception('Diff Currency');
-            }
-
-            if ($tranCurrency == $baseCurrency) {
-                $amount = $tranAmount;
-            } else {
-                // Convert Amount to Base
-                $amount = CurrencySelect::convertOrderToBase($payment, $tranAmount);
-
-                $payment->getOrder()
-                    ->addStatusHistoryComment(
-                        __(
-                            'Transaction amount converted to base currency: (%1) = (%2)',
-                            $payment->getOrder()->getOrderCurrency()->format($tranAmount, [], false),
-                            $payment->formatPrice($amount)
-                        )
-                    )
-                    ->setIsCustomerNotified(false)
-                    ->save();
-            }
-        } else {
-            if ($baseCurrency != $tranCurrency) {
-                throw Exception('Diff Currency');
-            }
-            $amount = $tranAmount;
-        }
-
-        return $amount;
     }
 }
-

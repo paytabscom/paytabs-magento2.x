@@ -12,6 +12,11 @@
             <group id="all" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - All</label>
 
+                <field id="pt_version" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Version</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\ModuleVersion</frontend_model>
+                </field>
+
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -34,12 +39,30 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
+
+                <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field> -->
@@ -82,9 +105,10 @@
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
 
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
+                <field id="ClickPay_all_vault_active" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Tokenization</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/ClickPay_all_vault/active</config_path>
                 </field>
             </group>
 
@@ -113,19 +137,35 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
+
+                <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-
-
-                <!-- <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field> -->
@@ -194,9 +234,27 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -235,11 +293,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -269,10 +322,28 @@
                 </field>
 
                 <!-- ApplyPay does not allow the iFrame option -->
-                <!-- <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <!-- <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field> -->
+
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -310,11 +381,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -343,8 +409,31 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
+
+                <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -384,11 +473,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -417,9 +501,27 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
                 </field>
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -458,11 +560,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -491,8 +588,31 @@
                     <label>Server Key</label>
                 </field>
 
-                <field id="iframe_mode" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Currency</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
+                </field>
+
+                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Allow IPN notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPN URL</label>
+                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
+                        <field id="ipn_allow">1</field>
+                    </depends>
+                </field>
+
+                <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
@@ -533,13 +653,7 @@
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
-
-                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Allow associated methods</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
-
 
         </section>
     </system>

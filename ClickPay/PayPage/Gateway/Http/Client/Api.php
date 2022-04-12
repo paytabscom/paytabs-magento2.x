@@ -2,10 +2,10 @@
 
 namespace ClickPay\PayPage\Gateway\Http\Client;
 
-use ClickPay\PayPage\Gateway\Http\ClickpayApi;
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
-use ClickPay\PayPage\Gateway\Http\ClickpayEnum;
-use ClickPay\PayPage\Gateway\Http\ClickpayRequestHolder;
+use ClickPay\PayPage\Gateway\Http\ClickPayApi;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
+use ClickPay\PayPage\Gateway\Http\ClickPayRequestHolder;
 use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class Api
@@ -19,8 +19,8 @@ class Api
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
 
-        new ClickpayCore();
-        $pt = ClickpayApi::getInstance($endpoint, $merchant_id, $merchant_key);
+        new ClickPayCore();
+        $pt = ClickPayApi::getInstance($endpoint, $merchant_id, $merchant_key);
 
         return $pt;
     }
@@ -32,7 +32,7 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentMethod)
+    public function prepare_order($order, $paymentMethod, $isTokenise)
     {
         /** 1. Read required Params */
 
@@ -41,9 +41,10 @@ class Api
         $hide_shipping = (bool) $paymentMethod->getConfigData('hide_shipping');
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
+
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
+
         $allow_associated_methods = (bool) $paymentMethod->getConfigData('allow_associated_methods');
-        
 
         $orderId = $order->getIncrementId();
 
@@ -53,7 +54,7 @@ class Api
         $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         $versionMagento = $productMetadata->getVersion();
 
-         if ($use_order_currency) {
+        if ($use_order_currency) {
             $currency = $order->getOrderCurrencyCode();
             $amount = $order->getGrandTotal();
         } else {
@@ -62,7 +63,8 @@ class Api
         }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $returnUrl = $baseurl . "paypage/paypage/response?p=$orderId";
+        $returnUrl = $baseurl . "ClickPay/paypage/response";
+        $callbackUrl = $baseurl . "ClickPay/paypage/callback";
 
         $lang_code = $localeResolver->getLocale();
         $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
@@ -133,23 +135,23 @@ class Api
         // $systemVersion = "Magento {$versionMagento}";
 
 
-        $tran_type = ClickpayEnum::TRAN_TYPE_SALE;
+        $tran_type = ClickPayEnum::TRAN_TYPE_SALE;
         switch ($payment_action) {
             case 'authorize':
-                $tran_type = ClickpayEnum::TRAN_TYPE_AUTH;
+                $tran_type = ClickPayEnum::TRAN_TYPE_AUTH;
                 break;
 
             case 'authorize_capture':
-                $tran_type = ClickpayEnum::TRAN_TYPE_SALE;
+                $tran_type = ClickPayEnum::TRAN_TYPE_SALE;
                 break;
         }
 
         /** 2. Fill post array */
 
-        $pt_holder = new ClickpayRequestHolder();
+        $pt_holder = new ClickPayRequestHolder();
         $pt_holder
             ->set01PaymentCode($paymentType, $allow_associated_methods, $currency)
-            ->set02Transaction($tran_type, ClickpayEnum::TRAN_CLASS_ECOM)
+            ->set02Transaction($tran_type, ClickPayEnum::TRAN_CLASS_ECOM)
             ->set03Cart($orderId, $currency, $amount, $cart_desc)
             ->set04CustomerDetails(
                 $billingAddress->getName(),
@@ -182,10 +184,11 @@ class Api
 
         $pt_holder
             ->set06HideShipping($hide_shipping)
-            ->set07URLs($returnUrl, null)
+            ->set07URLs($returnUrl, $callbackUrl)
             ->set08Lang($lang)
             ->set09Framed($framed_mode, 'top')
-            ->set99PluginInfo('Magento', $versionMagento, CLICKPAY_PAYPAGE_VERSION);
+            ->set10Tokenise($isTokenise)
+            ->set99PluginInfo('Magento', $versionMagento, ClickPay_PAYPAGE_VERSION);
 
         $post_arr = $pt_holder->pt_build();
 

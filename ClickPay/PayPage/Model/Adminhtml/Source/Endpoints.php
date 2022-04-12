@@ -7,8 +7,8 @@
 
 namespace ClickPay\PayPage\Model\Adminhtml\Source;
 
-use ClickPay\PayPage\Gateway\Http\ClickpayApi;
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayApi;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 
 /**
  * Class Endpoints
@@ -20,8 +20,8 @@ class Endpoints implements \Magento\Framework\Option\ArrayInterface
      */
     public function toOptionArray()
     {
-        new ClickpayCore();
-        $endpoints = ClickpayApi::getEndpoints();
+        new ClickPayCore();
+        $endpoints = ClickPayApi::getEndpoints();
 
         $endpoints1 = array_map(function ($key, $value) {
             return [

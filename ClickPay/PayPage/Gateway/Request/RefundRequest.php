@@ -11,9 +11,9 @@ use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
-use ClickPay\PayPage\Gateway\Http\ClickpayCore;
-use ClickPay\PayPage\Gateway\Http\ClickpayEnum;
-use ClickPay\PayPage\Gateway\Http\ClickpayFollowupHolder;
+use ClickPay\PayPage\Gateway\Http\ClickPayCore;
+use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
+use ClickPay\PayPage\Gateway\Http\ClickPayFollowupHolder;
 use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class RefundRequest implements BuilderInterface
@@ -32,7 +32,7 @@ class RefundRequest implements BuilderInterface
         ConfigInterface $config,
         \Magento\Framework\App\ProductMetadataInterface $productMetadata
     ) {
-        new ClickpayCore();
+        new ClickPayCore();
         $this->config = $config;
 
         $this->productMetadata = $productMetadata;
@@ -89,15 +89,15 @@ class RefundRequest implements BuilderInterface
         } else {
             $currency = $payment->getOrder()->getBaseCurrencyCode();
         }
-        
+
         $order_id = $payment->getOrder()->getIncrementId();
 
-        $pt_holder = new ClickpayFollowupHolder();
+        $pt_holder = new ClickPayFollowupHolder();
         $pt_holder
-            ->set02Transaction(ClickpayEnum::TRAN_TYPE_REFUND, ClickpayEnum::TRAN_CLASS_ECOM)
+            ->set02Transaction(ClickPayEnum::TRAN_TYPE_REFUND, ClickPayEnum::TRAN_CLASS_ECOM)
             ->set03Cart($order_id, $currency, $amount, $reason)
             ->set30TransactionInfo($transaction_id)
-            ->set99PluginInfo('Magento', $versionMagento, CLICKPAY_PAYPAGE_VERSION);
+            ->set99PluginInfo('Magento', $versionMagento, ClickPay_PAYPAGE_VERSION);
 
         $values = $pt_holder->pt_build();
 

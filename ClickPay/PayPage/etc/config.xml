@@ -25,7 +25,8 @@
 
                 <iframe_mode>0</iframe_mode>
 
-                <allow_associated_methods>1</allow_associated_methods>
+                <currency_select>base_currency</currency_select>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -40,6 +41,9 @@
 
                 <can_review_payment>1</can_review_payment>
                 <can_deny_payment>1</can_deny_payment>
+
+                <can_authorize_vault>1</can_authorize_vault>
+                <can_capture_vault>1</can_capture_vault>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -62,7 +66,10 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <currency_select>base_currency</currency_select>
+
                 <allow_associated_methods>1</allow_associated_methods>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -101,7 +108,8 @@
 
                 <iframe_mode>0</iframe_mode>
 
-                <allow_associated_methods>1</allow_associated_methods>
+                <currency_select>base_currency</currency_select>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -132,7 +140,8 @@
 
                 <iframe_mode>0</iframe_mode>
 
-                <allow_associated_methods>1</allow_associated_methods>
+                <currency_select>base_currency</currency_select>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -163,7 +172,10 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <currency_select>base_currency</currency_select>
+
                 <allow_associated_methods>1</allow_associated_methods>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -194,7 +206,8 @@
 
                 <iframe_mode>0</iframe_mode>
 
-                <allow_associated_methods>1</allow_associated_methods>
+                <currency_select>base_currency</currency_select>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -225,7 +238,10 @@
 
                 <iframe_mode>0</iframe_mode>
 
+                <currency_select>base_currency</currency_select>
+
                 <allow_associated_methods>1</allow_associated_methods>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -240,6 +256,13 @@
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
             </amex>
+
+
+            <ClickPay_all_vault>
+                <title>ClickPay - Tokenization (All)</title>
+                <model>ClickPayAllVaultFacade</model>
+                <!-- <payment_action>authorize_capture</payment_action> -->
+            </ClickPay_all_vault>
 
         </payment>
     </default>

@@ -78,7 +78,6 @@
                                                                     </item>
                                                                 </item>
 
-
                                                                 <item name="paypage-amex" xsi:type="array">
                                                                     <item name="component" xsi:type="string">ClickPay_PayPage/js/view/payment/amex</item>
                                                                     <item name="methods" xsi:type="array">
