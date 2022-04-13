@@ -2,7 +2,7 @@
 
 The Official Magento2 plugin for PayTabs
 
-- - -
+---
 
 ## Installation
 
@@ -11,13 +11,13 @@ The Official Magento2 plugin for PayTabs
 *Note: Delete any previous PayTabs plugin.*
 
 1. Download the latest release of the plugin
-2. Upload the folder `PayTabs` to the magento2 installation directory: `app/code/`
+2. Upload the content of the folder to magento2 installation directory: `app/code/PayTabs/PayPage`
 3. Run the following Magento commands:
    1. `php bin/magento setup:upgrade`
    2. `php bin/magento setup:static-content:deploy`
    3. `php bin/magento cache:clean`
 
-- - -
+---
 
 ## Activating the Plugin
 
@@ -32,7 +32,7 @@ To Disable/Enable the module:
 
 `php bin/magento module:disable PayTabs_PayPage`
 
-- - -
+---
 
 ## Configure the Plugin
 
@@ -45,7 +45,7 @@ To Disable/Enable the module:
    - **Server Key**: `Merchant’s Dashboard >> Developers >> Key management >> Server Key`
 6. Click `Save Config`
 
-- - -
+---
 
 ## Log Access
 
@@ -53,6 +53,6 @@ To Disable/Enable the module:
 
 1. Access `debug_paytabs.log` file found at: `/var/log/debug_paytabs.log`
 
-- - -
+---
 
 Done
