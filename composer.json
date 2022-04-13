@@ -2,7 +2,7 @@
     "name": "paytabs/magento2",
     "type": "magento2-module",
     "description": "3rd party payment gateway",
-    "version": "3.7.2",
+    "version": "3.7.3",
     "homepage": "https://paytabs.com",
     "require": {
         "php": "^7.1|^8.1",
@@ -25,7 +25,7 @@
             "email": "w.kammoun@paytabs.com"
         }
     ],
-    "license": "proprietary",
+    "license": "MIT",
     "autoload": {
         "files": [
             "registration.php"
