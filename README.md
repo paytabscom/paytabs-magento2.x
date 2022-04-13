@@ -17,6 +17,13 @@ The Official Magento2 plugin for PayTabs
    2. `php bin/magento setup:static-content:deploy`
    3. `php bin/magento cache:clean`
 
+### Install using `Composer`
+
+1. `composer require paytabs/magento2`
+2. `php bin/magento setup:upgrade`
+3. `php bin/magento setup:static-content:deploy`
+4. `php bin/magento cache:clean`
+
 ---
 
 ## Activating the Plugin
