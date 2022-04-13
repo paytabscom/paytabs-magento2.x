@@ -32,17 +32,13 @@ class AuthorizationRequest implements BuilderInterface
      */
     public function __construct(
         ConfigInterface $config,
-        $action = null,
+        $action,
         \Magento\Framework\App\ProductMetadataInterface $productMetadata
     ) {
         new PaytabsCore();
         $this->config = $config;
 
-        if ($action != null) {
-            $this->_action = $action;
-        } else {
-            $this->_action = PaytabsEnum::TRAN_TYPE_SALE;
-        }
+        $this->_action = $action;
 
         $this->productMetadata = $productMetadata;
     }
