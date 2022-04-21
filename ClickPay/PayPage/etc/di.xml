@@ -107,7 +107,7 @@
     </virtualType>
     <virtualType name="PayPageStcPayConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">\PaClickPayyTabs\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageApplePayConfig" type="Magento\Payment\Gateway\Config\Config">
