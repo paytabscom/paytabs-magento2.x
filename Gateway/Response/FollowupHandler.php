@@ -46,16 +46,22 @@ class FollowupHandler implements HandlerInterface
         $isAuth = PaytabsEnum::TranIsAuth($pt_tran_type);
 
         $tran_ref = $response['tran_ref'];
+
+        $transaction_info = [
+            'tran_amount'   => $pt_tran_amount,
+            'tran_currency' => $pt_tran_currency,
+        ];
+
+        if (array_key_exists('amount', $handlingSubject)) {
+            $transaction_info['amount'] = $handlingSubject['amount'];
+        }
+
         $payment
             ->setTransactionId($tran_ref)
             ->setIsTransactionClosed(!$isAuth)
             ->setTransactionAdditionalinfo(
                 \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS,
-                [
-                    'tran_amount'   => $pt_tran_amount,
-                    'tran_currency' => $pt_tran_currency,
-                    'amount' => $handlingSubject['amount']
-                ]
+                $transaction_info
             );
     }
 }
