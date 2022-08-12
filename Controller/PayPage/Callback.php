@@ -59,6 +59,9 @@ class Callback extends Action
     private $encryptor;
 
 
+    private $_row_details = \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS;
+
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -175,14 +178,17 @@ class Callback extends Action
 
         $success = $verify_response->success;
         $is_on_hold = $verify_response->is_on_hold;
+        $is_pending = $verify_response->is_pending;
         $res_msg = $verify_response->message;
         $orderId = @$verify_response->reference_no;
         $transaction_ref = @$verify_response->transaction_id;
+        $pt_prev_tran_ref = @$verify_response->previous_tran_ref;
         $transaction_type = @$verify_response->tran_type;
+        $response_code = @$verify_response->response_code;
 
         //
 
-        $_fail = !($success || $is_on_hold);
+        $_fail = !($success || $is_on_hold || $is_pending);
 
         if ($_fail) {
             PaytabsHelper::log("Paytabs Response: Payment verify failed, Order {$orderId}, Message [$res_msg]", 2);
@@ -202,23 +208,58 @@ class Callback extends Action
             return;
         }
 
-        // Success or OnHold
+        // Success or OnHold or Pending
 
         $tranAmount = $verify_response->cart_amount;
         $tranCurrency = $verify_response->cart_currency;
 
+        $_tran_details = [
+            'tran_amount'   => $tranAmount,
+            'tran_currency' => $tranCurrency,
+            'tran_type'     => $transaction_type,
+            'response_code' => $response_code
+        ];
+        if ($pt_prev_tran_ref) {
+            $_tran_details['previous_tran'] = $pt_prev_tran_ref;
+        }
+
         $payment
             ->setTransactionId($transaction_ref)
-            ->setAdditionalInformation("payment_amount", $tranAmount)
-            ->setAdditionalInformation("payment_currency", $tranCurrency)
-            ->save();
+            ->setTransactionAdditionalinfo($this->_row_details, $_tran_details);
 
-        $payment->setAmountAuthorized($payment->getAmountOrdered());
 
         $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
 
+        if ($is_pending) {
+            $payment
+                ->setIsTransactionPending(true)
+                ->setIsTransactionClosed(false);
+
+            //
+
+            PaytabsHelper::log("Order {$orderId}, On-Hold (Pending), transaction {$transaction_ref}", 1);
+
+            $order->hold();
+
+            // Add Comment to Store Admin
+            $order->addStatusHistoryComment("Transaction {$transaction_ref} is Pending, (Reference number: {$response_code}).");
+
+            // Add comment to the Customer
+            $order->addCommentToStatusHistory("Payment Reference number: {$response_code}", false, true);
+
+            $order->save();
+
+            return;
+        }
+
+        $payment->setAmountAuthorized($payment->getAmountOrdered());
+
         if (PaytabsEnum::TranIsSale($transaction_type)) {
             // $payment->capture();
+            if ($pt_prev_tran_ref) {
+                $payment->setParentTransactionId($pt_prev_tran_ref);
+            }
+
             $payment->registerCaptureNotification($paymentAmount, true);
         } else {
             $payment
@@ -227,6 +268,8 @@ class Callback extends Action
         }
 
         $payment->accept();
+
+        //
 
         $canSendEmail = EmailConfig::canSendEMail(EmailConfig::EMAIL_PLACE_AFTER_PAYMENT, $emailConfig);
         if ($canSendEmail) {
@@ -259,7 +302,7 @@ class Callback extends Action
         } elseif ($is_on_hold) {
             $order->hold();
 
-            PaytabsHelper::log("Order {$orderId}, On-Hold", 1);
+            PaytabsHelper::log("Order {$orderId}, On-Hold, transaction {$transaction_ref}", 1);
             $order->addCommentToStatusHistory("Transaction {$transaction_ref} is On-Hold, Go to PayTabs dashboard to Approve/Decline it");
         }
 
