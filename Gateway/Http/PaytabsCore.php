@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.7.4');
+define('PAYTABS_PAYPAGE_VERSION', '3.7.5');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -34,10 +34,15 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.7.7
+ * Version: 2.8.1
+ * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.7.7');
+define('PAYTABS_SDK_VERSION', '2.8.1');
+
+define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
+define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
+define('PAYTABS_PREFIX', 'PayTabs');
 
 
 abstract class PaytabsHelper
@@ -228,6 +233,7 @@ abstract class PaytabsHelper
      * <b>paytabs_error_log<b> should be defined,
      * Main functionality: use the platform logger to log the error messages
      * If not found: create a new log file and log the messages
+     * @param $severity: [1: info, 2: warning, 3: error]
      */
     public static function log($msg, $severity = 1)
     {
@@ -235,9 +241,11 @@ abstract class PaytabsHelper
             paytabs_error_log($msg, $severity);
         } catch (\Throwable $th) {
             try {
-                $_prefix = date('c') . ' PayTabs: ';
+                $severity_str = PAYTABS_DEBUG_SEVERITY[$severity];
+                $_prefix = date('c') . " " . PAYTABS_PREFIX . "{$severity_str}: ";
                 $_msg = ($_prefix . $msg . PHP_EOL);
-                file_put_contents('debug_paytabs.log', $_msg, FILE_APPEND);
+
+                file_put_contents(PAYTABS_DEBUG_FILE_NAME, $_msg, FILE_APPEND);
             } catch (\Throwable $th) {
                 // var_export($th);
             }
@@ -256,6 +264,8 @@ abstract class PaytabsEnum
     const TRAN_TYPE_SALE     = 'sale';
     const TRAN_TYPE_REGISTER = 'register';
 
+    const TRAN_TYPE_PAYMENT_REQUEST = 'payment request';
+
     const TRAN_TYPE_VOID    = 'void';
     const TRAN_TYPE_RELEASE = 'release';
     const TRAN_TYPE_REFUND  = 'refund';
@@ -265,6 +275,16 @@ abstract class PaytabsEnum
     const TRAN_CLASS_ECOM = 'ecom';
     const TRAN_CLASS_MOTO = 'moto';
     const TRAN_CLASS_RECURRING = 'recurring';
+
+    //
+
+    const TRAN_STATUS_Authorised = 'A';
+    const TRAN_STATUS_OnHold     = 'H';
+    const TRAN_STATUS_Pending    = 'P';
+    const TRAN_STATUS_Voided     = 'V';
+    const TRAN_STATUS_Error      = 'E';
+    const TRAN_STATUS_Declined   = 'D';
+    const TRAN_STATUS_Expired    = 'X';
 
     //
 
@@ -287,6 +307,11 @@ abstract class PaytabsEnum
         return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_REGISTER) == 0;
     }
 
+    static function TranIsPaymentRequest($tran_type)
+    {
+        return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_PAYMENT_REQUEST) == 0;
+    }
+
     static function TranIsCapture($tran_type)
     {
         return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_CAPTURE) == 0;
@@ -307,6 +332,49 @@ abstract class PaytabsEnum
         return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_REFUND) == 0;
     }
 
+
+    static function TranIsPaymentComplete($ipn_data)
+    {
+        if ($ipn_data) {
+            $original_trx = @$ipn_data->previous_tran_ref;
+            $tran_type = $ipn_data->tran_type;
+
+            // Sale && previous_tran_ref
+            if (PaytabsEnum::TranIsSale($tran_type) && isset($original_trx)) {
+                return true;
+            }
+
+            // Or Expired
+            $tran_status = @$ipn_data->payment_result->response_status;
+            if ($tran_status  === 'X') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //
+
+    static function TranStatusIsSuccess($tran_response_status)
+    {
+        return $tran_response_status == PaytabsEnum::TRAN_STATUS_Authorised;
+    }
+
+    static function TranStatusIsOnHold($tran_response_status)
+    {
+        return $tran_response_status == PaytabsEnum::TRAN_STATUS_OnHold;
+    }
+
+    static function TranStatusIsPending($tran_response_status)
+    {
+        return $tran_response_status == PaytabsEnum::TRAN_STATUS_Pending;
+    }
+
+    static function TranStatusIsExpired($tran_response_status)
+    {
+        return $tran_response_status == PaytabsEnum::TRAN_STATUS_Expired;
+    }
 
     //
 
@@ -792,7 +860,7 @@ class PaytabsManagedFormHolder extends PaytabsBasicHolder
 
 /**
  * Holder class, Inherit class PaytabsBasicHolder
- * Holds & Generates the parameters array for the Managed form payments
+ * Holds & Generates the parameters array for the Own form payments
  * Members:
  * - Card Info (pan, cvv, expiry_year, expiry_month)
  */
@@ -903,7 +971,7 @@ class PaytabsApi
         '7'  => ['name' => 'sadad', 'title' => 'PayTabs - Sadad', 'currencies' => ['SAR'], 'groups' => []],
         '8'  => ['name' => 'fawry', 'title' => 'PayTabs - @Fawry', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '9'  => ['name' => 'knet', 'title' => 'PayTabs - KnPay', 'currencies' => ['KWD'], 'groups' => [PaytabsApi::GROUP_CARDS]],
-        '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
+        '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '11' => ['name' => 'valu', 'title' => 'PayTabs - valU', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '12' => ['name' => 'meeza', 'title' => 'PayTabs - Meeza', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '13' => ['name' => 'meezaqr', 'title' => 'PayTabs - Meeza (QR)', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
@@ -911,6 +979,8 @@ class PaytabsApi
         '15' => ['name' => 'samsungpay', 'title' => 'PayTabs - SamsungPay', 'currencies' => ['AED', 'SAR'], 'groups' => []],
         '16' => ['name' => 'knetdebit', 'title' => 'PayTabs - KnPay (Debit)', 'currencies' => ['KWD'], 'groups' => []],
         '17' => ['name' => 'knetcredit', 'title' => 'PayTabs - KnPay (Credit)', 'currencies' => ['KWD'], 'groups' => []],
+        '18' => ['name' => 'aman', 'title' => 'PayTabs - Aman', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '19' => ['name' => 'urpay', 'title' => 'PayTabs - UrPay', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
     ];
 
     const BASE_URLS = [
@@ -1123,7 +1193,10 @@ class PaytabsApi
             $data = json_decode($response);
 
             $headers = getallheaders();
-            $signature = $headers['Signature'];
+            // Lower case all keys
+            $headers = array_change_key_case($headers);
+
+            $signature = $headers['signature'];
             // $client_key = $headers['Client-Key'];
 
             $is_valid = $this->is_valid_ipn($response, $signature, false);
@@ -1178,8 +1251,12 @@ class PaytabsApi
             $_verify->success = false;
         } else {
             if (isset($verify->payment_result)) {
-                $_verify->success = $verify->payment_result->response_status == "A";
-                $_verify->is_on_hold = $_verify->payment_result->response_status === 'H';
+                $_verify->success = PaytabsEnum::TranStatusIsSuccess($verify->payment_result->response_status);
+                $_verify->is_on_hold = PaytabsEnum::TranStatusIsOnHold($verify->payment_result->response_status);
+                $_verify->is_pending = PaytabsEnum::TranStatusIsPending($verify->payment_result->response_status);
+                $_verify->is_expired = PaytabsEnum::TranStatusIsExpired($verify->payment_result->response_status);
+
+                $_verify->response_code = $verify->payment_result->response_code;
             } else {
                 $_verify->success = false;
             }
@@ -1188,6 +1265,14 @@ class PaytabsApi
 
         if (!isset($_verify->is_on_hold)) {
             $_verify->is_on_hold = false;
+        }
+
+        if (!isset($_verify->is_pending)) {
+            $_verify->is_pending = false;
+        }
+
+        if (!isset($_verify->is_expired)) {
+            $_verify->is_expired = false;
         }
 
         $_verify->reference_no = @$verify->cart_id;
@@ -1204,14 +1289,17 @@ class PaytabsApi
             $_verify = new stdClass();
             $_verify->success = false;
             $_verify->is_on_hold = false;
+            $_verify->is_pending = false;
             $_verify->message = 'Verifying paytabs payment failed (locally)';
         } else {
             $_verify = (object)$return_data;
 
             $response_status = $return_data['respStatus'];
-            $_verify->success = $response_status == "A";
 
-            $_verify->is_on_hold = $response_status === 'H';
+            $_verify->success = PaytabsEnum::TranStatusIsSuccess($response_status);
+            $_verify->is_on_hold = PaytabsEnum::TranStatusIsOnHold($response_status);
+            $_verify->is_pending = PaytabsEnum::TranStatusIsPending($response_status);
+
             $_verify->message = $return_data['respMessage'];
 
             $_verify->transaction_id = $return_data['tranRef'];
@@ -1231,7 +1319,7 @@ class PaytabsApi
             $_refund->message = 'Verifying paytabs Refund failed';
         } else {
             if (isset($refund->payment_result)) {
-                $_refund->success = $refund->payment_result->response_status == "A";
+                $_refund->success = PaytabsEnum::TranStatusIsSuccess($refund->payment_result->response_status);
                 $_refund->message = $refund->payment_result->response_message;
             } else {
                 $_refund->success = false;
