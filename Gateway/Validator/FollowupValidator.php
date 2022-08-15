@@ -9,6 +9,7 @@ namespace PayTabs\PayPage\Gateway\Validator;
 
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 
 class FollowupValidator extends AbstractValidator
@@ -32,6 +33,9 @@ class FollowupValidator extends AbstractValidator
         $success = $response['success'];
         // $pending_success = $response['pending_success'];
         $message = $response['message'];
+
+        $_order_id = @$response['cart_id'];
+        PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 1);
 
         return $this->createResult(
             $success,

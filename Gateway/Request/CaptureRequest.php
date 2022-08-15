@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class CaptureRequest implements BuilderInterface
@@ -92,6 +93,12 @@ class CaptureRequest implements BuilderInterface
 
         $order_id = $payment->getOrder()->getIncrementId();
         $order_id .= ' - ' . date('U'); // prevents Duplicate request issue
+
+        //
+
+        PaytabsHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
+
+        //
 
         $pt_holder = new PaytabsFollowupHolder();
         $pt_holder
