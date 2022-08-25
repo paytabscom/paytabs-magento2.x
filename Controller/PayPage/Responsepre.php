@@ -40,7 +40,7 @@ class Responsepre extends Action
         Context $context,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         // \Magento\Framework\Controller\Result\JsonFactory $jsonResultFactory,
-        \Magento\Framework\Controller\Result\Raw $rawResultFactory,
+        \Magento\Framework\Controller\Result\Raw $rawResultFactory
 
         // \Psr\Log\LoggerInterface $logger
     ) {
