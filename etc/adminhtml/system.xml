@@ -112,6 +112,7 @@
                 </field>
             </group>
 
+
             <group id="creditcard" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - CreditCard</label>
 
@@ -1133,9 +1134,9 @@
                     </depends>
                 </field>
 
-                <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="valu_product_id" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>valU product ID</label>
-                </field>
+                </field> -->
 
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
@@ -1149,6 +1150,10 @@
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <!-- This field will only be visible if the field with the id can_initialize is set to value 1 -->
+                        <field id="can_initialize">1</field>
+                    </depends>
                 </field>
 
                 <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -1173,6 +1178,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
+                </field>
+
+                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Default Order flow</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 

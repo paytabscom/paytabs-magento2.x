@@ -37,6 +37,8 @@ define(
                 this.vaultEnabler = new VaultEnabler();
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
 
+                this.redirectAfterPlaceOrder = !this.canInitialize();
+
                 return self;
             },
 
@@ -61,6 +63,22 @@ define(
                 return window.checkoutConfig.payment[this.getCode()].vault_code;
             },
 
+            /**
+             * True: Default Order flow (Place then Payment)
+             * @returns bool
+             */
+            canInitialize: function (code = null) {
+                code = code || this.getCode();
+
+                return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
+                    window.checkoutConfig.payment[code]['can_initialize'] === true;
+            },
+
+            isFramed: function () {
+                return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                    window.checkoutConfig.payment[this.getCode()]['iframe_mode'] === true;
+            },
+
             redirectAfterPlaceOrder: false,
 
             /** Returns send check to info */
@@ -68,14 +86,26 @@ define(
                 return window.checkoutConfig.payment.checkmo.mailingAddress;
             },
 
-            // placeOrder: function (data, event) { },
+            placeOrder: function (data, event) {
+                let force = this.payment_info && this.payment_info.ready;
+
+                if (!this.canInitialize() && !force) {
+                    console.log('placeOrder: Collect');
+                    this.ptPaymentCollect(data, event);
+                    return;
+                }
+
+                if (force) {
+                    console.log('placeOrder: Force');
+                }
+                this._super(data, event);
+            },
 
             afterPlaceOrder: function () {
                 try {
                     let quoteId = quote.getQuoteId();
 
-                    $('.payment-method._active .btn_place_order').hide('fast');
-                    $('.payment-method._active .btn_pay').show('fast');
+                    this.pt_start_payment_ui(true);
 
                     this.payPage(quoteId);
                 } catch (error) {
@@ -89,22 +119,87 @@ define(
                 }
             },
 
+
+            ptPaymentCollect: function (data, event) {
+                if (this.canInitialize()) {
+                    console.log('Default flow');
+                    return;
+                }
+                try {
+                    let quoteId = quote.getQuoteId();
+
+                    this.pt_start_payment_ui(true);
+
+                    this.payPage(quoteId);
+
+                    this.payment_info = {
+                        data: data,
+                        event: event,
+                        ready: false
+                    };
+                } catch (error) {
+                    alert({
+                        title: $.mage.__('PaymentCollect error'),
+                        content: $.mage.__(error),
+                        actions: {
+                            always: function () { }
+                        }
+                    });
+                }
+
+                return false;
+            },
+
+            ptStartPaymentListining: function (stop = false) {
+                if (stop) {
+                    clearInterval(page.iframe_listining);
+                    return;
+                }
+
+                var page = this;
+                page.payment_info.ready = true;
+
+                page.iframe_listining = setInterval(() => {
+                    let c = $("#pt_iframe_" + page.getCode()).contents().find("body").html();
+                    console.log(c);
+
+                    if (c == 'Done - Loading...') {
+                        clearInterval(page.iframe_listining);
+                        page.placeOrder(page.payment_info.data, page.payment_info.event);
+
+                        page.displayIframeUI(false);
+                        delete page.payment_info;
+                    }
+
+                }, 3000);
+            },
+
+
             payPage: function (quoteId) {
                 $("body").trigger('processStart');
                 var page = this;
+
+                let isOrder = this.canInitialize();
+
+                let url = 'paytabs/paypage/create';
+                if (!isOrder) {
+                    url = 'paytabs/paypage/createpre';
+                }
+
                 $.post(
-                    _urlBuilder.build('paytabs/paypage/create'),
+                    _urlBuilder.build(url),
                     { quote: quoteId }
                 )
                     .done(function (result) {
                         // console.log(result);
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
-                            let framed_mode = result.framed_mode == '1';
+                            let framed_mode = page.isFramed() || !page.canInitialize();
 
                             if (!result.had_paid) {
                                 if (framed_mode) {
                                     page.displayIframe(result.payment_url);
+                                    page.ptStartPaymentListining(false);
                                 } else {
                                     $.mage.redirect(redirectURL);
                                 }
@@ -133,35 +228,53 @@ define(
                             }
 
                         } else {
-                            let msg = result.message;
+                            let msg = result.result || result.message;
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
-                                clickableOverlay: false,
+                                clickableOverlay: !isOrder,
                                 buttons: [{
                                     text: $.mage.__('Close'),
                                     class: 'action primary accept',
 
                                     click: function () {
-                                        $.mage.redirect(_urlBuilder.build('checkout/cart'));
+                                        if (!isOrder) {
+                                        } else {
+                                            $.mage.redirect(_urlBuilder.build('checkout/cart'));
+                                        }
                                     }
                                 }]
                             });
+
+                            page.pt_start_payment_ui(false);
                         }
                     })
-                    .fail(function (err) {
-                        console.log(err);
-                        alert(err);
+                    .fail(function (xhr, status, error) {
+                        console.log(error, xhr);
+                        // alert(status);
+                        page.pt_start_payment_ui(false);
                     })
                     .complete(function () {
                         $("body").trigger('processStop');
+                        page.pt_start_payment_ui(false);
                     });
+            },
+
+            pt_start_payment_ui: function (is_start) {
+                if (is_start) {
+                    $('.payment-method._active .btn_place_order').hide('fast');
+                    $('.payment-method._active .btn_pay').show('fast');
+                } else {
+                    $('.payment-method._active .btn_place_order').show('fast');
+                    $('.payment-method._active .btn_pay').hide('fast');
+                }
             },
 
             displayIframe: function (src) {
                 let pt_iframe = $('<iframe>', {
                     src: src,
                     frameborder: 0,
+                    id: 'pt_iframe_' + this.getCode(),
                 }).css({
                     'min-width': '400px',
                     'width': '100%',
@@ -169,12 +282,30 @@ define(
                 });
 
                 // Hide the Address & Actions sections
-                $('.payment-method._active .payment-method-billing-address').hide('fast');
-                $('.payment-method._active .actions-toolbar').hide('fast');
+                this.displayIframeUI(true);
 
                 // Append the iFrame to correct payment method
                 $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
-            }
+            },
+
+            displayIframeUI: function (is_iframe) {
+                let classes = [
+                    '.payment-method._active .payment-method-billing-address',
+                    '.payment-method._active .actions-toolbar',
+                    '.payment-method._active .pt_vault'
+                ];
+
+                let classes_str = classes.join();
+
+                if (is_iframe) {
+                    // Hide the Address & Actions sections
+                    $(classes_str).hide('fast');
+                } else {
+                    $(classes_str).show('fast');
+
+                    $('#pt_iframe_' + this.getCode()).remove();
+                }
+            },
 
         });
     }

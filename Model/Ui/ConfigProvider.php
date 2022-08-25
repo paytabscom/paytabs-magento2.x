@@ -28,6 +28,13 @@ final class ConfigProvider implements ConfigProviderInterface
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
+    protected $paymentHelper;
+
+    public function __construct(
+        \Magento\Payment\Helper\Data $paymentHelper
+    ) {
+        $this->paymentHelper = $paymentHelper;
+    }
 
     /**
      * Retrieve assoc array of checkout configuration
@@ -36,31 +43,41 @@ final class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
-        return [
-            'payment' => [
-                self::CODE_ALL => [
-                    'vault_code' => self::CODE_VAULT_ALL
-                ],
-                self::CODE_CREDITCARD => [],
-                self::CODE_STCPAY => [],
-                self::CODE_APPLEPAY => [],
-                self::CODE_OMANNET => [],
-                self::CODE_MADA => [],
-                self::CODE_SADAD => [],
-                self::CODE_FAWRY => [],
-                self::CODE_KNPAY => [],
-                self::CODE_KNPAY_DEBIT => [],
-                self::CODE_KNPAY_CREDIT => [],
-                self::CODE_AMEX => [],
-                self::CODE_VALU => [],
-                self::CODE_MEEZA => [],
-                self::CODE_MEEZAQR => [],
-                self::CODE_UNIONPAY => [],
+        $pt_payments = [
+            self::CODE_ALL => [
+                'vault_code' => self::CODE_VAULT_ALL,
+            ],
+            self::CODE_CREDITCARD => [],
+            self::CODE_STCPAY => [],
+            self::CODE_APPLEPAY => [],
+            self::CODE_OMANNET => [],
+            self::CODE_MADA => [],
+            self::CODE_SADAD => [],
+            self::CODE_FAWRY => [],
+            self::CODE_KNPAY => [],
+            self::CODE_KNPAY_DEBIT => [],
+            self::CODE_KNPAY_CREDIT => [],
+            self::CODE_AMEX => [],
+            self::CODE_VALU => [],
+            self::CODE_MEEZA => [],
+            self::CODE_MEEZAQR => [],
+            self::CODE_UNIONPAY => [],
 
-                self::CODE_VAULT_ALL => [
-                    'vault_code' => self::CODE_VAULT_ALL
-                ],
-            ]
+            self::CODE_VAULT_ALL => [
+                'vault_code' => self::CODE_VAULT_ALL
+            ],
+        ];
+
+        $keys = ['can_initialize', 'iframe_mode'];
+
+        foreach ($pt_payments as $code => &$values) {
+            foreach ($keys as $key) {
+                $values[$key] = (bool) $this->paymentHelper->getMethodInstance($code)->getConfigData($key);
+            }
+        }
+
+        return [
+            'payment' => $pt_payments
         ];
     }
 }

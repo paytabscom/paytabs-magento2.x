@@ -9,8 +9,9 @@ namespace PayTabs\PayPage\Gateway\Validator;
 
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
+use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
-
+use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class FollowupValidator extends AbstractValidator
 {
@@ -37,9 +38,62 @@ class FollowupValidator extends AbstractValidator
         $_order_id = @$response['cart_id'];
         PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 1);
 
+        $is_verify = $response['is_verify'];
+
+        if ($success && $is_verify) {
+            $success = $this->_pt_validate($validationSubject, $response);
+            if (!$success) {
+                // Fraud
+                PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 2);
+
+                $message = 'Unable to process your request';
+            }
+        }
+
         return $this->createResult(
             $success,
             [$message]
         );
+    }
+
+    private function _pt_validate($buildSubject, $pt_response)
+    {
+        $paymentDO = $buildSubject['payment'];
+        $amount = $buildSubject['amount'];
+
+        $payment = $paymentDO->getPayment();
+
+        $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
+
+        if ($use_order_currency) {
+            $currency = $payment->getOrder()->getOrderCurrencyCode();
+            $amount = $payment->getOrder()->getBaseCurrency()->convert($amount, $currency);
+            $amount = $payment->formatAmount($amount, true);
+        } else {
+            $currency = $payment->getOrder()->getBaseCurrencyCode();
+        }
+
+        // $order_id = $payment->getOrder()->getIncrementId();
+        $quote_id = $payment->getOrder()->getQuoteId();
+
+        //
+
+        $_same_id =
+            $pt_response['cart_id'] == $quote_id;
+
+        $_same_type = PaytabsEnum::TransAreSame(
+            $pt_response['tran_type'],
+            $pt_response['pt_type']
+        );
+
+        // $pt_response['profileId'];
+
+        $_same_amount =
+            $pt_response['cart_amount'] == $amount
+            && $pt_response['cart_currency'] == $currency;
+
+        //
+
+        return $_same_id && $_same_type && $_same_amount;
     }
 }

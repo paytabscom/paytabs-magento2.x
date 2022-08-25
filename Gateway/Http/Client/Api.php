@@ -32,7 +32,7 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentMethod, $isTokenise)
+    public function prepare_order($order, $paymentMethod, $isTokenise, $preApprove = false)
     {
         /** 1. Read required Params */
 
@@ -46,8 +46,6 @@ class Api
 
         $allow_associated_methods = (bool) $paymentMethod->getConfigData('allow_associated_methods');
 
-        $orderId = $order->getIncrementId();
-
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
         $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
@@ -55,7 +53,11 @@ class Api
         $versionMagento = $productMetadata->getVersion();
 
         if ($use_order_currency) {
-            $currency = $order->getOrderCurrencyCode();
+            if ($preApprove) {
+                $currency = $order->getQuoteCurrencyCode();
+            } else {
+                $currency = $order->getOrderCurrencyCode();
+            }
             $amount = $order->getGrandTotal();
         } else {
             $currency = $order->getBaseCurrencyCode();
@@ -63,8 +65,18 @@ class Api
         }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
-        $returnUrl = $baseurl . "paytabs/paypage/response";
-        $callbackUrl = $baseurl . "paytabs/paypage/callback";
+
+        if ($preApprove) {
+            $orderId = $order->getId();
+
+            $returnUrl = $baseurl . "paytabs/paypage/responsepre";
+            $callbackUrl = $baseurl . "paytabs/paypage/callbackpre";
+        } else {
+            $orderId = $order->getIncrementId();
+
+            $returnUrl = $baseurl . "paytabs/paypage/response";
+            $callbackUrl = $baseurl . "paytabs/paypage/callback";
+        }
 
         $lang_code = $localeResolver->getLocale();
         $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
@@ -186,7 +198,7 @@ class Api
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, $callbackUrl)
             ->set08Lang($lang)
-            ->set09Framed($framed_mode, 'top')
+            ->set09Framed($framed_mode || $preApprove, $preApprove ? 'iframe' : 'top')
             ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
