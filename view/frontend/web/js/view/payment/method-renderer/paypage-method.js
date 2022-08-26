@@ -199,7 +199,9 @@ define(
                             if (!result.had_paid) {
                                 if (framed_mode) {
                                     page.displayIframe(result.payment_url);
-                                    page.ptStartPaymentListining(false);
+                                    if (!isOrder) {
+                                        page.ptStartPaymentListining(false);
+                                    }
                                 } else {
                                     $.mage.redirect(redirectURL);
                                 }

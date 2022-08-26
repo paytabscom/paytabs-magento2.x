@@ -81,6 +81,8 @@ class AuthorizationRequest implements BuilderInterface
         $order_id = $payment->getOrder()->getIncrementId();
 
         if ($default_order_flow) {
+            PaytabsHelper::log("Auth is not working with Default mode!, Order [{$order_id}], Amount {$amount} {$currency}", 3);
+            throw new \LogicException('Auth is not working with Default mode!');
         } else {
             // Collect the payment before placing the Order (It is Sale not Capture)
 
@@ -96,9 +98,6 @@ class AuthorizationRequest implements BuilderInterface
                 PaytabsHelper::log("Validate Auth!, tran_ref should be provided", 3);
                 throw new \InvalidArgumentException('Payment tran_ref should be provided');
             }
-
-            PaytabsHelper::log("Auth not yet implemented in pre-payment mode!, Order [{$order_id}], Amount {$amount} {$currency}, Transaction {$transaction_registered}", 3);
-            throw new \LogicException('Auth not yet implemented in pre-payment mode.');
 
             $values = [
                 'tran_ref' => $transaction_registered

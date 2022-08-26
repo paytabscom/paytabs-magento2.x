@@ -518,10 +518,10 @@
     <virtualType name="PayPageAuthorizeCommandAll" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAll</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
@@ -556,10 +556,11 @@
     <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageAuthorizeCommandStcPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -655,10 +656,11 @@
     <virtualType name="PayPageAuthorizeCommandValU" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestValU</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageAuthorizeCommandMeeza" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -1009,6 +1011,7 @@
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="txnid" xsi:type="string">PayTabs\PayPage\Gateway\Response\TxnIdHandler</item>
+                <item name="followup" xsi:type="string">PayTabs\PayPage\Gateway\Response\FollowupHandler</item>
                 <!-- <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item> -->
             </argument>
         </arguments>

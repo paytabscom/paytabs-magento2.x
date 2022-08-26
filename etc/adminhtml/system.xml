@@ -78,6 +78,9 @@
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="can_initialize">1</field>
+                    </depends>
                 </field>
 
                 <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -109,6 +112,11 @@
                     <label>Enable Tokenization</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <config_path>payment/paytabs_all_vault/active</config_path>
+                </field>
+
+                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Default Order flow</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -182,6 +190,9 @@
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="can_initialize">1</field>
+                    </depends>
                 </field>
 
                 <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -207,6 +218,11 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+
+                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Default Order flow</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
