@@ -42,6 +42,9 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -73,13 +76,16 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
-                        <field id="can_initialize">1</field>
+                        <field id="payment_preorder">0</field>
                     </depends>
                 </field>
 
@@ -114,8 +120,8 @@
                     <config_path>payment/paytabs_all_vault/active</config_path>
                 </field>
 
-                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Default Order flow</label>
+                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Collect payment before placing the Order</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
@@ -191,7 +197,7 @@
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
-                        <field id="can_initialize">1</field>
+                        <field id="payment_preorder">0</field>
                     </depends>
                 </field>
 
@@ -220,8 +226,8 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
 
-                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Default Order flow</label>
+                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Collect payment before placing the Order</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
@@ -1167,8 +1173,8 @@
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
-                        <!-- This field will only be visible if the field with the id can_initialize is set to value 1 -->
-                        <field id="can_initialize">1</field>
+                        <!-- This field will only be visible if the field with the id payment_preorder is set to value 1 -->
+                        <field id="payment_preorder">0</field>
                     </depends>
                 </field>
 
@@ -1196,8 +1202,8 @@
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
                 </field>
 
-                <field id="can_initialize" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Default Order flow</label>
+                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Collect the payment before placing the Order</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>

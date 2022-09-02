@@ -80,7 +80,11 @@ class Createpre extends Action
             return $result;
         }
 
-        $quote = $this->quoteRepository->get($quoteId);
+        try {
+            $quote = $this->quoteRepository->get($quoteId);
+        } catch (\Throwable $th) {
+            $quote = null;
+        }
 
         if (!$quote) {
             PaytabsHelper::log("Paytabs: Quote is missing!, Quote [{$quoteId}]", 3);
@@ -100,6 +104,14 @@ class Createpre extends Action
             $res = new stdClass();
             $res->success = true;
             $res->payment_url = $paypage->payment_url;
+
+            $quote
+                ->getPayment()
+                ->setAdditionalInformation(
+                    'pt_registered_transaction',
+                    $paypage->tran_ref
+                )
+                ->save();
         } else {
             PaytabsHelper::log("Create paypage failed!, Order [{$quoteId}] - " . json_encode($paypage), 3);
 

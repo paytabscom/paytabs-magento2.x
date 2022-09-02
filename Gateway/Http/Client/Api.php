@@ -67,10 +67,10 @@ class Api
         $baseurl = $storeManager->getStore()->getBaseUrl();
 
         if ($preApprove) {
-            $orderId = $order->getId();
+            $orderId = 'Q' . $order->getId();
 
             $returnUrl = $baseurl . "paytabs/paypage/responsepre";
-            $callbackUrl = $baseurl . "paytabs/paypage/callbackpre";
+            $callbackUrl = $baseurl . "paytabs/paypage/responsepre"; // Disable IPN
         } else {
             $orderId = $order->getIncrementId();
 

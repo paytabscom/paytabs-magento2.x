@@ -38,15 +38,23 @@ class FollowupValidator extends AbstractValidator
         $_order_id = @$response['cart_id'];
         PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 1);
 
-        $is_verify = $response['is_verify'];
+        $is_verify = array_key_exists('is_verify', $response) ? $response['is_verify'] : false;
 
-        if ($success && $is_verify) {
-            $success = $this->_pt_validate($validationSubject, $response);
-            if (!$success) {
-                // Fraud
-                PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 2);
+        if ($is_verify) {
+            $on_hold = $response['is_on_hold'];
+            $is_pending = $response['is_pending'];
 
-                $message = 'Unable to process your request';
+            if ($success || $on_hold /*|| $is_pending*/) {
+                $success = $this->_pt_validate($validationSubject, $response);
+
+                if (!$success) {
+                    $tran_ref = $response['tran_ref'];
+
+                    // Fraud
+                    PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}] [$tran_ref]", 2);
+
+                    $message = 'Unable to process your request';
+                }
             }
         }
 
@@ -78,8 +86,11 @@ class FollowupValidator extends AbstractValidator
 
         //
 
+        $_pt_quote_id = $pt_response['cart_id'];
+        $_pt_quote_id = substr($_pt_quote_id, 1);
+
         $_same_id =
-            $pt_response['cart_id'] == $quote_id;
+            $_pt_quote_id == $quote_id;
 
         $_same_type = PaytabsEnum::TransAreSame(
             $pt_response['tran_type'],
@@ -94,6 +105,6 @@ class FollowupValidator extends AbstractValidator
 
         //
 
-        return $_same_id && $_same_type && $_same_amount;
+        return $_same_id /*&& $_same_type*/ && $_same_amount;
     }
 }

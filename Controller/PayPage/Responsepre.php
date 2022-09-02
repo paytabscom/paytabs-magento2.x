@@ -66,11 +66,30 @@ class Responsepre extends Action
 
         //
 
-        $result = $this->rawResultFactory;//->create();
+        $_p_tran_ref = 'tranRef';
+        $_p_cart_id = 'cartId';
+        $transactionId = $this->getRequest()->getParam($_p_tran_ref, null);
+        $pOrderId = $this->getRequest()->getParam($_p_cart_id, null);
+
+        //
+
+        // $pOrderId = substr($pOrderId, 1);
+        
+        /*
+        $quote = $this->quoteRepository->get($pOrderId);
+        $payment = $quote->getPayment();
+        $payment
+            ->setTransactionId($transactionId)
+            ->setAdditionalInformation(
+                'pt_registered_transaction',
+                $transactionId
+            )
+            ->save();*/
+        //
+
+        $result = $this->rawResultFactory; //->create();
         $result->setContents('Done - Loading...');
 
         return $result;
-
-        // return $this->pageFactory->create();
     }
 }

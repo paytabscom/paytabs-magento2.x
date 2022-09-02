@@ -56,6 +56,26 @@ class FollowupHandler implements HandlerInterface
             $transaction_info['amount'] = $handlingSubject['amount'];
         }
 
+        //
+
+        $is_verify = array_key_exists('is_verify', $response) ? $response['is_verify'] : false;
+
+        if ($is_verify) {
+            $on_hold = $response['is_on_hold'];
+            $is_pending = $response['is_pending'];
+
+            /*if ($on_hold || $is_pending) {
+                $order = $payment->getOrder();
+                $order->hold()->save();
+            }*/
+
+            if ($on_hold) {
+                $payment->setIsFraudDetected(true);
+            }
+        }
+
+        //
+
         $payment
             ->setTransactionId($tran_ref)
             ->setIsTransactionClosed(!$isAuth)

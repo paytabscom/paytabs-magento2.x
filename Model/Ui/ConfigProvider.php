@@ -68,7 +68,7 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
         ];
 
-        $keys = ['can_initialize', 'iframe_mode'];
+        $keys = ['can_initialize', 'iframe_mode', 'payment_preorder'];
 
         foreach ($pt_payments as $code => &$values) {
             foreach ($keys as $key) {

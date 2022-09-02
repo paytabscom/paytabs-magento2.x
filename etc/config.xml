@@ -49,6 +49,9 @@
                 <is_offline>0</is_offline>
 
                 <sort_order>10</sort_order>
+
+                <payment_preorder>0</payment_preorder>
+
             </all>
 
 
@@ -91,6 +94,8 @@
                 <is_offline>0</is_offline>
 
                 <sort_order>11</sort_order>
+
+                <payment_preorder>0</payment_preorder>
 
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>FRAUD_MSG_LIST</paymentInfoKeys>
@@ -477,6 +482,9 @@
                 <is_offline>0</is_offline>
 
                 <sort_order>20</sort_order>
+
+                <payment_preorder>0</payment_preorder>
+
             </valu>
 
 

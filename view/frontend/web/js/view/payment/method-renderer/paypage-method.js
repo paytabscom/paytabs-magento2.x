@@ -37,7 +37,7 @@ define(
                 this.vaultEnabler = new VaultEnabler();
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
 
-                this.redirectAfterPlaceOrder = !this.canInitialize();
+                this.redirectAfterPlaceOrder = this.isPaymentPreorder();
 
                 return self;
             },
@@ -64,9 +64,17 @@ define(
             },
 
             /**
-             * True: Default Order flow (Place then Payment)
+             * True: Collect payment before (Payment then Place)
+             * False: Default Order flow (Place then Payment)
              * @returns bool
              */
+            isPaymentPreorder: function (code = null) {
+                code = code || this.getCode();
+
+                return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
+                    window.checkoutConfig.payment[code]['payment_preorder'] === true;
+            },
+
             canInitialize: function (code = null) {
                 code = code || this.getCode();
 
@@ -89,7 +97,7 @@ define(
             placeOrder: function (data, event) {
                 let force = this.payment_info && this.payment_info.ready;
 
-                if (!this.canInitialize() && !force) {
+                if (this.isPaymentPreorder() && !force) {
                     console.log('placeOrder: Collect');
                     this.ptPaymentCollect(data, event);
                     return;
@@ -121,7 +129,7 @@ define(
 
 
             ptPaymentCollect: function (data, event) {
-                if (this.canInitialize()) {
+                if (!this.isPaymentPreorder()) {
                     console.log('Default flow');
                     return;
                 }
@@ -165,6 +173,7 @@ define(
 
                     if (c == 'Done - Loading...') {
                         clearInterval(page.iframe_listining);
+                        page.redirectAfterPlaceOrder = true;
                         page.placeOrder(page.payment_info.data, page.payment_info.event);
 
                         page.displayIframeUI(false);
@@ -179,10 +188,10 @@ define(
                 $("body").trigger('processStart');
                 var page = this;
 
-                let isOrder = this.canInitialize();
+                let isPreorder = this.isPaymentPreorder();
 
                 let url = 'paytabs/paypage/create';
-                if (!isOrder) {
+                if (isPreorder) {
                     url = 'paytabs/paypage/createpre';
                 }
 
@@ -194,12 +203,12 @@ define(
                         // console.log(result);
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
-                            let framed_mode = page.isFramed() || !page.canInitialize();
+                            let framed_mode = page.isFramed() || page.isPaymentPreorder();
 
                             if (!result.had_paid) {
                                 if (framed_mode) {
                                     page.displayIframe(result.payment_url);
-                                    if (!isOrder) {
+                                    if (isPreorder) {
                                         page.ptStartPaymentListining(false);
                                     }
                                 } else {
@@ -234,13 +243,13 @@ define(
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
-                                clickableOverlay: !isOrder,
+                                clickableOverlay: isPreorder,
                                 buttons: [{
                                     text: $.mage.__('Close'),
                                     class: 'action primary accept',
 
                                     click: function () {
-                                        if (!isOrder) {
+                                        if (isPreorder) {
                                         } else {
                                             $.mage.redirect(_urlBuilder.build('checkout/cart'));
                                         }
