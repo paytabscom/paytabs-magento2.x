@@ -62,7 +62,7 @@ class AuthorizationRequest implements BuilderInterface
         $endpoint = $paymentMethod->getConfigData('endpoint');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-        $default_order_flow = (bool) $paymentMethod->getConfigData('can_initialize');
+        $preorder = (bool) $paymentMethod->getConfigData('payment_preorder');
 
         // $this->config->getValue('merchant_email');
 
@@ -80,7 +80,7 @@ class AuthorizationRequest implements BuilderInterface
 
         $order_id = $payment->getOrder()->getIncrementId();
 
-        if ($default_order_flow) {
+        if (!$preorder) {
             PaytabsHelper::log("Auth is not working with Default mode!, Order [{$order_id}], Amount {$amount} {$currency}", 3);
             throw new \LogicException('Auth is not working with Default mode!');
         } else {
@@ -111,7 +111,7 @@ class AuthorizationRequest implements BuilderInterface
                 'merchant_key' => $merchant_key,
                 'endpoint'     => $endpoint,
             ],
-            'is_verify' => !$default_order_flow
+            'is_verify' => $preorder
         ];
 
         return $req_data;

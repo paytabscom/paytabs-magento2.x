@@ -72,9 +72,14 @@ class CaptureRequest implements BuilderInterface
         $endpoint = $paymentMethod->getConfigData('endpoint');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-        $default_order_flow = (bool) $paymentMethod->getConfigData('can_initialize');
+        // $preorder = (bool) $paymentMethod->getConfigData('payment_preorder');
+        $paymentAction = $paymentMethod->getConfigPaymentAction();
 
         // $this->config->getValue('merchant_email');
+
+        //
+
+        $admin_request = ($paymentAction == 'authorize');
 
         //
 
@@ -90,7 +95,7 @@ class CaptureRequest implements BuilderInterface
 
         $order_id = $payment->getOrder()->getIncrementId();
 
-        if ($default_order_flow) {
+        if ($admin_request) {
             PaytabsHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
 
             //
@@ -117,6 +122,7 @@ class CaptureRequest implements BuilderInterface
         } else {
             // Collect the payment before placing the Order (It is Sale not Capture)
 
+            $transaction_registered_done = (bool)$payment->getAdditionalInformation('pt_registered_transaction_done');
             $transaction_registered = $payment->getAdditionalInformation('pt_registered_transaction');
 
             //
@@ -124,6 +130,11 @@ class CaptureRequest implements BuilderInterface
             PaytabsHelper::log("Validate Capture!, Order [{$order_id}], Amount {$amount} {$currency}, Transaction {$transaction_registered}", 1);
 
             //
+
+            if ($transaction_registered_done) {
+                PaytabsHelper::log("Validate Capture!, Transaction [$transaction_registered] already done", 3);
+                throw new \InvalidArgumentException('Payment transaction already done');
+            }
 
             if (!$transaction_registered) {
                 PaytabsHelper::log("Validate Capture!, tran_ref should be provided", 3);
@@ -142,7 +153,7 @@ class CaptureRequest implements BuilderInterface
                 'merchant_key' => $merchant_key,
                 'endpoint'     => $endpoint,
             ],
-            'is_verify' => !$default_order_flow
+            'is_verify' => !$admin_request
         ];
 
         return $req_data;
