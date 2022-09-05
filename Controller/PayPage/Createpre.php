@@ -31,6 +31,11 @@ class Createpre extends Action
     private $paytabs;
 
     /**
+     * @var \Magento\Quote\Model\QuoteIdMaskFactory
+     */
+    protected $quoteIdMaskFactory;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     // protected $_logger;
@@ -46,7 +51,8 @@ class Createpre extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory,
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
@@ -58,6 +64,7 @@ class Createpre extends Action
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
         // $this->_logger = $logger;
+        $this->quoteIdMaskFactory = $quoteIdMaskFactory;
 
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();
@@ -71,7 +78,10 @@ class Createpre extends Action
         $result = $this->jsonResultFactory->create();
 
         // Get the params that were passed from our Router
-        $quoteId = $this->getRequest()->getParam('quote', null);
+        $quoteId = $this->getRequest()->getPostValue('quote', null);
+        $isTokenize = (bool) $this->getRequest()->getPostValue('vault', null);
+        $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
+
         if (!$quoteId) {
             PaytabsHelper::log("Paytabs: Quote ID is missing!", 3);
             $result->setData([
@@ -81,7 +91,12 @@ class Createpre extends Action
         }
 
         try {
-            $quote = $this->quoteRepository->get($quoteId);
+            if ($isGuest) {
+                $quoteIdMask = $this->quoteIdMaskFactory->create()->load($quoteId, 'masked_id');
+                $quote = $this->quoteRepository->getActive($quoteIdMask->getQuoteId());
+            } else {
+                $quote = $this->quoteRepository->getActive($quoteId);
+            }
         } catch (\Throwable $th) {
             $quote = null;
         }

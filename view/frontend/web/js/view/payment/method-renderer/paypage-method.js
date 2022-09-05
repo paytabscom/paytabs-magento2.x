@@ -12,7 +12,8 @@ define(
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
         'Magento_Ui/js/modal/alert',
-        'Magento_Vault/js/view/payment/vault-enabler'
+        'Magento_Vault/js/view/payment/vault-enabler',
+        'Magento_Customer/js/model/customer'
     ],
     function (
         $,
@@ -21,7 +22,8 @@ define(
         // placeOrderAction,
         _urlBuilder,
         alert,
-        VaultEnabler
+        VaultEnabler,
+        customer
     ) {
         'use strict';
 
@@ -191,13 +193,22 @@ define(
                 let isPreorder = this.isPaymentPreorder();
 
                 let url = 'paytabs/paypage/create';
+                let payload = {
+                    quote: quoteId
+                };
+
                 if (isPreorder) {
                     url = 'paytabs/paypage/createpre';
+                    payload = {
+                        quote: quoteId,
+                        vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
+                        guest: Number(!customer.isLoggedIn())
+                    };
                 }
 
                 $.post(
                     _urlBuilder.build(url),
-                    { quote: quoteId }
+                    payload
                 )
                     .done(function (result) {
                         // console.log(result);
