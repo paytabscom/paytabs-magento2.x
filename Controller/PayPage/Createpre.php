@@ -52,7 +52,7 @@ class Createpre extends Action
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory,
+        \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
@@ -79,7 +79,7 @@ class Createpre extends Action
 
         // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getPostValue('quote', null);
-        $isTokenize = (bool) $this->getRequest()->getPostValue('vault', null);
+        $isTokenise = (bool) $this->getRequest()->getPostValue('vault', null);
         $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
 
         if (!$quoteId) {
@@ -109,7 +109,7 @@ class Createpre extends Action
             return $result;
         }
 
-        $paypage = $this->prepare($quote);
+        $paypage = $this->prepare($quote, $isTokenise);
 
         if ($paypage->success) {
             // Create paypage success
@@ -144,7 +144,7 @@ class Createpre extends Action
     }
 
 
-    function prepare($quote)
+    function prepare($quote, $isTokenise)
     {
         try {
             $payment = $quote->getPayment();
@@ -159,7 +159,7 @@ class Createpre extends Action
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
-        $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
+        // $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
         // $a = $payment->getAdditionalInformation('pt_registered_transaction');
         $values = $this->paytabs->prepare_order($quote, $paymentMethod, $isTokenise, true);
 

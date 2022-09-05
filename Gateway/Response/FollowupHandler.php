@@ -9,11 +9,25 @@ namespace PayTabs\PayPage\Gateway\Response;
 
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
+
 
 class FollowupHandler implements HandlerInterface
 {
-    const TXN_ID = 'TXN_ID';
+    use PaytabsHelpers;
+
+
+    public function __construct(
+        \Magento\Vault\Api\Data\PaymentTokenFactoryInterface $paymentTokenFactory,
+        \Magento\Framework\Encryption\EncryptorInterface $encryptor
+
+        // \Psr\Log\LoggerInterface $logger
+    ) {
+        $this->_paymentTokenFactory = $paymentTokenFactory;
+        $this->encryptor = $encryptor;
+    }
 
     /**
      * Handles transaction id
@@ -37,7 +51,7 @@ class FollowupHandler implements HandlerInterface
         $payment = $paymentDO->getPayment();
 
         /** @var $payment \Magento\Sales\Model\Order\Payment */
-        // $payment->setTransactionId($response[self::TXN_ID]);
+
 
         $pt_tran_amount = array_key_exists('cart_amount', $response) ? $response['cart_amount'] : 'NA';
         $pt_tran_currency = array_key_exists('cart_currency', $response) ? $response['cart_currency'] : 'NA';
@@ -73,6 +87,23 @@ class FollowupHandler implements HandlerInterface
                 $payment->setIsFraudDetected(true);
             }
         }
+
+        //
+
+        $this->pt_manage_tokenize($this->_paymentTokenFactory, $this->encryptor, $payment, (object) $response);
+        /*if (isset($response['token'], $response['payment_info'])) {
+            $token_details = $response['payment_info'];
+            $token_details->tran_ref = $tran_ref;
+
+            $order = $payment->getOrder();
+            $paymentMethod = $payment->getMethodInstance();
+
+            $paymentToken = $this->pt_find_token($response['token'], $order->getCustomerId(), $paymentMethod->getCode(), $token_details);
+            if ($paymentToken) {
+                $extensionAttributes = $payment->getExtensionAttributes();
+                $extensionAttributes->setVaultPaymentToken($paymentToken);
+            }
+        }*/
 
         //
 

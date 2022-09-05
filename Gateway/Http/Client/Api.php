@@ -78,6 +78,8 @@ class Api
             $callbackUrl = $baseurl . "paytabs/paypage/callback";
         }
 
+        $callbackUrl = str_replace('https://magento244.localhost', 'https://aaec-92-98-202-106.ngrok.io', $callbackUrl);
+
         $lang_code = $localeResolver->getLocale();
         $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
 
