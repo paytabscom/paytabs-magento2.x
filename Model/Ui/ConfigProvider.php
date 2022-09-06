@@ -33,7 +33,7 @@ final class ConfigProvider implements ConfigProviderInterface
 
     public function __construct(
         \Magento\Payment\Helper\Data $paymentHelper,
-        \Magento\Framework\View\Asset\Repository $assetRepo,
+        \Magento\Framework\View\Asset\Repository $assetRepo
     ) {
         $this->paymentHelper = $paymentHelper;
         $this->assetRepo = $assetRepo;
