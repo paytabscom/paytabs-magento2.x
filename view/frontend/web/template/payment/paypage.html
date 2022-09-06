@@ -42,7 +42,13 @@
         <!-- /ko -->
 
         <!-- Dispaly the PayTabs iFrame here -->
-        <div class="paytabs_iframe"></div>
+        <div class="paytabs_iframe">
+            <div>
+                <img
+                    data-bind="attr: {'id': 'pt_loader_' + getCode(), 'src': window.checkoutConfig.pt_icons.logo_animation}"
+                    style='width: 150px; margin: auto; display: none;' />
+            </div>
+        </div>
 
         <div class="actions-toolbar">
             <div class="primary">

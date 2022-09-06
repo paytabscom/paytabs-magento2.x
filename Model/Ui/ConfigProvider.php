@@ -29,11 +29,14 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
     protected $paymentHelper;
+    private $assetRepo;
 
     public function __construct(
-        \Magento\Payment\Helper\Data $paymentHelper
+        \Magento\Payment\Helper\Data $paymentHelper,
+        \Magento\Framework\View\Asset\Repository $assetRepo,
     ) {
         $this->paymentHelper = $paymentHelper;
+        $this->assetRepo = $assetRepo;
     }
 
     /**
@@ -68,7 +71,7 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
         ];
 
-        $keys = ['can_initialize', 'iframe_mode', 'payment_preorder'];
+        $keys = ['iframe_mode', 'payment_preorder'];
 
         foreach ($pt_payments as $code => &$values) {
             foreach ($keys as $key) {
@@ -76,8 +79,13 @@ final class ConfigProvider implements ConfigProviderInterface
             }
         }
 
+        $logo_animation = $this->assetRepo->getUrl('PayTabs_PayPage::images/logo-animation.gif');
+
         return [
-            'payment' => $pt_payments
+            'payment' => $pt_payments,
+            'pt_icons' => [
+                'logo_animation' => $logo_animation
+            ]
         ];
     }
 }

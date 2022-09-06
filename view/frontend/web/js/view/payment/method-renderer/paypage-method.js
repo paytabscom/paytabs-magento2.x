@@ -297,29 +297,38 @@ define(
                     'height': '450px'
                 });
 
-                // Hide the Address & Actions sections
-                this.displayIframeUI(true);
-
                 // Append the iFrame to correct payment method
                 $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
+
+                // Hide the Address & Actions sections
+                this.displayIframeUI(true);
             },
 
-            displayIframeUI: function (is_iframe) {
+            displayIframeUI: function (show_iframe) {
                 let classes = [
                     '.payment-method._active .payment-method-billing-address',
                     '.payment-method._active .actions-toolbar',
                     '.payment-method._active .pt_vault'
                 ];
 
+                let code = this.getCode();
+                let iframe_id = '#pt_iframe_' + code;
+                let loader_id = '#pt_loader_' + code;
+
+                $(iframe_id).load(function () {
+                    $(loader_id).hide('fast');
+                });
+
                 let classes_str = classes.join();
 
-                if (is_iframe) {
+                if (show_iframe) {
                     // Hide the Address & Actions sections
                     $(classes_str).hide('fast');
+                    $(loader_id).show('fast');
                 } else {
                     $(classes_str).show('fast');
 
-                    $('#pt_iframe_' + this.getCode()).remove();
+                    $(iframe_id).remove();
                 }
             },
 
