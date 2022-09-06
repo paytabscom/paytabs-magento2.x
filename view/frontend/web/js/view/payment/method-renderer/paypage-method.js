@@ -112,6 +112,11 @@ define(
             },
 
             afterPlaceOrder: function () {
+                let isPreorder = this.isPaymentPreorder();
+                if (isPreorder) {
+                    return this._super();
+                }
+
                 try {
                     let quoteId = quote.getQuoteId();
 
