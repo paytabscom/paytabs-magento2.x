@@ -51,7 +51,7 @@ class FollowupValidator extends AbstractValidator
                     $tran_ref = $response['tran_ref'];
 
                     // Fraud
-                    PaytabsHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}] [$tran_ref]", 2);
+                    PaytabsHelper::log("Payment does not match, Order {$_order_id}, [{$message}] [$tran_ref]", 2);
 
                     $message = 'Unable to process your request';
                 }
