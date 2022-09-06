@@ -72,14 +72,14 @@ class CaptureRequest implements BuilderInterface
         $endpoint = $paymentMethod->getConfigData('endpoint');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-        // $this->config->getValue('merchant_email');
+        // $preorder = (bool) $paymentMethod->getConfigData('payment_preorder');
+        $paymentAction = $paymentMethod->getConfigPaymentAction();
 
-        $transaction_id = $payment->getParentTransactionId();
-        $reason = 'Admin request';
+        // $this->config->getValue('merchant_email');
 
         //
 
-        $versionMagento = $this->productMetadata->getVersion();
+        $admin_request = ($paymentAction == 'authorize');
 
         //
 
@@ -91,23 +91,60 @@ class CaptureRequest implements BuilderInterface
             $currency = $payment->getOrder()->getBaseCurrencyCode();
         }
 
+        //
+
         $order_id = $payment->getOrder()->getIncrementId();
-        $order_id .= ' - ' . date('U'); // prevents Duplicate request issue
 
-        //
+        if ($admin_request) {
+            PaytabsHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
 
-        PaytabsHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
+            //
 
-        //
+            $transaction_id = $payment->getParentTransactionId();
+            $reason = 'Admin request';
 
-        $pt_holder = new PaytabsFollowupHolder();
-        $pt_holder
-            ->set02Transaction(PaytabsEnum::TRAN_TYPE_CAPTURE, PaytabsEnum::TRAN_CLASS_ECOM)
-            ->set03Cart($order_id, $currency, $amount, $reason)
-            ->set30TransactionInfo($transaction_id)
-            ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
+            $order_id .= ' - ' . date('U'); // prevents Duplicate request issue
 
-        $values = $pt_holder->pt_build();
+            //
+
+            $versionMagento = $this->productMetadata->getVersion();
+
+            //
+
+            $pt_holder = new PaytabsFollowupHolder();
+            $pt_holder
+                ->set02Transaction(PaytabsEnum::TRAN_TYPE_CAPTURE, PaytabsEnum::TRAN_CLASS_ECOM)
+                ->set03Cart($order_id, $currency, $amount, $reason)
+                ->set30TransactionInfo($transaction_id)
+                ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
+
+            $values = $pt_holder->pt_build();
+        } else {
+            // Collect the payment before placing the Order (It is Sale not Capture)
+
+            $transaction_registered_done = (bool)$payment->getAdditionalInformation('pt_registered_transaction_done');
+            $transaction_registered = $payment->getAdditionalInformation('pt_registered_transaction');
+
+            //
+
+            PaytabsHelper::log("Validate Capture!, Order [{$order_id}], Amount {$amount} {$currency}, Transaction {$transaction_registered}", 1);
+
+            //
+
+            if ($transaction_registered_done) {
+                PaytabsHelper::log("Validate Capture!, Transaction [$transaction_registered] already done", 3);
+                throw new \InvalidArgumentException('Payment transaction already done');
+            }
+
+            if (!$transaction_registered) {
+                PaytabsHelper::log("Validate Capture!, tran_ref should be provided", 3);
+                throw new \InvalidArgumentException('Payment tran_ref should be provided');
+            }
+
+            $values = [
+                'tran_ref' => $transaction_registered
+            ];
+        }
 
         $req_data = [
             'params' => $values,
@@ -115,7 +152,8 @@ class CaptureRequest implements BuilderInterface
                 'merchant_id'  => $merchant_id,
                 'merchant_key' => $merchant_key,
                 'endpoint'     => $endpoint,
-            ]
+            ],
+            'is_verify' => !$admin_request
         ];
 
         return $req_data;

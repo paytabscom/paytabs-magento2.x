@@ -19,7 +19,7 @@ use stdClass;
 /**
  * Class Index
  */
-class Create extends Action
+class Createpre extends Action
 {
     /**
      * @var PageFactory
@@ -29,6 +29,11 @@ class Create extends Action
     protected $orderRepository;
     protected $quoteRepository;
     private $paytabs;
+
+    /**
+     * @var \Magento\Quote\Model\QuoteIdMaskFactory
+     */
+    protected $quoteIdMaskFactory;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -46,10 +51,12 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
+
         $this->_orderFactory = $orderFactory;
         $this->checkoutSession = $checkoutSession;
         $this->pageFactory = $pageFactory;
@@ -57,6 +64,8 @@ class Create extends Action
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
         // $this->_logger = $logger;
+        $this->quoteIdMaskFactory = $quoteIdMaskFactory;
+
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();
     }
@@ -68,8 +77,10 @@ class Create extends Action
     {
         $result = $this->jsonResultFactory->create();
 
-        // Get the params that were passed from our Router
-        $quoteId = $this->getRequest()->getParam('quote', null);
+        $quoteId = $this->getRequest()->getPostValue('quote', null);
+        $isTokenise = (bool) $this->getRequest()->getPostValue('vault', null);
+        $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
+
         if (!$quoteId) {
             PaytabsHelper::log("Paytabs: Quote ID is missing!", 3);
             $result->setData([
@@ -78,76 +89,81 @@ class Create extends Action
             return $result;
         }
 
-        // Create PayPage
-        $order = $this->getOrder();
-        if (!$order) {
-            PaytabsHelper::log("Paytabs: Order is missing!, Quote [{$quoteId}]", 3);
+        try {
+            if ($isGuest) {
+                $quoteIdMask = $this->quoteIdMaskFactory->create()->load($quoteId, 'masked_id');
+                $quote = $this->quoteRepository->getActive($quoteIdMask->getQuoteId());
+            } else {
+                $quote = $this->quoteRepository->getActive($quoteId);
+            }
+        } catch (\Throwable $th) {
+            $quote = null;
+        }
+
+        if (!$quote) {
+            PaytabsHelper::log("Paytabs: Quote is missing!, Quote [{$quoteId}]", 3);
             $result->setData([
-                'result' => 'Order is missing!'
+                'result' => 'Quote is missing!'
             ]);
             return $result;
         }
 
-        $paypage = $this->prepare($order);
+        $paypage = $this->prepare($quote, $isTokenise);
 
         if ($paypage->success) {
             // Create paypage success
-            PaytabsHelper::log("Paytabs: create paypage success!, Order [{$order->getIncrementId()}]", 1);
+            PaytabsHelper::log("Create paypage success!, Quote [{$quoteId}]", 1);
 
             // Remove sensetive information
             $res = new stdClass();
             $res->success = true;
             $res->payment_url = $paypage->payment_url;
-            $res->tran_ref = $paypage->tran_ref;
 
-            $paypage = $res;
+            $quote
+                ->getPayment()
+                ->setAdditionalInformation(
+                    'pt_registered_transaction',
+                    $paypage->tran_ref
+                )
+                ->save();
         } else {
-            PaytabsHelper::log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
+            PaytabsHelper::log("Create paypage failed!, Order [{$quoteId}] - " . json_encode($paypage), 3);
 
-            try {
-                // Create paypage failed, Save the Quote (user's Cart)
-                $quote = $this->quoteRepository->get($quoteId);
-                $quote->setIsActive(true)->removePayment()->save();
-            } catch (\Throwable $th) {
-                PaytabsHelper::log("Paytabs: load Quote by ID failed!, QuoteId [{$quoteId}]", 3);
-            }
-            $order->cancel()->save();
+            $res = $paypage;
         }
 
-        if (Api::hadPaid($order)) {
+        /*if (Api::hadPaid($order)) {
             $paypage->had_paid = true;
             $paypage->order_id = $order->getId();
-        }
+        }*/
 
-        $result->setData($paypage);
+        $result->setData($res);
 
         return $result;
     }
 
 
-    function prepare($order)
+    function prepare($quote, $isTokenise)
     {
-        $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethodInstance();
+        try {
+            $payment = $quote->getPayment();
+            $paymentMethod = $payment->getMethodInstance();
+        } catch (\Throwable $th) {
+            $res = new stdClass();
+            $res->result = "Quote [" . $quote->getId() . "] payment method is missing!";
+            $res->success = false;
+
+            return $res;
+        }
 
         $ptApi = $this->paytabs->pt($paymentMethod);
 
-        $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
-        $values = $this->paytabs->prepare_order($order, $paymentMethod, $isTokenise);
+        // $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
+        // $a = $payment->getAdditionalInformation('pt_registered_transaction');
+        $values = $this->paytabs->prepare_order($quote, $paymentMethod, $isTokenise, true);
 
         $res = $ptApi->create_pay_page($values);
 
         return $res;
-    }
-
-
-    public function getOrder()
-    {
-        $lastRealOrderId = $this->checkoutSession->getLastRealOrderId();
-        if ($lastRealOrderId) {
-            $order = $this->_orderFactory->create()->loadByIncrementId($lastRealOrderId);
-            return $order;
-        }
-        return false;
     }
 }

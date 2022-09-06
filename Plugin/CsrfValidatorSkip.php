@@ -17,7 +17,7 @@ class CsrfValidatorSkip
         $action
     ) {
         if ($request->getModuleName() == 'paytabs') {
-            $arr_actions = ['response', 'callback', 'ipn'];
+            $arr_actions = ['response', 'callback', 'ipn', 'responsepre'];
             if (in_array($request->getActionName(), $arr_actions)) {
                 return; // Skip CSRF check
             }

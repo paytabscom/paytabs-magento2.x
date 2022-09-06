@@ -12,7 +12,8 @@ define(
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
         'Magento_Ui/js/modal/alert',
-        'Magento_Vault/js/view/payment/vault-enabler'
+        'Magento_Vault/js/view/payment/vault-enabler',
+        'Magento_Customer/js/model/customer'
     ],
     function (
         $,
@@ -21,7 +22,8 @@ define(
         // placeOrderAction,
         _urlBuilder,
         alert,
-        VaultEnabler
+        VaultEnabler,
+        customer
     ) {
         'use strict';
 
@@ -36,6 +38,8 @@ define(
                 self._super();
                 this.vaultEnabler = new VaultEnabler();
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
+
+                this.redirectAfterPlaceOrder = this.isPaymentPreorder();
 
                 return self;
             },
@@ -61,21 +65,51 @@ define(
                 return window.checkoutConfig.payment[this.getCode()].vault_code;
             },
 
-            redirectAfterPlaceOrder: false,
+            /**
+             * True: Collect payment before (Payment then Place)
+             * False: Default Order flow (Place then Payment)
+             * @returns bool
+             */
+            isPaymentPreorder: function (code = null) {
+                code = code || this.getCode();
 
-            /** Returns send check to info */
-            getMailingAddress: function () {
-                return window.checkoutConfig.payment.checkmo.mailingAddress;
+                return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
+                    window.checkoutConfig.payment[code]['payment_preorder'] === true;
             },
 
-            // placeOrder: function (data, event) { },
+            isFramed: function () {
+                return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                    window.checkoutConfig.payment[this.getCode()]['iframe_mode'] === true;
+            },
+
+            redirectAfterPlaceOrder: false,
+
+            placeOrder: function (data, event) {
+                let force = this.payment_info && this.payment_info.ready;
+
+                if (this.isPaymentPreorder() && !force) {
+                    console.log('placeOrder: Collect');
+                    this.ptPaymentCollect(data, event);
+                    return;
+                }
+
+                if (force) {
+                    console.log('placeOrder: Force');
+                }
+                this._super(data, event);
+            },
+
 
             afterPlaceOrder: function () {
+                let isPreorder = this.isPaymentPreorder();
+                if (isPreorder) {
+                    return this._super();
+                }
+
                 try {
                     let quoteId = quote.getQuoteId();
 
-                    $('.payment-method._active .btn_place_order').hide('fast');
-                    $('.payment-method._active .btn_pay').show('fast');
+                    this.pt_start_payment_ui(true);
 
                     this.payPage(quoteId);
                 } catch (error) {
@@ -89,22 +123,99 @@ define(
                 }
             },
 
+
+            ptPaymentCollect: function (data, event) {
+                if (!this.isPaymentPreorder()) {
+                    console.log('Default flow');
+                    return;
+                }
+                try {
+                    let quoteId = quote.getQuoteId();
+
+                    this.pt_start_payment_ui(true);
+
+                    this.payPage(quoteId);
+
+                    this.payment_info = {
+                        data: data,
+                        event: event,
+                        ready: false
+                    };
+                } catch (error) {
+                    alert({
+                        title: $.mage.__('PaymentCollect error'),
+                        content: $.mage.__(error),
+                        actions: {
+                            always: function () { }
+                        }
+                    });
+                }
+
+                return false;
+            },
+
+            ptStartPaymentListining: function (stop = false) {
+                if (stop) {
+                    clearInterval(page.iframe_listining);
+                    return;
+                }
+
+                var page = this;
+                page.payment_info.ready = true;
+
+                page.iframe_listining = setInterval(() => {
+                    let c = $("#pt_iframe_" + page.getCode()).contents().find("body").html();
+                    console.log(c);
+
+                    if (c == 'Done - Loading...') {
+                        clearInterval(page.iframe_listining);
+                        page.redirectAfterPlaceOrder = true;
+                        page.placeOrder(page.payment_info.data, page.payment_info.event);
+
+                        page.displayIframeUI(false);
+                        delete page.payment_info;
+                    }
+
+                }, 3000);
+            },
+
+
             payPage: function (quoteId) {
                 $("body").trigger('processStart');
                 var page = this;
+
+                let isPreorder = this.isPaymentPreorder();
+
+                let url = 'paytabs/paypage/create';
+                let payload = {
+                    quote: quoteId
+                };
+
+                if (isPreorder) {
+                    url = 'paytabs/paypage/createpre';
+                    payload = {
+                        quote: quoteId,
+                        vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
+                        guest: Number(!customer.isLoggedIn())
+                    };
+                }
+
                 $.post(
-                    _urlBuilder.build('paytabs/paypage/create'),
-                    { quote: quoteId }
+                    _urlBuilder.build(url),
+                    payload
                 )
                     .done(function (result) {
                         // console.log(result);
                         if (result && result.success) {
                             var redirectURL = result.payment_url;
-                            let framed_mode = result.framed_mode == '1';
+                            let framed_mode = page.isFramed() || page.isPaymentPreorder();
 
                             if (!result.had_paid) {
                                 if (framed_mode) {
                                     page.displayIframe(result.payment_url);
+                                    if (isPreorder) {
+                                        page.ptStartPaymentListining(false);
+                                    }
                                 } else {
                                     $.mage.redirect(redirectURL);
                                 }
@@ -133,48 +244,93 @@ define(
                             }
 
                         } else {
-                            let msg = result.message;
+                            let msg = result.result || result.message;
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
-                                clickableOverlay: false,
+                                clickableOverlay: isPreorder,
                                 buttons: [{
                                     text: $.mage.__('Close'),
                                     class: 'action primary accept',
 
                                     click: function () {
-                                        $.mage.redirect(_urlBuilder.build('checkout/cart'));
+                                        if (isPreorder) {
+                                        } else {
+                                            $.mage.redirect(_urlBuilder.build('checkout/cart'));
+                                        }
                                     }
                                 }]
                             });
+
+                            page.pt_start_payment_ui(false);
                         }
                     })
-                    .fail(function (err) {
-                        console.log(err);
-                        alert(err);
+                    .fail(function (xhr, status, error) {
+                        console.log(error, xhr);
+                        // alert(status);
+                        page.pt_start_payment_ui(false);
                     })
                     .complete(function () {
                         $("body").trigger('processStop');
+                        page.pt_start_payment_ui(false);
                     });
+            },
+
+            pt_start_payment_ui: function (is_start) {
+                if (is_start) {
+                    $('.payment-method._active .btn_place_order').hide('fast');
+                    $('.payment-method._active .btn_pay').show('fast');
+                } else {
+                    $('.payment-method._active .btn_place_order').show('fast');
+                    $('.payment-method._active .btn_pay').hide('fast');
+                }
             },
 
             displayIframe: function (src) {
                 let pt_iframe = $('<iframe>', {
                     src: src,
                     frameborder: 0,
+                    id: 'pt_iframe_' + this.getCode(),
                 }).css({
                     'min-width': '400px',
                     'width': '100%',
                     'height': '450px'
                 });
 
-                // Hide the Address & Actions sections
-                $('.payment-method._active .payment-method-billing-address').hide('fast');
-                $('.payment-method._active .actions-toolbar').hide('fast');
-
                 // Append the iFrame to correct payment method
                 $(pt_iframe).appendTo($('.payment-method._active .paytabs_iframe'));
-            }
+
+                // Hide the Address & Actions sections
+                this.displayIframeUI(true);
+            },
+
+            displayIframeUI: function (show_iframe) {
+                let classes = [
+                    '.payment-method._active .payment-method-billing-address',
+                    '.payment-method._active .actions-toolbar',
+                    '.payment-method._active .pt_vault'
+                ];
+
+                let code = this.getCode();
+                let iframe_id = '#pt_iframe_' + code;
+                let loader_id = '#pt_loader_' + code;
+
+                $(iframe_id).load(function () {
+                    $(loader_id).hide('fast');
+                });
+
+                let classes_str = classes.join();
+
+                if (show_iframe) {
+                    // Hide the Address & Actions sections
+                    $(classes_str).hide('fast');
+                    $(loader_id).show('fast');
+                } else {
+                    $(classes_str).show('fast');
+
+                    $(iframe_id).remove();
+                }
+            },
 
         });
     }

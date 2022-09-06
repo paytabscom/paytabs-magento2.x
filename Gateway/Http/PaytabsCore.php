@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.7.5');
+define('PAYTABS_PAYPAGE_VERSION', '3.8.0.5');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -18,7 +18,7 @@ function paytabs_error_log($msg, $severity = 3)
             break;
 
         case 3:
-            $logger->err($msg);
+            $logger->error($msg);
             break;
 
         default:
@@ -34,7 +34,7 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.8.1
+ * Version: 2.8.2
  * PHP >= 7.0.0
  */
 
@@ -330,6 +330,11 @@ abstract class PaytabsEnum
     static function TranIsRefund($tran_type)
     {
         return strcasecmp($tran_type, PaytabsEnum::TRAN_TYPE_REFUND) == 0;
+    }
+
+    static function TransAreSame($tran_type1, $tran_type2)
+    {
+        return strcasecmp($tran_type1, $tran_type2) == 0;
     }
 
 
