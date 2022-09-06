@@ -91,19 +91,6 @@ class FollowupHandler implements HandlerInterface
         //
 
         $this->pt_manage_tokenize($this->_paymentTokenFactory, $this->encryptor, $payment, (object) $response);
-        /*if (isset($response['token'], $response['payment_info'])) {
-            $token_details = $response['payment_info'];
-            $token_details->tran_ref = $tran_ref;
-
-            $order = $payment->getOrder();
-            $paymentMethod = $payment->getMethodInstance();
-
-            $paymentToken = $this->pt_find_token($response['token'], $order->getCustomerId(), $paymentMethod->getCode(), $token_details);
-            if ($paymentToken) {
-                $extensionAttributes = $payment->getExtensionAttributes();
-                $extensionAttributes->setVaultPaymentToken($paymentToken);
-            }
-        }*/
 
         //
 

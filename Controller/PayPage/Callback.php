@@ -289,6 +289,7 @@ class Callback extends Action
             //
 
             $this->pt_manage_tokenize($this->_paymentTokenFactory, $this->encryptor, $payment, $verify_response);
+
             //
 
         } elseif ($is_on_hold) {

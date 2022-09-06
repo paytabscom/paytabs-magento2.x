@@ -77,24 +77,12 @@ define(
                     window.checkoutConfig.payment[code]['payment_preorder'] === true;
             },
 
-            canInitialize: function (code = null) {
-                code = code || this.getCode();
-
-                return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
-                    window.checkoutConfig.payment[code]['can_initialize'] === true;
-            },
-
             isFramed: function () {
                 return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     window.checkoutConfig.payment[this.getCode()]['iframe_mode'] === true;
             },
 
             redirectAfterPlaceOrder: false,
-
-            /** Returns send check to info */
-            getMailingAddress: function () {
-                return window.checkoutConfig.payment.checkmo.mailingAddress;
-            },
 
             placeOrder: function (data, event) {
                 let force = this.payment_info && this.payment_info.ready;
@@ -110,6 +98,7 @@ define(
                 }
                 this._super(data, event);
             },
+
 
             afterPlaceOrder: function () {
                 let isPreorder = this.isPaymentPreorder();

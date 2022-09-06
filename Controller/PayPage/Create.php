@@ -14,6 +14,7 @@ use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use Magento\Vault\Model\Ui\VaultConfigProvider;
+use stdClass;
 
 /**
  * Class Index
@@ -88,9 +89,18 @@ class Create extends Action
         }
 
         $paypage = $this->prepare($order);
+
         if ($paypage->success) {
             // Create paypage success
             PaytabsHelper::log("Paytabs: create paypage success!, Order [{$order->getIncrementId()}]", 1);
+
+            // Remove sensetive information
+            $res = new stdClass();
+            $res->success = true;
+            $res->payment_url = $paypage->payment_url;
+            $res->tran_ref = $paypage->tran_ref;
+
+            $paypage = $res;
         } else {
             PaytabsHelper::log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
 
@@ -126,9 +136,6 @@ class Create extends Action
         $values = $this->paytabs->prepare_order($order, $paymentMethod, $isTokenise);
 
         $res = $ptApi->create_pay_page($values);
-
-        $framed_mode = $paymentMethod->getConfigData('iframe_mode');
-        $res->framed_mode = $framed_mode;
 
         return $res;
     }

@@ -77,7 +77,6 @@ class Createpre extends Action
     {
         $result = $this->jsonResultFactory->create();
 
-        // Get the params that were passed from our Router
         $quoteId = $this->getRequest()->getPostValue('quote', null);
         $isTokenise = (bool) $this->getRequest()->getPostValue('vault', null);
         $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
