@@ -13,7 +13,8 @@ define(
         'mage/url',
         'Magento_Ui/js/modal/alert',
         'Magento_Vault/js/view/payment/vault-enabler',
-        'Magento_Customer/js/model/customer'
+        'Magento_Customer/js/model/customer',
+        'Magento_Customer/js/customer-data'
     ],
     function (
         $,
@@ -23,7 +24,8 @@ define(
         _urlBuilder,
         alert,
         VaultEnabler,
-        customer
+        customer,
+        customerData
     ) {
         'use strict';
 
@@ -40,6 +42,8 @@ define(
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
 
                 this.redirectAfterPlaceOrder = this.isPaymentPreorder();
+
+                this.refreshMiniCart();
 
                 return self;
             },
@@ -332,6 +336,12 @@ define(
                 }
             },
 
+
+            refreshMiniCart: function () {
+                var sections = ['cart'];
+                customerData.invalidate(sections);
+                customerData.reload(sections, true);
+            }
         });
     }
 );
