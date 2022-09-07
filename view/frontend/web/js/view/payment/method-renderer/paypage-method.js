@@ -332,6 +332,17 @@ define(
                 }
             },
 
+            //
+
+            getIcon: function () {
+                if (this.hasIcon())
+                    return window.checkoutConfig.payment[this.getCode()].icon;
+            },
+
+            hasIcon: function () {
+                return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                    typeof window.checkoutConfig.payment[this.getCode()].icon !== 'undefined';
+            }
         });
     }
 );

@@ -49,22 +49,49 @@ final class ConfigProvider implements ConfigProviderInterface
         $pt_payments = [
             self::CODE_ALL => [
                 'vault_code' => self::CODE_VAULT_ALL,
+                'icon' => 'paytabs.png'
             ],
-            self::CODE_CREDITCARD => [],
-            self::CODE_STCPAY => [],
-            self::CODE_APPLEPAY => [],
-            self::CODE_OMANNET => [],
-            self::CODE_MADA => [],
-            self::CODE_SADAD => [],
-            self::CODE_FAWRY => [],
-            self::CODE_KNPAY => [],
+            self::CODE_CREDITCARD => [
+                'icon' => 'creditcard.svg'
+            ],
+            self::CODE_STCPAY => [
+                'icon' => 'stcpay.png'
+            ],
+            self::CODE_APPLEPAY => [
+                'icon' => 'applepay.svg'
+            ],
+            self::CODE_OMANNET => [
+                'icon' => 'omannet.png'
+            ],
+            self::CODE_MADA => [
+                'icon' => 'mada.svg'
+            ],
+            self::CODE_SADAD => [
+                'icon' => 'sadad.png'
+            ],
+            self::CODE_FAWRY => [
+                'icon' => 'fawry.png'
+            ],
+            self::CODE_KNPAY => [
+                'icon' => 'knet.svg'
+            ],
             self::CODE_KNPAY_DEBIT => [],
             self::CODE_KNPAY_CREDIT => [],
-            self::CODE_AMEX => [],
-            self::CODE_VALU => [],
-            self::CODE_MEEZA => [],
-            self::CODE_MEEZAQR => [],
-            self::CODE_UNIONPAY => [],
+            self::CODE_AMEX => [
+                'icon' => 'amex.png'
+            ],
+            self::CODE_VALU => [
+                'icon' => 'valu.png'
+            ],
+            self::CODE_MEEZA => [
+                'icon' => 'meeza.png'
+            ],
+            self::CODE_MEEZAQR => [
+                'icon' => 'meezaqr.png'
+            ],
+            self::CODE_UNIONPAY => [
+                'icon' => 'unionpay.png'
+            ],
 
             self::CODE_VAULT_ALL => [
                 'vault_code' => self::CODE_VAULT_ALL
@@ -73,9 +100,14 @@ final class ConfigProvider implements ConfigProviderInterface
 
         $keys = ['iframe_mode', 'payment_preorder'];
 
+        $_icons_path = $this->assetRepo->getUrl("PayTabs_PayPage::images/");
+
         foreach ($pt_payments as $code => &$values) {
             foreach ($keys as $key) {
                 $values[$key] = (bool) $this->paymentHelper->getMethodInstance($code)->getConfigData($key);
+            }
+            if (isset($values['icon'])) {
+                $values['icon'] = $_icons_path . '/' . $values['icon'];
             }
         }
 
