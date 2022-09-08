@@ -121,7 +121,7 @@
                 </field>
 
                 <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect payment before placing the Order</label>
+                    <label>Collect payment before placing the Order (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
@@ -155,6 +155,9 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -191,6 +194,9 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -227,7 +233,7 @@
                 </field>
 
                 <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect payment before placing the Order</label>
+                    <label>Collect payment before placing the Order (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
@@ -1136,6 +1142,9 @@
                 <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -1167,6 +1176,9 @@
                 <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Failed to pay order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
                 </field>
 
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -1203,7 +1215,7 @@
                 </field>
 
                 <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order</label>
+                    <label>Collect the payment before placing the Order (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
