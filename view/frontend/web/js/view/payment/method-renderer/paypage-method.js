@@ -154,29 +154,22 @@ define(
                 return false;
             },
 
-            ptStartPaymentListining: function (stop = false) {
-                if (stop) {
-                    clearInterval(page.iframe_listining);
-                    return;
-                }
-
-                var page = this;
+            ptStartPaymentListining: function (pt_iframe) {
+                let page = this;
                 page.payment_info.ready = true;
 
-                page.iframe_listining = setInterval(() => {
-                    let c = $("#pt_iframe_" + page.getCode()).contents().find("body").html();
-                    console.log(c);
+                $(pt_iframe).load(function () {
+                    let c = $(this).contents().find("body").html();
+                    console.log('iframe ', c);
 
                     if (c == 'Done - Loading...') {
-                        clearInterval(page.iframe_listining);
                         page.redirectAfterPlaceOrder = true;
                         page.placeOrder(page.payment_info.data, page.payment_info.event);
 
                         page.displayIframeUI(false);
                         delete page.payment_info;
                     }
-
-                }, 3000);
+                });
             },
 
 
@@ -213,9 +206,6 @@ define(
                             if (!result.had_paid) {
                                 if (framed_mode) {
                                     page.displayIframe(result.payment_url);
-                                    if (isPreorder) {
-                                        page.ptStartPaymentListining(false);
-                                    }
                                 } else {
                                     $.mage.redirect(redirectURL);
                                 }
@@ -302,6 +292,11 @@ define(
 
                 // Hide the Address & Actions sections
                 this.displayIframeUI(true);
+
+                let isPreorder = this.isPaymentPreorder();
+                if (isPreorder) {
+                    this.ptStartPaymentListining(pt_iframe);
+                }
             },
 
             displayIframeUI: function (show_iframe) {
