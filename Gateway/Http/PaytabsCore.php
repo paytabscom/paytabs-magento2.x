@@ -245,7 +245,7 @@ abstract class PaytabsHelper
                 $_prefix = date('c') . " " . PAYTABS_PREFIX . "{$severity_str}: ";
                 $_msg = ($_prefix . $msg . PHP_EOL);
 
-                file_put_contents(PAYTABS_DEBUG_FILE_NAME, $_msg, FILE_APPEND);
+                file_put_contents(BP . '/var/log/' . PAYTABS_DEBUG_FILE_NAME, $_msg, FILE_APPEND);
             } catch (\Throwable $th) {
                 // var_export($th);
             }
