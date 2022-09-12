@@ -112,18 +112,20 @@ class Createpre extends Action
 
         if ($paypage->success) {
             // Create paypage success
-            PaytabsHelper::log("Create paypage success!, Quote [{$quoteId}]", 1);
+            $tran_ref = $paypage->tran_ref;
+            PaytabsHelper::log("Create paypage success!, Quote [{$quoteId}] [{$tran_ref}]", 1);
 
             // Remove sensetive information
             $res = new stdClass();
             $res->success = true;
             $res->payment_url = $paypage->payment_url;
+            $res->tran_ref = $tran_ref;
 
             $quote
                 ->getPayment()
                 ->setAdditionalInformation(
                     'pt_registered_transaction',
-                    $paypage->tran_ref
+                    $tran_ref
                 )
                 ->save();
         } else {

@@ -200,6 +200,12 @@ define(
                     .done(function (result) {
                         // console.log(result);
                         if (result && result.success) {
+                            try {
+                                let tran_ref = result.tran_ref;
+                                $('.payment-method._active .paytabs_ref').text('Payment reference: ' + tran_ref);
+                            } catch (error) {
+                                console.log(error);
+                            }
                             var redirectURL = result.payment_url;
                             let framed_mode = page.isFramed() || page.isPaymentPreorder();
 
