@@ -1115,7 +1115,7 @@
             </group>
 
 
-            <group id="valu" translate="label" type="text" sortOrder="145" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="pt_valu" translate="label" type="text" sortOrder="145" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - valU</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">

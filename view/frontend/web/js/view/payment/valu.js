@@ -16,7 +16,7 @@ define(
         'use strict';
         rendererList.push(
             {
-                type: 'valu',
+                type: 'pt_valu',
                 component: 'PayTabs_PayPage/js/view/payment/method-renderer/paypage-method'
             }
         );

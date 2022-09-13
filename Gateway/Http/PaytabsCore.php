@@ -633,6 +633,12 @@ abstract class PaytabsBasicHolder extends PaytabsHolder
             }
         }
 
+        foreach ($codes as &$code) {
+            if (substr($code, 0, 3) === "pt_") {
+                $code = substr($code, 3);
+            }
+        }
+
         // 'creditcard' => ['creditcard', 'mada', 'omannet', 'meeza']
 
         $this->payment_code = ['payment_methods' => $codes];
@@ -977,7 +983,7 @@ class PaytabsApi
         '8'  => ['name' => 'fawry', 'title' => 'PayTabs - @Fawry', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '9'  => ['name' => 'knet', 'title' => 'PayTabs - KnPay', 'currencies' => ['KWD'], 'groups' => [PaytabsApi::GROUP_CARDS]],
         '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
-        '11' => ['name' => 'valu', 'title' => 'PayTabs - valU', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '11' => ['name' => 'pt_valu', 'title' => 'PayTabs - valU', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '12' => ['name' => 'meeza', 'title' => 'PayTabs - Meeza', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '13' => ['name' => 'meezaqr', 'title' => 'PayTabs - Meeza (QR)', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '14' => ['name' => 'unionpay', 'title' => 'PayTabs - UnionPay', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_AUTH_CAPTURE]],
