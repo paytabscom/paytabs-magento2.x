@@ -41,6 +41,7 @@ class Api
         $hide_shipping = (bool) $paymentMethod->getConfigData('hide_shipping');
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
+        $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 
@@ -55,13 +56,25 @@ class Api
         if ($use_order_currency) {
             if ($preApprove) {
                 $currency = $order->getQuoteCurrencyCode();
+                $shippingAmount = $order->getShippingAddress()->getShippingAmount();
             } else {
                 $currency = $order->getOrderCurrencyCode();
+                $shippingAmount = $order->getShippingAmount();
             }
             $amount = $order->getGrandTotal();
         } else {
             $currency = $order->getBaseCurrencyCode();
             $amount = $order->getBaseGrandTotal();
+
+            if ($preApprove) {
+                $shippingAmount = $order->getShippingAddress()->getBaseShippingAmount();
+            } else {
+                $shippingAmount = $order->getBaseShippingAmount();
+            }
+        }
+
+        if ($exclude_shipping) {
+            $amount -= $shippingAmount;
         }
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
@@ -201,6 +214,10 @@ class Api
             ->set09Framed($framed_mode || $preApprove, $preApprove ? 'iframe' : 'top')
             ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
+
+        if ($exclude_shipping) {
+            $pt_holder->set50UserDefined('exclude_shipping=1');
+        }
 
         $post_arr = $pt_holder->pt_build();
 

@@ -1218,6 +1218,11 @@
                     <label>Collect the payment before placing the Order (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                <field id="exclude_shipping" translate="label" type="select" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Exclude Shipping amount</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
 
 
