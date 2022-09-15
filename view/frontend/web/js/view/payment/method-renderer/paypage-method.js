@@ -346,8 +346,21 @@ define(
             },
 
             shippingExcluded: function () {
-                return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                let isEnabled = typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     window.checkoutConfig.payment[this.getCode()].exclude_shipping === true;
+
+                if (isEnabled) {
+                    try {
+                        let totals = quote.totals();
+                        let hasShippingFees = totals.shipping_amount > 0;
+
+                        return hasShippingFees;
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+
+                return false;
             },
 
             shippingTotal: function () {
