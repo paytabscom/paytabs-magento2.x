@@ -13,6 +13,7 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Gateway\Http\PaytabsTokenHolder;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
@@ -90,6 +91,10 @@ class AuthorizationRequest implements BuilderInterface
 
         $order = $payment->getOrder();
         $order_id = $payment->getOrder()->getIncrementId();
+
+        //
+
+        PaytabsHelper::log("Init Vault!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
 
         //
 

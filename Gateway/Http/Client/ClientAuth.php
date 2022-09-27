@@ -13,7 +13,7 @@ use Magento\Payment\Model\Method\Logger;
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 
-class ClientCapture implements ClientInterface
+class ClientAuth implements ClientInterface
 {
     /**
      * @var Logger
@@ -46,13 +46,11 @@ class ClientCapture implements ClientInterface
         if ($is_verify) {
             $tran_ref = $values['tran_ref'];
             $response = $ptApi->verify_payment($tran_ref);
-
-            $response->pt_type = PaytabsEnum::TRAN_TYPE_SALE;
         } else {
             $response = $ptApi->request_followup($values);
-
-            $response->pt_type = PaytabsEnum::TRAN_TYPE_CAPTURE;
         }
+
+        $response->pt_type = PaytabsEnum::TRAN_TYPE_AUTH;
         $response->is_verify = $is_verify;
 
         $this->logger->debug([

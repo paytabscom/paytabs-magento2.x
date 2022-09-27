@@ -4,7 +4,7 @@
 
     <!-- Payment Method Facade configuration -->
 
-    <virtualType name="PayPageAllFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageAllFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_ALL</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -14,7 +14,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageCreditCardFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageCreditCardFacade" type="PayTabs\PayPage\Model\Creditcard">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -24,7 +24,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageStcPayFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageStcPayFacade" type="PayTabs\PayPage\Model\Stcpay">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -34,7 +34,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageApplePayFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageApplePayFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -44,7 +44,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageOmanNetFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageOmanNetFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_OMANNET</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -54,7 +54,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMadaFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageMadaFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -64,7 +64,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageSadadFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageSadadFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -74,7 +74,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageFawryFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageFawryFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -84,7 +84,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageKnPayFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -94,7 +94,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayDebitFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageKnPayDebitFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY_DEBIT</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -104,7 +104,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayCreditFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageKnPayCreditFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY_CREDIT</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -115,7 +115,7 @@
     </virtualType>
 
 
-    <virtualType name="PayPageAmexFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageAmexFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -125,7 +125,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageValUFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageValUFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -135,7 +135,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMeezaFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageMeezaFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MEEZA</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -145,7 +145,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMeezaqrFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageMeezaqrFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MEEZAQR</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -155,7 +155,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageUnionpayFacade" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="PayPageUnionpayFacade" type="PayTabs\PayPage\Model\All">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_UNIONPAY</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
@@ -518,10 +518,10 @@
     <virtualType name="PayPageAuthorizeCommandAll" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAll</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
@@ -556,10 +556,11 @@
     <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageAuthorizeCommandStcPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -655,10 +656,11 @@
     <virtualType name="PayPageAuthorizeCommandValU" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestValU</argument>
-            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
             <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
-            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageAuthorizeCommandMeeza" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -1009,6 +1011,7 @@
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="txnid" xsi:type="string">PayTabs\PayPage\Gateway\Response\TxnIdHandler</item>
+                <item name="followup" xsi:type="string">PayTabs\PayPage\Gateway\Response\FollowupHandler</item>
                 <!-- <item name="fraud" xsi:type="string">PayTabs\PayPage\Gateway\Response\FraudHandler</item> -->
             </argument>
         </arguments>

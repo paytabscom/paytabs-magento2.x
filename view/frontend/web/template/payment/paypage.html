@@ -10,7 +10,12 @@
                name="payment[method]"
                class="radio"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <img alt="logo" class="payment-icon"
+                    data-bind="attr: {'src': getIcon()}, visible: hasIcon()"
+                    style="max-height: 30px;">
+            <span data-bind="text: getTitle()"></span>
+        </label>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
@@ -30,7 +35,7 @@
         </div>
 
         <!-- ko if: (isVaultEnabled())-->
-        <div class="field choice">
+        <div class="field choice pt_vault">
             <input type="checkbox"
                 name="vault[is_enabled]"
                 class="checkbox"
@@ -42,7 +47,17 @@
         <!-- /ko -->
 
         <!-- Dispaly the PayTabs iFrame here -->
-        <div class="paytabs_iframe"></div>
+        <div class="paytabs_iframe">
+            <div>
+                <img
+                    data-bind="attr: {'id': 'pt_loader_' + getCode(), 'src': window.checkoutConfig.pt_icons.logo_animation}"
+                    style='width: 150px; margin: auto; display: none;' />
+            </div>
+        </div>
+
+        <div
+            data-bind="visible: isPaymentPreorder()"
+            class="paytabs_ref" style="margin-top: 10px; color: #2c89db;"></div>
 
         <div class="actions-toolbar">
             <div class="primary">

@@ -92,8 +92,22 @@ class Ipn extends Action
 
         //
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
+        try {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+            $is_quote = substr($pOrderId, 0, 1) === "Q";
+            if ($is_quote) {
+                $pOrderId = substr($pOrderId, 1);
+                $quote = $objectManager->create('Magento\Quote\Api\CartRepositoryInterface')->get($pOrderId);
+
+                $pOrderId = $quote->getReservedOrderId();
+            }
+
+            $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
+        } catch (\Throwable $th) {
+            PaytabsHelper::log("PayTabs (IPN): Order could not be loaded, Order [{$pOrderId}]", 3);
+            return;
+        }
 
         if (!$this->isValidOrder($order)) {
             PaytabsHelper::log("PayTabs (IPN): Order is missing, Order [{$pOrderId}]", 3);

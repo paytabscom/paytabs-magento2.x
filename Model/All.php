@@ -12,7 +12,7 @@ namespace PayTabs\PayPage\Model;
 /**
  * Pay In Store payment method model
  */
-class Creditcard extends \Magento\Payment\Model\Method\Adapter
+class All extends \Magento\Payment\Model\Method\Adapter
 {
 
     /**
@@ -20,16 +20,21 @@ class Creditcard extends \Magento\Payment\Model\Method\Adapter
      *
      * @var string
      */
-    protected $_code = 'creditcard';
+    // protected $_code = 'all';
 
     /**
      * Availability option
      *
      * @var bool
      */
-    protected $_isOffline = false;
+    // protected $_isOffline = false;
 
     //
+
+    public function getConfigPaymentAction()
+    {
+        return parent::getConfigPaymentAction();
+    }
 
     public function isInitializeNeeded()
     {
@@ -39,5 +44,10 @@ class Creditcard extends \Magento\Payment\Model\Method\Adapter
         }
 
         return parent::isInitializeNeeded();
+    }
+
+    public function initialize($paymentAction, $stateObject)
+    {
+        return parent::initialize($paymentAction, $stateObject);
     }
 }
