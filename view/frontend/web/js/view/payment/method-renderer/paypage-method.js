@@ -189,7 +189,8 @@ define(
                     payload = {
                         quote: quoteId,
                         vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
-                        guest: Number(!customer.isLoggedIn())
+                        guest: Number(!customer.isLoggedIn()),
+                        method1: this.getCode()
                     };
                 }
 
