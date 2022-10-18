@@ -190,7 +190,7 @@ define(
                         quote: quoteId,
                         vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
                         guest: Number(!customer.isLoggedIn()),
-                        method1: this.getCode()
+                        method: this.getCode()
                     };
                 }
 
