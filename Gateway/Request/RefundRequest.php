@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
 use PayTabs\PayPage\Gateway\Http\PaytabsFollowupHolder;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class RefundRequest implements BuilderInterface
@@ -91,6 +92,12 @@ class RefundRequest implements BuilderInterface
         }
 
         $order_id = $payment->getOrder()->getIncrementId();
+
+        //
+
+        PaytabsHelper::log("Init Refund!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
+
+        //
 
         $pt_holder = new PaytabsFollowupHolder();
         $pt_holder
