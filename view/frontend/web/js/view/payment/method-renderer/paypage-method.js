@@ -266,7 +266,7 @@ define(
                         // alert(status);
                         page.pt_start_payment_ui(false);
                     })
-                    .complete(function () {
+                    .always(function () {
                         $("body").trigger('processStop');
                         page.pt_start_payment_ui(false);
                     });
