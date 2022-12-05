@@ -1244,7 +1244,7 @@
         <plugin name="MyOrderPlaceAfterPlugin" type="PayTabs\PayPage\Plugin\OrderServicePlugin" sortOrder="99" />
     </type>
     <type name="Magento\Framework\App\Request\CsrfValidator">
-        <plugin name="csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
+        <plugin name="paytabs_csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
 
 
