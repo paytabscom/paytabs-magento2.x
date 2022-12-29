@@ -70,15 +70,28 @@ class FollowupValidator extends AbstractValidator
         $amount = $buildSubject['amount'];
 
         $payment = $paymentDO->getPayment();
+        $order = $payment->getOrder();
+
+        $paymentMethod = $payment->getMethodInstance();
+        $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
 
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         if ($use_order_currency) {
-            $currency = $payment->getOrder()->getOrderCurrencyCode();
-            $amount = $payment->getOrder()->getBaseCurrency()->convert($amount, $currency);
+            $currency = $order->getOrderCurrencyCode();
+            $amount = $order->getBaseCurrency()->convert($amount, $currency);
             $amount = $payment->formatAmount($amount, true);
+
+            $shippingAmount = $order->getShippingAmount();
         } else {
-            $currency = $payment->getOrder()->getBaseCurrencyCode();
+            $currency = $order->getBaseCurrencyCode();
+
+            $shippingAmount = $order->getBaseShippingAmount();
+        }
+
+        if ($exclude_shipping) {
+            $amount -= $shippingAmount;
+            $amount = $payment->formatAmount($amount, true);
         }
 
         // $order_id = $payment->getOrder()->getIncrementId();
