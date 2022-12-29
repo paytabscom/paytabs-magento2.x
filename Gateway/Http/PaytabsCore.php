@@ -29,6 +29,10 @@ function paytabs_error_log($msg, $severity = 3)
 
 class PaytabsCore
 {
+    final static function getVersion()
+    {
+        return PAYTABS_PAYPAGE_VERSION;
+    }
 }
 
 
