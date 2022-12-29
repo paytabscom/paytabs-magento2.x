@@ -189,7 +189,8 @@ define(
                     payload = {
                         quote: quoteId,
                         vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
-                        guest: Number(!customer.isLoggedIn())
+                        guest: Number(!customer.isLoggedIn()),
+                        method: this.getCode()
                     };
                 }
 
@@ -266,7 +267,7 @@ define(
                         // alert(status);
                         page.pt_start_payment_ui(false);
                     })
-                    .complete(function () {
+                    .always(function () {
                         $("body").trigger('processStop');
                         page.pt_start_payment_ui(false);
                     });

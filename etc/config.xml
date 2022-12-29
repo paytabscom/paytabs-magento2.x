@@ -209,7 +209,7 @@
 
             <mada>
                 <active>0</active>
-                <title>PayTabs - Mada</title>
+                <title>PayTabs - mada</title>
                 <order_status>pending_payment</order_status>
 
                 <model>PayPageMadaFacade</model>
