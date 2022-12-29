@@ -507,7 +507,7 @@
 
 
             <group id="mada" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>PayTabs - Mada</label>
+                <label>PayTabs - mada</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -1115,7 +1115,7 @@
             </group>
 
 
-            <group id="pt_valu" translate="label" type="text" sortOrder="145" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="valu" translate="label" type="text" sortOrder="145" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - valU</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
