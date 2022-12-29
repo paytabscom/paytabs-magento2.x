@@ -80,6 +80,7 @@ class Createpre extends Action
         $quoteId = $this->getRequest()->getPostValue('quote', null);
         $isTokenise = (bool) $this->getRequest()->getPostValue('vault', null);
         $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
+        $methodCode = $this->getRequest()->getPostValue('method', null);
 
         if (!$quoteId) {
             PaytabsHelper::log("Paytabs: Quote ID is missing!", 3);
@@ -108,7 +109,7 @@ class Createpre extends Action
             return $result;
         }
 
-        $paypage = $this->prepare($quote, $isTokenise);
+        $paypage = $this->prepare($quote, $isTokenise, $methodCode);
 
         if ($paypage->success) {
             // Create paypage success
@@ -145,12 +146,11 @@ class Createpre extends Action
     }
 
 
-    function prepare($quote, $isTokenise)
+    function prepare($quote, $isTokenise, $methodCode)
     {
-        try {
-            $payment = $quote->getPayment();
-            $paymentMethod = $payment->getMethodInstance();
-        } catch (\Throwable $th) {
+        $paymentMethod = $this->_confirmPaymentMethod($quote, $methodCode);
+
+        if (!$paymentMethod) {
             $res = new stdClass();
             $res->result = "Quote [" . $quote->getId() . "] payment method is missing!";
             $res->success = false;
@@ -167,5 +167,28 @@ class Createpre extends Action
         $res = $ptApi->create_pay_page($values);
 
         return $res;
+    }
+
+
+    private function _confirmPaymentMethod($quote, $method_code)
+    {
+        $paymentMethod = null;
+
+        try {
+            $payment = $quote->getPayment();
+            $paymentMethod = $payment->getMethodInstance();
+        } catch (\Throwable $th) {
+            PaytabsHelper::log("Quote [{$quote->getId()}] payment method is missing!, ({$th->getMessage()})", 2);
+            try {
+                if (PaytabsHelper::isPayTabsPayment($method_code)) {
+                    $payment->setMethod($method_code);
+                    $paymentMethod = $payment->getMethodInstance();
+                }
+            } catch (\Throwable $th) {
+                PaytabsHelper::log("Quote [{$quote->getId()}] not able to set payment method!, ({$th->getMessage()})", 2);
+            }
+        }
+
+        return $paymentMethod;
     }
 }

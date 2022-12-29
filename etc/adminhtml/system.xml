@@ -507,7 +507,7 @@
 
 
             <group id="mada" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>PayTabs - Mada</label>
+                <label>PayTabs - mada</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
