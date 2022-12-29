@@ -21,7 +21,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_KNPAY_DEBIT  = 'knetdebit';
     const CODE_KNPAY_CREDIT = 'knetcredit';
     const CODE_AMEX       = 'amex';
-    const CODE_VALU       = 'pt_valu';
+    const CODE_VALU       = 'valu';
     const CODE_MEEZA      = 'meeza';
     const CODE_MEEZAQR    = 'meezaqr';
     const CODE_UNIONPAY   = 'unionpay';
