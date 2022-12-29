@@ -56,6 +56,16 @@
         </div>
 
         <div
+            data-bind="visible: shippingExcluded()"
+            class="paytabs_shipping" style="margin: 10px; color: #c92f24;">
+                <span>
+                    <span data-bind="text: '(' + shippingTotal() + ')'"></span>
+                    Shipping amount will be excluded from the online payment,
+                    You have to pay them at the delivery time.
+                </span>
+            </div>
+
+        <div
             data-bind="visible: isPaymentPreorder()"
             class="paytabs_ref" style="margin-top: 10px; color: #2c89db;"></div>
 

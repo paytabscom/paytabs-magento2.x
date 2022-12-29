@@ -344,7 +344,44 @@ define(
             hasIcon: function () {
                 return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     typeof window.checkoutConfig.payment[this.getCode()].icon !== 'undefined';
-            }
+            },
+
+            shippingExcluded: function () {
+                let isEnabled = typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                    window.checkoutConfig.payment[this.getCode()].exclude_shipping === true;
+
+                if (isEnabled) {
+                    try {
+                        let totals = quote.totals();
+                        let hasShippingFees = totals.shipping_amount > 0;
+
+                        return hasShippingFees;
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+
+                return false;
+            },
+
+            shippingTotal: function () {
+                try {
+                    let totals = quote.totals();
+                    if (this.useOrderCurrency()) {
+                        return totals.shipping_amount + ' ' + totals.quote_currency_code;
+                    } else {
+                        return totals.base_shipping_amount + ' ' + totals.base_currency_code;
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+                return quote.totals().shipping_amount;
+            },
+
+            useOrderCurrency: function () {
+                return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
+                    window.checkoutConfig.payment[this.getCode()].currency_select == 'order_currency';
+            },
         });
     }
 );

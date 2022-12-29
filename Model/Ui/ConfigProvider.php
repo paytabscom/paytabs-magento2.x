@@ -98,14 +98,20 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
         ];
 
-        $keys = ['iframe_mode', 'payment_preorder'];
+        $keys_bool = ['iframe_mode', 'payment_preorder', 'exclude_shipping'];
+        $keys = ['currency_select'];
 
         $_icons_path = $this->assetRepo->getUrl("PayTabs_PayPage::images/");
 
         foreach ($pt_payments as $code => &$values) {
-            foreach ($keys as $key) {
+            foreach ($keys_bool as $key) {
                 $values[$key] = (bool) $this->paymentHelper->getMethodInstance($code)->getConfigData($key);
             }
+
+            foreach ($keys as $key) {
+                $values[$key] = $this->paymentHelper->getMethodInstance($code)->getConfigData($key);
+            }
+
             if (isset($values['icon'])) {
                 $values['icon'] = $_icons_path . '/' . $values['icon'];
             }
