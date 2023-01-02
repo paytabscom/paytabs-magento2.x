@@ -25,9 +25,14 @@ class Create extends Action
      * @var PageFactory
      */
     private $pageFactory;
+
     private $jsonResultFactory;
     protected $orderRepository;
+    protected $_orderFactory;
     protected $quoteRepository;
+    protected $checkoutSession;
+    protected $_customerSession;
+
     private $paytabs;
 
     /**
@@ -46,16 +51,21 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
+
         $this->_orderFactory = $orderFactory;
-        $this->checkoutSession = $checkoutSession;
         $this->pageFactory = $pageFactory;
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
+
+        $this->checkoutSession = $checkoutSession;
+        $this->_customerSession = $customerSession;
+
         // $this->_logger = $logger;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();
@@ -133,7 +143,8 @@ class Create extends Action
         $ptApi = $this->paytabs->pt($paymentMethod);
 
         $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
-        $values = $this->paytabs->prepare_order($order, $paymentMethod, $isTokenise);
+        $isLoggedIn = $this->_customerSession->isLoggedIn();
+        $values = $this->paytabs->prepare_order($order, $paymentMethod, $isTokenise, false, $isLoggedIn);
 
         $res = $ptApi->create_pay_page($values);
 

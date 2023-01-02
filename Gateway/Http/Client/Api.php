@@ -32,7 +32,7 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentMethod, $isTokenise, $preApprove = false)
+    public function prepare_order($order, $paymentMethod, $isTokenise, $preApprove, $isLoggedIn)
     {
         /** 1. Read required Params */
 
@@ -87,7 +87,7 @@ class Api
         } else {
             $orderId = $order->getIncrementId();
 
-            $returnUrl = $baseurl . "paytabs/paypage/response";
+            $returnUrl = $baseurl . "paytabs/paypage/response" . ($isLoggedIn ? "" : "?g=1");
             $callbackUrl = $baseurl . "paytabs/paypage/callback";
         }
 
