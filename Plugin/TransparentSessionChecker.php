@@ -55,8 +55,10 @@ class TransparentSessionChecker
 
         foreach ($this->disableSessionUrls as $url) {
             if (strpos((string)$this->request->getPathInfo(), $url) !== false) {
+                // is Guest & Refill option is enabled
                 $isGuest = $this->request->getParam('g', false);
-                if (!$isGuest) {
+                $tranStatus = $this->request->getParam('respStatus', '');
+                if (!$isGuest || ($isGuest && $tranStatus == 'A')) {
                     return false;
                 }
             }
