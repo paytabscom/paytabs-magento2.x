@@ -27,7 +27,13 @@ class Createpre extends Action
     private $pageFactory;
     private $jsonResultFactory;
     protected $orderRepository;
+    protected $_orderFactory;
     protected $quoteRepository;
+
+    protected $checkoutSession;
+    protected $_customerSession;
+
+
     private $clickpay;
 
     /**
@@ -52,19 +58,22 @@ class Createpre extends Action
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
 
         $this->_orderFactory = $orderFactory;
-        $this->checkoutSession = $checkoutSession;
         $this->pageFactory = $pageFactory;
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
         // $this->_logger = $logger;
         $this->quoteIdMaskFactory = $quoteIdMaskFactory;
+
+        $this->checkoutSession = $checkoutSession;
+        $this->_customerSession = $customerSession;
 
         $this->clickpay = new \ClickPay\PayPage\Gateway\Http\Client\Api;
         new ClickPayCore();
@@ -79,7 +88,7 @@ class Createpre extends Action
 
         $quoteId = $this->getRequest()->getPostValue('quote', null);
         $isTokenise = (bool) $this->getRequest()->getPostValue('vault', null);
-        $isGuest = (bool) $this->getRequest()->getPostValue('guest', null);
+        
         $methodCode = $this->getRequest()->getPostValue('method', null);
 
         if (!$quoteId) {
@@ -91,7 +100,8 @@ class Createpre extends Action
         }
 
         try {
-            if ($isGuest) {
+            $isLoggedIn = $this->_customerSession->isLoggedIn();
+            if (!$isLoggedIn) {
                 $quoteIdMask = $this->quoteIdMaskFactory->create()->load($quoteId, 'masked_id');
                 $quote = $this->quoteRepository->getActive($quoteIdMask->getQuoteId());
             } else {
@@ -109,7 +119,7 @@ class Createpre extends Action
             return $result;
         }
 
-        $paypage = $this->prepare($quote, $isTokenise, $methodCode);
+        $paypage = $this->prepare($quote, $isTokenise, $methodCode, $isLoggedIn);
 
         if ($paypage->success) {
             // Create paypage success
@@ -146,7 +156,7 @@ class Createpre extends Action
     }
 
 
-    function prepare($quote, $isTokenise, $methodCode)
+    function prepare($quote, $isTokenise, $methodCode, $isLoggedIn)
     {
         $paymentMethod = $this->_confirmPaymentMethod($quote, $methodCode);
 
@@ -162,7 +172,7 @@ class Createpre extends Action
 
         // $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
         // $a = $payment->getAdditionalInformation('pt_registered_transaction');
-        $values = $this->cickpay->prepare_order($quote, $paymentMethod, $isTokenise, true);
+        $values = $this->cickpay->prepare_order($quote, $paymentMethod, $isTokenise, true, $isLoggedIn);
 
         $res = $ptApi->create_pay_page($values);
 

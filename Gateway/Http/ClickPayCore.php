@@ -6,7 +6,7 @@ use ClickPay\PayPage\Logger\Handler\ClickPayLogger;
 use stdClass;
 
 define('ClickPay_DEBUG_FILE', 'var/log/debug_ClickPay.log');
-define('ClickPay_PAYPAGE_VERSION', '3.9.0');
+define('ClickPay_PAYPAGE_VERSION', '3.9.1');
 
 function ClickPay_error_log($msg, $severity = 3)
 {

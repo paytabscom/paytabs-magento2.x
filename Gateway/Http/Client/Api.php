@@ -32,7 +32,7 @@ class Api
      * -Products
      * @return Array of values to pass to create_paypage API
      */
-    public function prepare_order($order, $paymentMethod, $isTokenise, $preApprove = false)
+    public function prepare_order($order, $paymentMethod, $isTokenise, $preApprove, $isLoggedIn)
     {
         /** 1. Read required Params */
 
@@ -42,6 +42,8 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 
@@ -87,7 +89,7 @@ class Api
         } else {
             $orderId = $order->getIncrementId();
 
-            $returnUrl = $baseurl . "clickpay/paypage/response";
+            $returnUrl = $baseurl . "clickpay/paypage/response" . ($isLoggedIn ? "" : ($cart_refill ? "?g=1" : ""));
             $callbackUrl = $baseurl . "clickpay/paypage/callback";
         }
 

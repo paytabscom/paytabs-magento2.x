@@ -12,8 +12,7 @@ define(
         // 'Magento_Checkout/js/action/place-order',
         'mage/url',
         'Magento_Ui/js/modal/alert',
-        'Magento_Vault/js/view/payment/vault-enabler',
-        'Magento_Customer/js/model/customer'
+        'Magento_Vault/js/view/payment/vault-enabler'
     ],
     function (
         $,
@@ -22,8 +21,7 @@ define(
         // placeOrderAction,
         _urlBuilder,
         alert,
-        VaultEnabler,
-        customer
+        VaultEnabler
     ) {
         'use strict';
 
@@ -188,7 +186,6 @@ define(
                     payload = {
                         quote: quoteId,
                         vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
-                        guest: Number(!customer.isLoggedIn()),
                         method: this.getCode()
                     };
                 }

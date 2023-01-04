@@ -26,7 +26,11 @@ class Create extends Action
     private $pageFactory;
     private $jsonResultFactory;
     protected $orderRepository;
+    protected $_orderFactory;
     protected $quoteRepository;
+    protected $checkoutSession;
+    protected $_customerSession;
+
     private $ClickPay;
 
     /**
@@ -45,16 +49,21 @@ class Create extends Action
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Sales\Model\OrderFactory $orderFactory,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession
         // \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->_orderFactory = $orderFactory;
-        $this->checkoutSession = $checkoutSession;
         $this->pageFactory = $pageFactory;
         $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
         $this->quoteRepository = $quoteRepository;
+
+
+        $this->checkoutSession = $checkoutSession;
+        $this->_customerSession = $customerSession;
+
         // $this->_logger = $logger;
         $this->ClickPay = new \ClickPay\PayPage\Gateway\Http\Client\Api;
         new ClickPayCore();
@@ -132,7 +141,8 @@ class Create extends Action
         $ptApi = $this->ClickPay->pt($paymentMethod);
 
         $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
-        $values = $this->ClickPay->prepare_order($order, $paymentMethod, $isTokenise);
+         $isLoggedIn = $this->_customerSession->isLoggedIn();
+        $values = $this->clickpay->prepare_order($order, $paymentMethod, $isTokenise, false, $isLoggedIn);
 
         $res = $ptApi->create_pay_page($values);
 

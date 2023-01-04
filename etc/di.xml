@@ -695,6 +695,9 @@
     <type name="Magento\Framework\App\Request\CsrfValidator">
         <plugin name="clickpay_csrf_validator_skip" type="ClickPay\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
+    <type name="Magento\Framework\Session\SessionStartChecker">
+        <plugin name="clickpay_transparent_session_checker" type="ClickPay\PayPage\Plugin\TransparentSessionChecker" />
+    </type>
 
 
     <!-- Logger, initialized with PayPageCreditCardConfig -->
