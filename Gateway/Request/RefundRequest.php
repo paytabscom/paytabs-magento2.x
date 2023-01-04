@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
 use ClickPay\PayPage\Gateway\Http\ClickPayFollowupHolder;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
 use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class RefundRequest implements BuilderInterface
@@ -94,7 +95,7 @@ class RefundRequest implements BuilderInterface
 
         //
 
-        ClickpayHelper::log("Init Refund!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
+        ClickPayHelper::log("Init Refund!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
 
         //
 

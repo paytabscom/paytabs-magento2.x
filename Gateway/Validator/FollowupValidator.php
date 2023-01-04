@@ -7,6 +7,9 @@
 
 namespace ClickPay\PayPage\Gateway\Validator;
 
+use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
+use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
 
@@ -34,7 +37,7 @@ class FollowupValidator extends AbstractValidator
         $message = $response['message'];
 
         $_order_id = @$response['cart_id'];
-        ClickpayHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 1);
+        ClickPayHelper::log("Payment result, Order {$_order_id}, [{$success} {$message}]", 1);
 
         $is_verify = array_key_exists('is_verify', $response) ? $response['is_verify'] : false;
 
@@ -105,7 +108,7 @@ class FollowupValidator extends AbstractValidator
         $_same_id =
             $_pt_quote_id == $quote_id;
 
-        $_same_type = ClickpayEnum::TransAreSame(
+        $_same_type = ClickPayEnum::TransAreSame(
             $pt_response['tran_type'],
             $pt_response['pt_type']
         );

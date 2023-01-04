@@ -14,6 +14,7 @@ use ClickPay\PayPage\Gateway\Http\Client\Api;
 use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
 use Magento\Vault\Model\Ui\VaultConfigProvider;
+use stdClass;
 
 /**
  * Class Index
@@ -142,7 +143,7 @@ class Create extends Action
 
         $isTokenise = $payment->getAdditionalInformation(VaultConfigProvider::IS_ACTIVE_CODE);
          $isLoggedIn = $this->_customerSession->isLoggedIn();
-        $values = $this->clickpay->prepare_order($order, $paymentMethod, $isTokenise, false, $isLoggedIn);
+        $values = $this->ClickPay->prepare_order($order, $paymentMethod, $isTokenise, false, $isLoggedIn);
 
         $res = $ptApi->create_pay_page($values);
 

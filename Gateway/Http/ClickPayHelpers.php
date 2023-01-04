@@ -112,4 +112,62 @@ trait ClickPayHelpers
 
         return null;
     }
+
+
+    public function pt_manage_tokenize($tokenFactory, $encryptor, $payment, $response)
+    {
+        if (!isset($response->token, $response->payment_info, $response->tran_ref)) {
+            return;
+        }
+
+        $transaction_ref = $response->tran_ref;
+        $token_details = $response->payment_info;
+        $token_details->tran_ref = $transaction_ref;
+
+        $order = $payment->getOrder();
+        $paymentMethod = $payment->getMethodInstance();
+
+        $paymentToken = $this->pt_find_token(
+            $response->token,
+            $order->getCustomerId(),
+            $paymentMethod->getCode(),
+            $token_details,
+            $tokenFactory,
+            $encryptor
+        );
+        if ($paymentToken) {
+            $extensionAttributes = $payment->getExtensionAttributes();
+            $extensionAttributes->setVaultPaymentToken($paymentToken);
+        }
+    }
+
+    private function pt_find_token($token, $customer_id, $payment_code, $token_details, $tokenFactory, $encryptor)
+    {
+        try {
+            $isCard = ($payment_code == 'all') || ClickPayHelper::isCardPayment($payment_code);
+            $tokenType = $isCard
+                ? \Magento\Vault\Api\Data\PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD
+                : \Magento\Vault\Api\Data\PaymentTokenFactoryInterface::TOKEN_TYPE_ACCOUNT;
+
+            $str_token_details = json_encode($token_details);
+
+            $publicHash = "$customer_id $str_token_details";
+            $publicHashEncrypted = $encryptor->getHash($publicHash);
+
+            $paymentToken = $tokenFactory->create($tokenType);
+            $paymentToken
+                ->setGatewayToken($token)
+                ->setCustomerId($customer_id)
+                ->setPaymentMethodCode($payment_code)
+                ->setPublicHash($publicHashEncrypted)
+                ->setExpiresAt("{$token_details->expiryYear}-{$token_details->expiryMonth}-01 00:00:00")
+                ->setTokenDetails($str_token_details)
+                ->save();
+
+            return $paymentToken;
+        } catch (\Throwable $th) {
+            ClickPayHelper::log('Save payment token: ' . $th->getMessage(), 3);
+            return null;
+        }
+    }
 }

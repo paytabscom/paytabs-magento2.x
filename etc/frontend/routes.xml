@@ -2,7 +2,7 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="standard">
-        <route id="ClickPay_paypage" frontName="ClickPay">
+        <route id="clickpay_paypage" frontName="clickpay">
             <module name="ClickPay_PayPage" />
         </route>
     </router>

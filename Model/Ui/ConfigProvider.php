@@ -70,7 +70,7 @@ final class ConfigProvider implements ConfigProviderInterface
         $keys_bool = ['iframe_mode', 'payment_preorder', 'exclude_shipping'];
         $keys = ['currency_select'];
 
-        $_icons_path = $this->assetRepo->getUrl("Clickpay_PayPage::images/");
+        $_icons_path = $this->assetRepo->getUrl("ClickPay_PayPage::images/");
 
         foreach ($pt_payments as $code => &$values) {
             foreach ($keys_bool as $key) {

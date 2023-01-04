@@ -11,6 +11,7 @@ use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
 use ClickPay\PayPage\Gateway\Http\ClickPayApi;
+use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
 
 class ClientCapture implements ClientInterface
 {
@@ -46,11 +47,11 @@ class ClientCapture implements ClientInterface
             $tran_ref = $values['tran_ref'];
             $response = $ptApi->verify_payment($tran_ref);
 
-            $response->pt_type = PaytabsEnum::TRAN_TYPE_SALE;
+            $response->pt_type = ClickPayEnum::TRAN_TYPE_SALE;
         } else {
             $response = $ptApi->request_followup($values);
 
-            $response->pt_type = PaytabsEnum::TRAN_TYPE_CAPTURE;
+            $response->pt_type = ClickPayEnum::TRAN_TYPE_CAPTURE;
         }
         $response->is_verify = $is_verify;
         

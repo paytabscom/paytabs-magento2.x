@@ -7,6 +7,8 @@
 
 namespace ClickPay\PayPage\Gateway\Request;
 
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
+use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
@@ -78,7 +80,7 @@ class AuthorizationRequest implements BuilderInterface
         $order_id = $payment->getOrder()->getIncrementId();
 
         if (!$preorder) {
-            ClickpayHelper::log("Auth is not working with Default mode!, Order [{$order_id}], Amount {$amount} {$currency}", 3);
+            ClickPayHelper::log("Auth is not working with Default mode!, Order [{$order_id}], Amount {$amount} {$currency}", 3);
             throw new \LogicException('Auth is not working with Default mode!');
         } else {
             // Collect the payment before placing the Order (It is Sale not Capture)

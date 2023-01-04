@@ -355,7 +355,7 @@ abstract class ClickPayEnum
     {
         return strcasecmp($tran_type1, $tran_type2) == 0;
     }
-    
+
 
     //
 
@@ -473,7 +473,7 @@ class ClickPayHolder
     public function set99PluginInfo($platform_name, $platform_version, $plugin_version = null)
     {
         if (!$plugin_version) {
-            $plugin_version = ClickPay_SDK_VERSION;
+            $plugin_version = CLICKPAY_SDK_VERSION;
         }
 
         $this->plugin_info = [
@@ -1215,7 +1215,7 @@ class ClickPayApi
             $_verify->success = false;
         } else {
             if (isset($verify->payment_result)) {
-    
+
                 $_verify->success = ClickpayEnum::TranStatusIsSuccess($verify->payment_result->response_status);
                 $_verify->is_on_hold = ClickpayEnum::TranStatusIsOnHold($verify->payment_result->response_status);
                 $_verify->is_pending = ClickpayEnum::TranStatusIsPending($verify->payment_result->response_status);

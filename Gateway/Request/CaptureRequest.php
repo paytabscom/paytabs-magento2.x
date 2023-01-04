@@ -14,6 +14,7 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 use ClickPay\PayPage\Gateway\Http\ClickPayEnum;
 use ClickPay\PayPage\Gateway\Http\ClickPayFollowupHolder;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
 use ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
 class CaptureRequest implements BuilderInterface
@@ -71,8 +72,8 @@ class CaptureRequest implements BuilderInterface
         $endpoint = $paymentMethod->getConfigData('endpoint');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-         // $preorder = (bool) $paymentMethod->getConfigData('payment_preorder');
-         $paymentAction = $paymentMethod->getConfigPaymentAction();
+        // $preorder = (bool) $paymentMethod->getConfigData('payment_preorder');
+        $paymentAction = $paymentMethod->getConfigPaymentAction();
 
         $transaction_id = $payment->getParentTransactionId();
         $reason = 'Admin request';
@@ -92,10 +93,10 @@ class CaptureRequest implements BuilderInterface
         }
 
         $order_id = $payment->getOrder()->getIncrementId();
-       
+
 
         if ($admin_request) {
-            ClickpayHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
+            ClickPayHelper::log("Init Capture!, Order [{$order_id}], Amount {$amount} {$currency}", 1);
 
             //
 
@@ -110,13 +111,12 @@ class CaptureRequest implements BuilderInterface
 
             //
 
-        $values = $pt_holder->pt_build();
             $pt_holder = new ClickpayFollowupHolder();
             $pt_holder
                 ->set02Transaction(ClickpayEnum::TRAN_TYPE_CAPTURE, ClickpayEnum::TRAN_CLASS_ECOM)
                 ->set03Cart($order_id, $currency, $amount, $reason)
                 ->set30TransactionInfo($transaction_id)
-                ->set99PluginInfo('Magento', $versionMagento, CLICKPAY_PAYPAGE_VERSION);
+                ->set99PluginInfo('Magento', $versionMagento, ClickPay_PAYPAGE_VERSION);
 
             $values = $pt_holder->pt_build();
         } else {
