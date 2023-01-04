@@ -130,11 +130,6 @@
             <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
         </arguments>
     </virtualType>
-    <virtualType name="PayPageValUConfig" type="Magento\Payment\Gateway\Config\Config">
-        <arguments>
-            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
-        </arguments>
-    </virtualType>
    
 
     <virtualType name="ClickPayVaultConfig" type="Magento\Payment\Gateway\Config\Config">
