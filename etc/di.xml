@@ -1,0 +1,716 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Payment Method Facade configuration -->
+
+    <virtualType name="PayPageAllFacade" type="ClickPay\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_ALL</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAll</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAll</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageCreditCardFacade" type="ClickPay\PayPage\Model\Creditcard">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolCreditCard</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageStcPayFacade" type="ClickPay\PayPage\Model\Stcpay">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolStcPay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolStcPay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageApplePayFacade" type="ClickPay\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolApplePay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolApplePay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageMadaFacade" type="ClickPay\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolMada</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolMada</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageSadadFacade" type="ClickPay\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolSadad</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolSadad</argument>
+        </arguments>
+    </virtualType>
+
+
+    <virtualType name="PayPageAmexFacade" type="ClickPay\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAmex</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAmex</argument>
+        </arguments>
+    </virtualType>
+
+
+    <virtualType name="ClickPayAllVaultFacade" type="ClickPay\PayPage\Gateway\ClickPayVault">
+        <arguments>
+            <argument name="config" xsi:type="object">ClickPayAllVaultPaymentConfig</argument>
+            <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_VAULT_ALL</argument>
+            <argument name="valueHandlerPool" xsi:type="object">ClickPayVaultValueHandlerPool</argument>
+            <argument name="vaultProvider" xsi:type="object">PayPageAllFacade</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ClickPayAllVaultPaymentConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_VAULT_ALL</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Payment Method Facade configuration -->
+
+
+    <!-- Configuration reader -->
+
+    <virtualType name="PayPageAllConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_ALL</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCreditCardConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageStcPayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageApplePayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageMadaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageSadadConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAmexConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValUConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
+        </arguments>
+    </virtualType>
+   
+
+    <virtualType name="ClickPayVaultConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_VAULT_ALL</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+
+
+    <!-- Commands infrastructure -->
+
+    <virtualType name="PayPageCommandPoolAll" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAll</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+
+                <item name="vault_authorize" xsi:type="string">PayPageVaultAuthorizeCommandAll</item>
+                <!-- <item name="vault_capture" xsi:type="string">PayPageVaultCaptureCommandAll</item> -->
+                <item name="vault_sale" xsi:type="string">PayPageVaultCaptureCommandAll</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolCreditCard" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolStcPay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandStcPay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolApplePay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandApplePay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolMada" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandMada</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolSadad" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandSadad</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageCommandPoolAmex" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandAmex</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Commands infrastructure -->
+
+
+    <!-- Init command -->
+
+    <virtualType name="PayPageInitCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">ClickPay\PayPage\Gateway\Request\InitRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <!-- <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\TxnIdHandler</argument> -->
+        </arguments>
+    </virtualType>
+
+    <!-- Init Request -->
+
+    <type name="ClickPay\PayPage\Gateway\Request\InitRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+
+    <!-- Authorize command -->
+
+    <virtualType name="PayPageAuthorizeCommandAll" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAll</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageVaultAuthorizeCommandAll" type="PayPageAuthorizeCommandAll">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageVaultAuthorizationRequestAll</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Vault\Client</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\FollowupHandler</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageVaultCaptureCommandAll" type="PayPageVaultAuthorizeCommandAll">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageVaultCaptureRequestAll</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="ClickPayCommandManager" type="Magento\Payment\Gateway\Command\CommandManager">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAll</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Payment\Gateway\Command\CommandManagerPool">
+        <arguments>
+            <argument name="executors" xsi:type="array">
+                <item name="all" xsi:type="string">ClickPayCommandManager</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <virtualType name="PayPageAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+             <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientAuth</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandStcPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestStcPay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandApplePay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestApplePay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandMada" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestMada</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandSadad" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestSadad</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizeCommandAmex" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestAmex</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Authorize command -->
+
+
+    <!-- Authorization Request -->
+
+    <virtualType name="PayPageAuthorizationRequestAll" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestAll</item>
+                <!-- <item name="vault" xsi:type="string">ClickPay\PayPage\Gateway\Request\VaultDataBuilder</item> -->
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageVaultAuthorizationRequestAll" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">VaultAuthorizationRequestAll</item>
+                <item name="vault_authenticate" xsi:type="string">VaultAuthenticateAll</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageVaultCaptureRequestAll" type="PayPageVaultAuthorizationRequestAll">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">VaultCaptureRequestAll</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestCreditCard</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestStcPay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestStcPay</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestApplePay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestApplePay</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestMada" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestMada</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestSadad" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestSadad</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAuthorizationRequestAmex" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestAmex</item>
+                <!-- <item name="mockData" xsi:type="string">ClickPay\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="AuthorizationRequestAll" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageAllConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="VaultAuthorizationRequestAll" type="ClickPay\PayPage\Gateway\Vault\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">ClickPayVaultConfig</argument>
+            <argument name="action" xsi:type="const">\ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction::PAYMENT_ACTION_AUTH</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="VaultCaptureRequestAll" type="ClickPay\PayPage\Gateway\Vault\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">ClickPayVaultConfig</argument>
+            <argument name="action" xsi:type="const">\ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction::PAYMENT_ACTION_SALE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="VaultAuthenticateAll" type="ClickPay\PayPage\Gateway\Vault\AuthenticateBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageAllConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestCreditCard" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestStcPay" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageStcPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestApplePay" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageApplePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestMada" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageMadaConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestSadad" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageSadadConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestAmex" type="ClickPay\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageAmexConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Capture command -->
+
+    <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">ClickPay\PayPage\Gateway\Request\CaptureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientCapture</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Capture Request -->
+
+    <type name="ClickPay\PayPage\Gateway\Request\CaptureRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Void command -->
+
+    <virtualType name="PayPageVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">ClickPay\PayPage\Gateway\Request\VoidRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientVoid</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Void Request -->
+
+    <type name="ClickPay\PayPage\Gateway\Request\VoidRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+
+    <!-- Refund command -->
+
+    <virtualType name="PayPageRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">ClickPay\PayPage\Gateway\Request\RefundRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientRefund</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="ClickPay\PayPage\Gateway\Request\RefundRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Refund command -->
+
+
+    <!-- Response handlers -->
+
+    <virtualType name="PayPageResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="txnid" xsi:type="string">ClickPay\PayPage\Gateway\Response\TxnIdHandler</item>
+                <item name="followup" xsi:type="string">ClickPay\PayPage\Gateway\Response\FollowupHandler</item>
+                <!-- <item name="fraud" xsi:type="string">ClickPay\PayPage\Gateway\Response\FraudHandler</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Response handlers -->
+
+
+    <!-- Value handlers infrastructure -->
+
+    <virtualType name="PayPageValueHandlerPoolAll" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAll</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolStcPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerStcPay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolApplePay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerApplePay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolMada" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerMada</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolSadad" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerSadad</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolAmex" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAmex</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+
+    <virtualType name="ClickPayVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">ClickPayConfigValueHandlerVault</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Value handlers infrastructure -->
+
+    <virtualType name="PayPageConfigValueHandlerAll" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAllConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerStcPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageStcPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerApplePay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageApplePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerMada" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageMadaConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerSadad" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageSadadConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerAmex" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAmexConfig</argument>
+        </arguments>
+    </virtualType>
+    
+    <virtualType name="ClickPayConfigValueHandlerVault" type="VaultPaymentDefaultValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">ClickPayVaultConfig</argument>
+        </arguments>
+    </virtualType>
+
+
+    <type name="ClickPay\PayPage\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </type>
+
+
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="MyOrderPlaceAfterPlugin" type="ClickPay\PayPage\Plugin\OrderServicePlugin" sortOrder="99" />
+    </type>
+    <type name="Magento\Framework\App\Request\CsrfValidator">
+        <plugin name="clickpay_csrf_validator_skip" type="ClickPay\PayPage\Plugin\CsrfValidatorSkip" />
+    </type>
+
+
+    <!-- Logger, initialized with PayPageCreditCardConfig -->
+
+    <virtualType name="PayPageLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="ClickPay\PayPage\Gateway\Http\Client\ClientMock">
+        <arguments>
+            <argument name="logger" xsi:type="object">PayPageLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+
+</config>

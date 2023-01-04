@@ -11,13 +11,21 @@ The Official Magento2 plugin for ClickPay
 *Note: Delete any previous ClickPay plugin.*
 
 1. Download the latest release of the plugin
-2. Upload the folder `ClickPay` to the magento2 installation directory: `app/code/`
+2. Upload the content of the folder to magento2 installation directory: `app/code/ClickPay/PayPage`
 3. Run the following Magento commands:
    1. `php bin/magento setup:upgrade`
    2. `php bin/magento setup:static-content:deploy`
    3. `php bin/magento cache:clean`
 
 - - -
+### Install using `Composer`
+
+1. `composer require clickpay/magento2`
+2. `php bin/magento setup:upgrade`
+3. `php bin/magento setup:static-content:deploy`
+4. `php bin/magento cache:clean`
+
+---
 
 ## Activating the Plugin
 

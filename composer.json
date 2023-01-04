@@ -1,0 +1,21 @@
+{
+    "name": "clickpay/paypage",
+    "type": "magento2-module",
+    "description": "3rd party payment gateway",
+    "version": "3.9.0",
+    "homepage": "https://paytabs.com",
+    "require": {
+        "php": "^7.1|^8.1",
+        "magento/module-sales": "101.0.*||102.0.*||103.0.*",
+        "magento/module-checkout": "100.2.*||100.3.*||100.4.*",
+        "magento/module-payment": "100.2.*||100.3.*||100.4.*",
+        "magento/module-vault": "101.0.*||101.1.*||101.2.*"
+    },
+    "license": "MIT",
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "ClickPay\\PayPage\\": ""
+        }
+    }
+}
