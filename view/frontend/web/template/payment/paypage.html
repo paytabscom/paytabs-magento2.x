@@ -10,12 +10,12 @@
                name="payment[method]"
                class="radio"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-               <label data-bind="attr: {'for': getCode()}" class="label">
-                <img alt="logo" class="payment-icon"
-                        data-bind="attr: {'src': getIcon()}, visible: hasIcon()"
-                        style="max-height: 30px;">
-                <span data-bind="text: getTitle()"></span>
-            </label>
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <img alt="logo" class="payment-icon"
+                    data-bind="attr: {'src': getIcon()}, visible: hasIcon()"
+                    style="max-height: 30px;">
+            <span data-bind="text: getTitle()"></span>
+        </label>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
@@ -47,7 +47,7 @@
         <!-- /ko -->
 
         <!-- Dispaly the ClickPay iFrame here -->
-        <div class="ClickPay_iframe">
+        <div class="clickpay_iframe">
             <div>
                 <img
                     data-bind="attr: {'id': 'pt_loader_' + getCode(), 'src': window.checkoutConfig.pt_icons.logo_animation}"
@@ -56,18 +56,18 @@
         </div>
 
         <div
-        data-bind="visible: shippingExcluded()"
-        class="clickpay_shipping" style="margin: 10px; color: #c92f24;">
-            <span>
-                <span data-bind="text: '(' + shippingTotal() + ')'"></span>
-                Shipping amount will be excluded from the online payment,
-                You have to pay them at the delivery time.
-            </span>
+            data-bind="visible: shippingExcluded()"
+            class="clickpay_shipping" style="margin: 10px; color: #c92f24;">
+                <span>
+                    <span data-bind="text: '(' + shippingTotal() + ')'"></span>
+                    Shipping amount will be excluded from the online payment,
+                    You have to pay them at the delivery time.
+                </span>
         </div>
-        
+
         <div
             data-bind="visible: isPaymentPreorder()"
-            class="ClickPay_ref" style="margin-top: 10px; color: #2c89db;"></div>
+            class="clickpay_ref" style="margin-top: 10px; color: #2c89db;"></div>
 
         <div class="actions-toolbar">
             <div class="primary">
@@ -92,4 +92,3 @@
         </div>
     </div>
 </div>
-        

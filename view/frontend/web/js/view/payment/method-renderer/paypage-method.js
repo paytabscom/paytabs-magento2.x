@@ -104,6 +104,7 @@ define(
                 if (isPreorder) {
                     return this._super();
                 }
+
                 try {
                     let quoteId = quote.getQuoteId();
 
@@ -120,6 +121,7 @@ define(
                     });
                 }
             },
+
 
             ptPaymentCollect: function (data, event) {
                 if (!this.isPaymentPreorder()) {
@@ -197,6 +199,12 @@ define(
                     .done(function (result) {
                         // console.log(result);
                         if (result && result.success) {
+                            try {
+                                let tran_ref = result.tran_ref;
+                                $('.payment-method._active .clickpay_ref').text('Payment reference: ' + tran_ref);
+                            } catch (error) {
+                                console.log(error);
+                            }
                             var redirectURL = result.payment_url;
                             let framed_mode = page.isFramed() || page.isPaymentPreorder();
 
@@ -248,6 +256,7 @@ define(
                                     }
                                 }]
                             });
+
                             page.pt_start_payment_ui(false);
                         }
                     })
@@ -261,6 +270,7 @@ define(
                         page.pt_start_payment_ui(false);
                     });
             },
+
             pt_start_payment_ui: function (is_start) {
                 if (is_start) {
                     $('.payment-method._active .btn_place_order').hide('fast');
@@ -281,6 +291,9 @@ define(
                     'width': '100%',
                     'height': '450px'
                 });
+
+                // Append the iFrame to correct payment method
+                $(pt_iframe).appendTo($('.payment-method._active .clickpay_iframe'));
 
                 // Hide the Address & Actions sections
                 this.displayIframeUI(true);
@@ -367,7 +380,6 @@ define(
                 return typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     window.checkoutConfig.payment[this.getCode()].currency_select == 'order_currency';
             },
-
         });
     }
 );
