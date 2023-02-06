@@ -170,4 +170,16 @@ trait PaytabsHelpers
             return null;
         }
     }
+
+    // Add a prefix to all Keys (array should associative array, like [$k => $v])
+    // returns new array
+    function pt_add_prefix_to_keys($array, $prefix)
+    {
+        $new_array = [];
+        foreach ($array as $k => $v) {
+            $new_array[$prefix . $k] = $v;
+        }
+
+        return $new_array;
+    }
 }
