@@ -222,6 +222,13 @@ class Callback extends Action
             $_tran_details['previous_tran'] = $pt_prev_tran_ref;
         }
 
+        // Add valU values as a transaction details
+        if (isset($verify_response->valU)) {
+            $valu_values = (array)$verify_response->valU;
+            $valu_values = $this->pt_add_prefix_to_keys($valu_values, 'valu_');
+            $_tran_details = array_merge($_tran_details, $valu_values);
+        }
+
         $payment
             ->setTransactionId($transaction_ref)
             ->setTransactionAdditionalinfo($this->_row_details, $_tran_details);

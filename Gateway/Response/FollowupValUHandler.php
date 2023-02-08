@@ -96,7 +96,10 @@ class FollowupValUHandler implements HandlerInterface
         //
 
         if (array_key_exists('valU', $response)) {
-            $this->pt_handle_valu($response['valU'], $payment->getOrder());
+            $valu_values = (array)$response['valU'];
+            $valu_values = $this->pt_add_prefix_to_keys($valu_values, 'valu_');
+
+            $transaction_info = array_merge($transaction_info, $valu_values);
         } else {
             PaytabsHelper::log("valU params not found, $tran_ref", 2);
         }
@@ -110,16 +113,5 @@ class FollowupValUHandler implements HandlerInterface
                 \Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS,
                 $transaction_info
             );
-    }
-
-
-    private function pt_handle_valu($valu_values, $order)
-    {
-        $valu = (array) $valu_values;
-        $valu_str = '';
-        foreach ($valu as $k => $v) {
-            $valu_str .= " [$k = $v], ";
-        }
-        $order->addStatusHistoryComment("valU: $valu_str");
     }
 }

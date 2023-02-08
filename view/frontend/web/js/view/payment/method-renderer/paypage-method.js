@@ -158,7 +158,7 @@ define(
                 let page = this;
                 page.payment_info.ready = true;
 
-                $(pt_iframe).load(function () {
+                $(pt_iframe).on("load", function () {
                     let c = $(this).contents().find("body").html();
                     console.log('iframe ', c);
 
@@ -189,7 +189,6 @@ define(
                     payload = {
                         quote: quoteId,
                         vault: Number(this.vaultEnabler.isActivePaymentTokenEnabler()),
-                        guest: Number(!customer.isLoggedIn()),
                         method: this.getCode()
                     };
                 }
@@ -317,7 +316,7 @@ define(
                 let iframe_id = '#pt_iframe_' + code;
                 let loader_id = '#pt_loader_' + code;
 
-                $(iframe_id).load(function () {
+                $(iframe_id).on("load", function () {
                     $(loader_id).hide('fast');
                 });
 

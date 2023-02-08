@@ -1253,6 +1253,9 @@
         <plugin name="paytabs_csrf_validator_skip" type="PayTabs\PayPage\Plugin\CsrfValidatorSkip" />
     </type>
 
+    <type name="Magento\Framework\Session\SessionStartChecker">
+        <plugin name="paytabs_transparent_session_checker" type="PayTabs\PayPage\Plugin\TransparentSessionChecker" />
+    </type>
 
     <!-- Logger, initialized with PayPageCreditCardConfig -->
 
