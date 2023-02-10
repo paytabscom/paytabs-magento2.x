@@ -38,7 +38,7 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.11.0
+ * Version: 2.11.1
  * PHP >= 7.0.0
  */
 
@@ -639,6 +639,12 @@ abstract class PaytabsBasicHolder extends PaytabsHolder
         }
 
         // 'creditcard' => ['creditcard', 'mada', 'omannet', 'meeza']
+
+        foreach ($codes as &$code) {
+            if (substr($code, 0, 3) === "pt_") {
+                $code = substr($code, 3);
+            }
+        }
 
         $this->payment_code = ['payment_methods' => $codes];
 
