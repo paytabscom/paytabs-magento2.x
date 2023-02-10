@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.10.2
+ * Version: 2.11.0
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.10.2');
+define('PAYTABS_SDK_VERSION', '2.11.0');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -974,14 +974,14 @@ class PaytabsApi
         '0'  => ['name' => 'all', 'title' => 'PayTabs - All', 'currencies' => null, 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '1'  => ['name' => 'stcpay', 'title' => 'PayTabs - StcPay', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '2'  => ['name' => 'stcpayqr', 'title' => 'PayTabs - StcPay(QR)', 'currencies' => ['SAR'], 'groups' => []],
-        '3'  => ['name' => 'applepay', 'title' => 'PayTabs - ApplePay', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_AUTH_CAPTURE]],
+        '3'  => ['name' => 'applepay', 'title' => 'PayTabs - ApplePay', 'currencies' => ['AED', 'SAR', 'ILS'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_AUTH_CAPTURE]],
         '4'  => ['name' => 'omannet', 'title' => 'PayTabs - OmanNet', 'currencies' => ['OMR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_IFRAME]],
         '5'  => ['name' => 'mada', 'title' => 'PayTabs - mada', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '6'  => ['name' => 'creditcard', 'title' => 'PayTabs - CreditCard', 'currencies' => null, 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '7'  => ['name' => 'sadad', 'title' => 'PayTabs - Sadad', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '8'  => ['name' => 'fawry', 'title' => 'PayTabs - @Fawry', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '9'  => ['name' => 'knet', 'title' => 'PayTabs - KnPay', 'currencies' => ['KWD'], 'groups' => [PaytabsApi::GROUP_CARDS]],
-        '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
+        '10' => ['name' => 'amex', 'title' => 'PayTabs - Amex', 'currencies' => ['AED', 'SAR', 'USD'], 'groups' => [PaytabsApi::GROUP_TOKENIZE, PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_CARDS_INTERNATIONAL, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '11' => ['name' => 'valu', 'title' => 'PayTabs - valU', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '12' => ['name' => 'meeza', 'title' => 'PayTabs - Meeza', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_AUTH_CAPTURE, PaytabsApi::GROUP_IFRAME]],
         '13' => ['name' => 'meezaqr', 'title' => 'PayTabs - Meeza (QR)', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
@@ -1020,6 +1020,10 @@ class PaytabsApi
         'IRQ' => [
             'title' => 'Iraq',
             'endpoint' => 'https://secure-iraq.paytabs.com/'
+        ],
+        'PSE' => [
+            'title' => 'Palestine',
+            'endpoint' => 'https://secure-palestine.paytabs.com/'
         ],
         'GLOBAL' => [
             'title' => 'Global',
@@ -1291,6 +1295,8 @@ class PaytabsApi
         $_verify->reference_no = @$verify->cart_id;
         $_verify->transaction_id = @$verify->tran_ref;
 
+        $_verify->failed = !($_verify->success || $_verify->is_on_hold || $_verify->is_pending);
+
         return $_verify;
     }
 
@@ -1318,6 +1324,8 @@ class PaytabsApi
             $_verify->transaction_id = $return_data['tranRef'];
             $_verify->reference_no = $return_data['cartId'];
         }
+
+        $_verify->failed = !($_verify->success || $_verify->is_on_hold || $_verify->is_pending);
 
         return $_verify;
     }
