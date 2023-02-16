@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.11.0
+ * Version: 2.11.2
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.11.0');
+define('PAYTABS_SDK_VERSION', '2.11.2');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -640,6 +640,12 @@ abstract class PaytabsBasicHolder extends PaytabsHolder
 
         // 'creditcard' => ['creditcard', 'mada', 'omannet', 'meeza']
 
+        foreach ($codes as &$code) {
+            if (substr($code, 0, 3) === "pt_") {
+                $code = substr($code, 3);
+            }
+        }
+
         $this->payment_code = ['payment_methods' => $codes];
 
         return $this;
@@ -991,7 +997,7 @@ class PaytabsApi
         '17' => ['name' => 'knetcredit', 'title' => 'PayTabs - KnPay (Credit)', 'currencies' => ['KWD'], 'groups' => []],
         '18' => ['name' => 'aman', 'title' => 'PayTabs - Aman', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '19' => ['name' => 'urpay', 'title' => 'PayTabs - UrPay', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
-        '20' => ['name' => 'paypal', 'title' => 'PayTabs - PayPal', 'currencies' => ['USD', 'EUR', 'GPB', 'HKD', 'JPY'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '20' => ['name' => 'paypal', 'title' => 'PayTabs - PayPal', 'currencies' => ['USD', 'EUR', 'GPB', 'HKD', 'JPY'], 'groups' => []],
         '21' => ['name' => 'installment', 'title' => 'PayTabs - Installment', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '22' => ['name' => 'touchpoints', 'title' => 'PayTabs - Touchpoints', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
     ];
