@@ -26,6 +26,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_MEEZAQR    = 'meezaqr';
     const CODE_UNIONPAY   = 'unionpay';
     const CODE_PAYPAL     = 'pt_paypal';
+    const CODE_NBE_INSTALLMENT = 'pt_nbe_installment';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -95,6 +96,9 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_PAYPAL => [
                 'icon' => 'paypal.svg'
+            ],
+            self::CODE_NBE_INSTALLMENT => [
+                'icon' => 'nbe-installment.png'
             ],
 
             self::CODE_VAULT_ALL => [
