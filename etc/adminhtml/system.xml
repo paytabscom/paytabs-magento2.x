@@ -1616,6 +1616,11 @@
                     </depends>
                 </field>
 
+                <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>

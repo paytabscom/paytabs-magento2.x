@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.11.2
+ * Version: 2.11.3
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.11.2');
+define('PAYTABS_SDK_VERSION', '2.11.3');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -998,8 +998,8 @@ class PaytabsApi
         '18' => ['name' => 'aman', 'title' => 'PayTabs - Aman', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '19' => ['name' => 'urpay', 'title' => 'PayTabs - UrPay', 'currencies' => ['SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
         '20' => ['name' => 'paypal', 'title' => 'PayTabs - PayPal', 'currencies' => ['USD', 'EUR', 'GPB', 'HKD', 'JPY'], 'groups' => []],
-        '21' => ['name' => 'installment', 'title' => 'PayTabs - Installment', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
-        '22' => ['name' => 'touchpoints', 'title' => 'PayTabs - Touchpoints', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '21' => ['name' => 'installment', 'title' => 'PayTabs - Installment', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_IFRAME]],
+        '22' => ['name' => 'touchpoints', 'title' => 'PayTabs - Touchpoints', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_IFRAME]],
     ];
 
     const BASE_URLS = [
