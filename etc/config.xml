@@ -642,6 +642,8 @@
 
                 <currency_select>base_currency</currency_select>
 
+                <allow_associated_methods>0</allow_associated_methods>
+
                 <can_initialize>1</can_initialize>
                 <can_authorize>0</can_authorize>
                 <can_capture>1</can_capture>
