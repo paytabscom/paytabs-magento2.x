@@ -1487,7 +1487,7 @@
             </group>
 
 
-            <group id="pt_paypal" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="paypal" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - PayPal</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -1569,7 +1569,7 @@
             </group>
 
 
-            <group id="pt_nbe_installment" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="installment" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - NBE Installment</label>
 
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">

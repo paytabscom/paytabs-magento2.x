@@ -25,8 +25,8 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_MEEZA      = 'meeza';
     const CODE_MEEZAQR    = 'meezaqr';
     const CODE_UNIONPAY   = 'unionpay';
-    const CODE_PAYPAL     = 'pt_paypal';
-    const CODE_NBE_INSTALLMENT = 'pt_nbe_installment';
+    const CODE_PAYPAL     = 'paypal';
+    const CODE_NBE_INSTALLMENT = 'installment';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 

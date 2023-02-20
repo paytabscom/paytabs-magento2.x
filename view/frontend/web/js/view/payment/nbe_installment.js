@@ -16,7 +16,7 @@ define(
         'use strict';
         rendererList.push(
             {
-                type: 'pt_nbe_installment',
+                type: 'installment',
                 component: 'PayTabs_PayPage/js/view/payment/method-renderer/paypage-method'
             }
         );

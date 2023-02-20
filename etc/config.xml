@@ -592,7 +592,7 @@
             </unionpay>
 
 
-            <pt_paypal>
+            <paypal>
                 <active>0</active>
                 <title>PayTabs - PayPal</title>
                 <order_status>pending_payment</order_status>
@@ -623,10 +623,10 @@
                 <is_offline>0</is_offline>
 
                 <sort_order>19</sort_order>
-            </pt_paypal>
+            </paypal>
 
 
-            <pt_nbe_installment>
+            <installment>
                 <active>0</active>
                 <title>PayTabs - NBE Installment</title>
                 <order_status>pending_payment</order_status>
@@ -659,7 +659,7 @@
                 <is_offline>0</is_offline>
 
                 <sort_order>20</sort_order>
-            </pt_nbe_installment>
+            </installment>
 
 
             <paytabs_all_vault>
