@@ -101,6 +101,9 @@
                 <group id="payment_link" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links (Beta)</label>
                     <comment>Provide a new way to share the payment link with your Customers to pay for their Orders later</comment>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
 
                     <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Generate and Show a new Payment link</label>
@@ -264,6 +267,9 @@
                 <group id="payment_link" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links (Beta)</label>
                     <comment>Provide a new way to share the payment link with your Customers to pay for their Orders later</comment>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
 
                     <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Generate and Show a new Payment link</label>
@@ -1292,6 +1298,9 @@
                 <group id="payment_link" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links (Beta)</label>
                     <comment>Provide a new way to share the payment link with your Customers to pay for their Orders later</comment>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
 
                     <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Generate and Show a new Payment link</label>
