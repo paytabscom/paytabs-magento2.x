@@ -83,9 +83,18 @@
 
                 <group id="payment_link" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links</label>
+
                     <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Generate and Show a new Payment link</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+
+                    <field id="pl_flagged_order_only" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow re-pay on flagged Orders only</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
                     </field>
 
                     <field id="pl_customer_view" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -106,7 +115,8 @@
 
                     <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                         <label>Allow Cancelled orders since (in days)</label>
-                        <validate>validate-digits</validate>
+                        <comment>Cancelled Orders since more than (this option) days, can not be re-paied</comment>
+                        <validate>integer</validate>
                         <depends>
                             <field id="pl_allow_on_cancelled">1</field>
                         </depends>

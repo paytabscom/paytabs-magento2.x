@@ -34,9 +34,17 @@ class OrderServicePlugin
                         $baseurl = $storeManager->getStore()->getBaseUrl();
 
                         $pay_url = "{$baseurl}paytabs/paypage/pay?order={$order->getId()}";
+                        $comment = "The payment link: <strong>{$pay_url}</strong>";
 
                         $order
-                            ->addCommentToStatusHistory("The payment link: <strong>{$pay_url}</strong>", false, $isVisibleToCustomer)
+                            ->addCommentToStatusHistory($comment, false, $isVisibleToCustomer)
+                            ->save();
+
+                        $payment
+                            ->setAdditionalInformation(
+                                'pt_paylink_enabled',
+                                true
+                            )
                             ->save();
                     }
                 }

@@ -151,6 +151,16 @@ class Pay extends Action
             }
         }
 
+        $isFlaggedOrderOnly = (bool) $paymentMethod->getConfigData('payment_link/pl_flagged_order_only');
+        if ($isFlaggedOrderOnly) {
+            $orderIsFlagged = (bool) $order->getPayment()->getAdditionalInformation('pt_paylink_enabled');
+            if (!$orderIsFlagged) {
+                PaytabsHelper::log("Paytabs - Payment link: Order is not Flagged!, Order [{$orderId}]", 2);
+                $this->messageManager->addWarningMessage('The Order does not accept Re-Pay');
+                return $resultRedirect;
+            }
+        }
+
 
         $paypage = $this->prepare($order);
 
@@ -181,7 +191,12 @@ class Pay extends Action
     }
 
 
-    function prepare($order)
+    private function _validate($order)
+    {
+    }
+
+
+    private function prepare($order)
     {
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethodInstance();
