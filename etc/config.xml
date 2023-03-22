@@ -52,6 +52,10 @@
 
                 <payment_preorder>0</payment_preorder>
 
+                <payment_link>
+                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                </payment_link>
+
             </all>
 
 

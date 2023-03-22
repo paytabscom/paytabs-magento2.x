@@ -81,6 +81,38 @@
                     </depends>
                 </field>
 
+                <group id="payment_link" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment links</label>
+                    <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Generate and Show a new Payment link</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+
+                    <field id="pl_customer_view" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Show the payment link to the Customer</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
+                    </field>
+
+                    <field id="pl_allow_on_cancelled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow re-pay on Cancelled Orders</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
+                    </field>
+
+                    <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Allow Cancelled orders since (in days)</label>
+                        <validate>validate-digits</validate>
+                        <depends>
+                            <field id="pl_allow_on_cancelled">1</field>
+                        </depends>
+                    </field>
+                </group>
+
                 <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Re-Fill the Cart if Payment failed</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

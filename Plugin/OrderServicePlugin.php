@@ -2,6 +2,7 @@
 
 namespace PayTabs\PayPage\Plugin;
 
+use Exception;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig;
@@ -18,7 +19,30 @@ class OrderServicePlugin
     {
         // $orderId = $order->getId();
 
-        // do something with order object (Interceptor )
+        if ($this->is_admin_created($order)) {
+            try {
+                $payment = $order->getPayment();
+                $paymentMethod = $payment->getMethodInstance();
+
+                if (PaytabsHelper::isPayTabsPayment($paymentMethod->getCode())) {
+                    $isGenerateEnabled = (bool) $paymentMethod->getConfigData('payment_link/pl_enabled');
+                    $isVisibleToCustomer = (bool) $paymentMethod->getConfigData('payment_link/pl_customer_view');
+
+                    if ($isGenerateEnabled) {
+                        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                        $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+                        $baseurl = $storeManager->getStore()->getBaseUrl();
+
+                        $pay_url = "{$baseurl}paytabs/paypage/pay?order={$order->getId()}";
+
+                        $order
+                            ->addCommentToStatusHistory("The payment link: <strong>{$pay_url}</strong>", false, $isVisibleToCustomer)
+                            ->save();
+                    }
+                }
+            } catch (Exception $ex) {
+            }
+        }
 
         return $order;
     }
@@ -34,6 +58,13 @@ class OrderServicePlugin
         // your custom code
 
         return $return;
+    }
+
+
+    // Check if the Admin user created this Order
+    private function is_admin_created($order)
+    {
+        return empty($order->getRemoteIp());
     }
 
 
