@@ -10,13 +10,10 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
-use Magento\Framework\View\Result\PageFactory;
-use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
-use Magento\Vault\Model\Ui\VaultConfigProvider;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
-use stdClass;
+
 
 /**
  * Class Index
@@ -25,52 +22,28 @@ class Pay extends Action
 {
     use PaytabsHelpers;
 
-    /**
-     * @var PageFactory
-     */
-    private $pageFactory;
 
-    private $jsonResultFactory;
     protected $orderRepository;
-    protected $_orderFactory;
-    protected $quoteRepository;
-    protected $checkoutSession;
+
     protected $_customerSession;
 
     private $paytabs;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    // protected $_logger;
 
     /**
      * @param Context $context
-     * @param PageFactory $pageFactory
      */
     public function __construct(
         Context $context,
-        PageFactory $pageFactory,
-        \Magento\Framework\Controller\Result\JsonFactory $jsonResultFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession
-        // \Psr\Log\LoggerInterface $logger
+        \Magento\Customer\Model\Session $customerSession
     ) {
         parent::__construct($context);
 
-        $this->_orderFactory = $orderFactory;
-        $this->pageFactory = $pageFactory;
-        $this->jsonResultFactory = $jsonResultFactory;
         $this->orderRepository = $orderRepository;
-        $this->quoteRepository = $quoteRepository;
 
-        $this->checkoutSession = $checkoutSession;
         $this->_customerSession = $customerSession;
 
-        // $this->_logger = $logger;
         $this->paytabs = new \PayTabs\PayPage\Gateway\Http\Client\Api;
         new PaytabsCore();
     }

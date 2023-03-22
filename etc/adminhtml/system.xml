@@ -83,6 +83,7 @@
 
                 <group id="payment_link" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links</label>
+                    <comment>Provide a new way to share the payment link with your Customers to pay for their Orders later</comment>
 
                     <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Generate and Show a new Payment link</label>
@@ -91,6 +92,7 @@
 
                     <field id="pl_flagged_order_only" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Allow re-pay on flagged Orders only</label>
+                        <comment>Allow customers to re-pay orders that are only associated with a generated payment link</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <depends>
                             <field id="pl_enabled">1</field>
@@ -115,9 +117,10 @@
 
                     <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                         <label>Allow Cancelled orders since (in days)</label>
-                        <comment>Cancelled Orders since more than (this option) days, can not be re-paied</comment>
-                        <validate>integer</validate>
+                        <comment>Cancelled Orders which created since more than (this option) days, can not be re-paied</comment>
+                        <validate>integer not-negative-amount</validate>
                         <depends>
+                            <field id="pl_enabled">1</field>
                             <field id="pl_allow_on_cancelled">1</field>
                         </depends>
                     </field>
