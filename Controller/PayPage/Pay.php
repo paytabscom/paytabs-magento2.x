@@ -91,76 +91,13 @@ class Pay extends Action
         }
 
         $order = $this->getOrder($orderId);
-        if (!$order) {
-            PaytabsHelper::log("Paytabs: Order is missing!, ID [{$orderId}]", 3);
+
+        $passed = $this->_validate($order, $orderId);
+        if (!$passed) {
             return $resultRedirect;
         }
 
-        $isLoggedIn = $this->_customerSession->isLoggedIn();
-        if (!$isLoggedIn) {
-            PaytabsHelper::log("Paytabs - Payment link: Customer is not logged in, Order [{$orderId}]", 2);
-            $this->messageManager->addWarningMessage('Please Login and try again');
-            return $resultRedirect;
-        }
-
-        if ($order->getCustomerID() != $this->_customerSession->getCustomerId()) {
-            PaytabsHelper::log("Paytabs - Payment link: Order is not for the Customer!, Order [{$orderId}], Customer [{$order->getCustomerID()}]", 3);
-            return $resultRedirect;
-        }
-
-        $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethodInstance();
-        if (!PaytabsHelper::isPayTabsPayment($paymentMethod->getCode())) {
-            PaytabsHelper::log("Paytabs - Payment link: Order not linked to PayTabs!, Order [{$orderId}]", 3);
-            return $resultRedirect;
-        }
-
-        $isGenerateEnabled = (bool) $paymentMethod->getConfigData('payment_link/pl_enabled');
-        if (!$isGenerateEnabled) {
-            PaytabsHelper::log("Paytabs - Payment link: Disabled!, Order [{$orderId}]", 2);
-            $this->messageManager->addWarningMessage('Please Contact the Site administrator, Payment links are disabled');
-            return $resultRedirect;
-        }
-
-        $allowed_states = [
-            \Magento\Sales\Model\Order::STATE_NEW,
-            \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT
-        ];
-
-        $isCancelAllowed = (bool) $paymentMethod->getConfigData('payment_link/pl_allow_on_cancelled');
-        if ($isCancelAllowed) {
-            $allowed_states[] = \Magento\Sales\Model\Order::STATE_CANCELED;
-        }
-
-        if (!in_array($order->getState(), $allowed_states)) {
-            PaytabsHelper::log("Paytabs - Payment link: Order state not in the list!, Order [{$orderId}] [{$order->getState()}]", 2);
-            $this->messageManager->addWarningMessage('Please check your Order status again');
-            return $resultRedirect;
-        }
-
-        if ($order->getState() == \Magento\Sales\Model\Order::STATE_CANCELED) {
-            $cancelledDays = (int) $paymentMethod->getConfigData('payment_link/pl_allow_on_cancelled_since');
-
-            $createdAt = new DateTime($order->getCreatedAt());
-            $interval = (new DateTime())->diff($createdAt)->days;
-
-            if ($cancelledDays != 0 && $interval > $cancelledDays) {
-                PaytabsHelper::log("Paytabs - Payment link: Order created since {$interval} days!, Order [{$orderId}], [{$cancelledDays}]", 2);
-                $this->messageManager->addWarningMessage('The Order exceeds the time allowed');
-                return $resultRedirect;
-            }
-        }
-
-        $isFlaggedOrderOnly = (bool) $paymentMethod->getConfigData('payment_link/pl_flagged_order_only');
-        if ($isFlaggedOrderOnly) {
-            $orderIsFlagged = (bool) $order->getPayment()->getAdditionalInformation('pt_paylink_enabled');
-            if (!$orderIsFlagged) {
-                PaytabsHelper::log("Paytabs - Payment link: Order is not Flagged!, Order [{$orderId}]", 2);
-                $this->messageManager->addWarningMessage('The Order does not accept Re-Pay');
-                return $resultRedirect;
-            }
-        }
-
+        //
 
         $paypage = $this->prepare($order);
 
@@ -191,8 +128,79 @@ class Pay extends Action
     }
 
 
-    private function _validate($order)
+    private function _validate($order, $orderId)
     {
+        if (!$order) {
+            PaytabsHelper::log("Paytabs: Order is missing!, ID [{$orderId}]", 3);
+            return false;
+        }
+
+        $isLoggedIn = $this->_customerSession->isLoggedIn();
+        if (!$isLoggedIn) {
+            PaytabsHelper::log("Paytabs - Payment link: Customer is not logged in, Order [{$orderId}]", 2);
+            $this->messageManager->addWarningMessage('Please Login and try again');
+            return false;
+        }
+
+        if ($order->getCustomerID() != $this->_customerSession->getCustomerId()) {
+            PaytabsHelper::log("Paytabs - Payment link: Order is not for the Customer!, Order [{$orderId}], Customer [{$order->getCustomerID()}]", 3);
+            return false;
+        }
+
+        $payment = $order->getPayment();
+        $paymentMethod = $payment->getMethodInstance();
+        if (!PaytabsHelper::isPayTabsPayment($paymentMethod->getCode())) {
+            PaytabsHelper::log("Paytabs - Payment link: Order not linked to PayTabs!, Order [{$orderId}]", 3);
+            return false;
+        }
+
+        $isGenerateEnabled = (bool) $paymentMethod->getConfigData('payment_link/pl_enabled');
+        if (!$isGenerateEnabled) {
+            PaytabsHelper::log("Paytabs - Payment link: Disabled!, Order [{$orderId}]", 2);
+            $this->messageManager->addWarningMessage('Please Contact the Site administrator, Payment links are disabled');
+            return false;
+        }
+
+        $allowed_states = [
+            \Magento\Sales\Model\Order::STATE_NEW,
+            \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT
+        ];
+
+        $isCancelAllowed = (bool) $paymentMethod->getConfigData('payment_link/pl_allow_on_cancelled');
+        if ($isCancelAllowed) {
+            $allowed_states[] = \Magento\Sales\Model\Order::STATE_CANCELED;
+        }
+
+        if (!in_array($order->getState(), $allowed_states)) {
+            PaytabsHelper::log("Paytabs - Payment link: Order state not in the list!, Order [{$orderId}] [{$order->getState()}]", 2);
+            $this->messageManager->addWarningMessage('Please check your Order status again');
+            return false;
+        }
+
+        if ($order->getState() == \Magento\Sales\Model\Order::STATE_CANCELED) {
+            $cancelledDays = (int) $paymentMethod->getConfigData('payment_link/pl_allow_on_cancelled_since');
+
+            $createdAt = new DateTime($order->getCreatedAt());
+            $interval = (new DateTime())->diff($createdAt)->days;
+
+            if ($cancelledDays != 0 && $interval > $cancelledDays) {
+                PaytabsHelper::log("Paytabs - Payment link: Order created since {$interval} days!, Order [{$orderId}], [{$cancelledDays}]", 2);
+                $this->messageManager->addWarningMessage('The Order exceeds the time allowed');
+                return false;
+            }
+        }
+
+        $isFlaggedOrderOnly = (bool) $paymentMethod->getConfigData('payment_link/pl_flagged_order_only');
+        if ($isFlaggedOrderOnly) {
+            $orderIsFlagged = (bool) $order->getPayment()->getAdditionalInformation('pt_paylink_enabled');
+            if (!$orderIsFlagged) {
+                PaytabsHelper::log("Paytabs - Payment link: Order is not Flagged!, Order [{$orderId}]", 2);
+                $this->messageManager->addWarningMessage('The Order does not accept Re-Pay');
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
