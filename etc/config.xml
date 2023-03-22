@@ -101,6 +101,10 @@
 
                 <payment_preorder>0</payment_preorder>
 
+                <payment_link>
+                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                </payment_link>
+
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>FRAUD_MSG_LIST</paymentInfoKeys>
                 <privateInfoKeys>FRAUD_MSG_LIST</privateInfoKeys> -->
@@ -500,6 +504,9 @@
 
                 <payment_preorder>0</payment_preorder>
 
+                <payment_link>
+                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                </payment_link>
             </valu>
 
 
