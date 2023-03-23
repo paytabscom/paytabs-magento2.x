@@ -150,14 +150,14 @@ class Pay extends Action
             return false;
         }
 
-        if ($order->getState() == \Magento\Sales\Model\Order::STATE_CANCELED) {
-            $cancelledDays = (int) $paymentMethod->getConfigData('payment_link/pl_allow_on_cancelled_since');
+        $allowedInterval = max((int) $paymentMethod->getConfigData('payment_link/pl_allow_interval'), 0);
+        if ($allowedInterval > 0) {
+            $diff = (new DateTime())->diff(new DateTime($order->getCreatedAt()));
+            $intervalInHours = ($diff->days * 24) + $diff->h;
+            $allowedInHours = $allowedInterval * 24;
 
-            $createdAt = new DateTime($order->getCreatedAt());
-            $interval = (new DateTime())->diff($createdAt)->days;
-
-            if ($cancelledDays != 0 && $interval > $cancelledDays) {
-                PaytabsHelper::log("Paytabs - Payment link: Order created since {$interval} days!, Order [{$orderId}], [{$cancelledDays}]", 2);
+            if ($intervalInHours > $allowedInHours) {
+                PaytabsHelper::log("Paytabs - Payment link: Order created since {$intervalInHours} hours!, Order [{$orderId}], [Allowed {$allowedInterval} days]", 2);
                 $this->messageManager->addWarningMessage('The Order exceeds the time allowed');
                 return false;
             }

@@ -53,7 +53,7 @@
                 <payment_preorder>0</payment_preorder>
 
                 <payment_link>
-                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                    <pl_allow_interval>3</pl_allow_interval>
                 </payment_link>
 
             </all>
@@ -102,7 +102,7 @@
                 <payment_preorder>0</payment_preorder>
 
                 <payment_link>
-                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                    <pl_allow_interval>3</pl_allow_interval>
                 </payment_link>
 
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
@@ -505,7 +505,7 @@
                 <payment_preorder>0</payment_preorder>
 
                 <payment_link>
-                    <pl_allow_on_cancelled_since>3</pl_allow_on_cancelled_since>
+                    <pl_allow_interval>3</pl_allow_interval>
                 </payment_link>
             </valu>
 

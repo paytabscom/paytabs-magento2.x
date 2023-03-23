@@ -135,13 +135,12 @@
                         </depends>
                     </field>
 
-                    <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                        <label>Allow Cancelled orders since (in days)</label>
-                        <comment>Cancelled Orders which created since more than (this option) days, can not be re-paied</comment>
+                    <field id="pl_allow_interval" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Allowed interval (in days)</label>
+                        <comment>Created Orders since more than (this option) days, can not be re-paied</comment>
                         <validate>integer not-negative-amount</validate>
                         <depends>
                             <field id="pl_enabled">1</field>
-                            <field id="pl_allow_on_cancelled">1</field>
                         </depends>
                     </field>
                 </group>
@@ -301,13 +300,12 @@
                         </depends>
                     </field>
 
-                    <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                        <label>Allow Cancelled orders since (in days)</label>
-                        <comment>Cancelled Orders which created since more than (this option) days, can not be re-paied</comment>
+                    <field id="pl_allow_interval" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Allowed interval (in days)</label>
+                        <comment>Created Orders since more than (this option) days, can not be re-paied</comment>
                         <validate>integer not-negative-amount</validate>
                         <depends>
                             <field id="pl_enabled">1</field>
-                            <field id="pl_allow_on_cancelled">1</field>
                         </depends>
                     </field>
                 </group>
@@ -1332,13 +1330,12 @@
                         </depends>
                     </field>
 
-                    <field id="pl_allow_on_cancelled_since" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                        <label>Allow Cancelled orders since (in days)</label>
-                        <comment>Cancelled Orders which created since more than (this option) days, can not be re-paied</comment>
+                    <field id="pl_allow_interval" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Allowed interval (in days)</label>
+                        <comment>Created Orders since more than (this option) days, can not be re-paied</comment>
                         <validate>integer not-negative-amount</validate>
                         <depends>
                             <field id="pl_enabled">1</field>
-                            <field id="pl_allow_on_cancelled">1</field>
                         </depends>
                     </field>
                 </group>

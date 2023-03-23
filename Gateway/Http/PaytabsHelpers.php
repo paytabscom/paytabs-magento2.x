@@ -182,4 +182,11 @@ trait PaytabsHelpers
 
         return $new_array;
     }
+
+
+    // Check if the Admin user created this Order
+    public static function is_admin_created($order)
+    {
+        return empty($order->getRemoteIp());
+    }
 }
