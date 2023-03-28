@@ -37,7 +37,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
-                <!-- <can_use_internal>1</can_use_internal> -->
+                <can_use_internal>1</can_use_internal>
 
                 <can_review_payment>0</can_review_payment>
                 <can_deny_payment>0</can_deny_payment>
@@ -51,6 +51,10 @@
                 <sort_order>10</sort_order>
 
                 <payment_preorder>0</payment_preorder>
+
+                <payment_link>
+                    <pl_allow_interval>3</pl_allow_interval>
+                </payment_link>
 
             </all>
 
@@ -85,7 +89,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
-                <!-- <can_use_internal>1</can_use_internal> -->
+                <can_use_internal>1</can_use_internal>
 
                 <can_review_payment>0</can_review_payment>
                 <can_deny_payment>0</can_deny_payment>
@@ -96,6 +100,10 @@
                 <sort_order>11</sort_order>
 
                 <payment_preorder>0</payment_preorder>
+
+                <payment_link>
+                    <pl_allow_interval>3</pl_allow_interval>
+                </payment_link>
 
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>FRAUD_MSG_LIST</paymentInfoKeys>
@@ -129,6 +137,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -163,6 +172,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -199,6 +209,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -235,6 +246,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -269,6 +281,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -303,6 +316,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -339,6 +353,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -373,6 +388,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -407,6 +423,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -443,6 +460,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -477,6 +495,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -485,6 +504,9 @@
 
                 <payment_preorder>0</payment_preorder>
 
+                <payment_link>
+                    <pl_allow_interval>3</pl_allow_interval>
+                </payment_link>
             </valu>
 
 
@@ -516,6 +538,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -550,6 +573,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -584,6 +608,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -618,6 +643,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -654,6 +680,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -666,6 +693,8 @@
                 <title>PayTabs - Tokenization (All)</title>
                 <model>PayTabsAllVaultFacade</model>
                 <!-- <payment_action>authorize_capture</payment_action> -->
+
+                <can_use_internal>0</can_use_internal>
             </paytabs_all_vault>
 
         </payment>

@@ -118,7 +118,7 @@ class Api
         // $email = $billingAddress->getEmail();
         // $city = $billingAddress->getCity();
 
-        $postcode = trim($billingAddress->getPostcode());
+        $postcode = trim($billingAddress->getPostcode() ?? '');
 
         // $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
@@ -135,7 +135,7 @@ class Api
             // $s_lastName = $shippingAddress->getlastname();
             // $s_city = $shippingAddress->getCity();
 
-            $s_postcode = trim($shippingAddress->getPostcode());
+            $s_postcode = trim($shippingAddress->getPostcode() ?? '');
 
             // $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();
