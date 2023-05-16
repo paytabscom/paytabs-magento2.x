@@ -185,6 +185,16 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageUrPayFacade" type="PayTabs\PayPage\Model\All">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_URPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolUrPay</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPoolUrPay</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -292,6 +302,11 @@
     <virtualType name="PayPageNbeInstallmentConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_NBE_INSTALLMENT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageUrPayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_URPAY</argument>
         </arguments>
     </virtualType>
 
@@ -544,6 +559,19 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageCommandPoolUrPay" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PayPageInitCommand</item>
+                <item name="authorize" xsi:type="string">PayPageAuthorizeCommandUrPay</item>
+                <item name="capture" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="capture_partial" xsi:type="string">PayPageCaptureCommand</item>
+                <item name="void" xsi:type="string">PayPageVoidCommand</item>
+                <item name="cancel" xsi:type="string">PayPageVoidCommand</item>
+                <item name="refund" xsi:type="string">PayPageRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <!-- Commands infrastructure -->
 
@@ -764,6 +792,15 @@
             <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageAuthorizeCommandUrPay" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequestUrPay</argument>
+            <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">PayTabs\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">PayTabs\PayPage\Gateway\Http\Client\ClientMock</argument>
+            <argument name="validator" xsi:type="object">PayTabs\PayPage\Gateway\Validator\ResponseCodeValidator</argument>
+        </arguments>
+    </virtualType>
     <!-- Authorize command -->
 
 
@@ -930,6 +967,14 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageAuthorizationRequestUrPay" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequestUrPay</item>
+                <!-- <item name="mockData" xsi:type="string">PayTabs\PayPage\Gateway\Request\MockDataRequest</item> -->
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="AuthorizationRequestAll" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
         <arguments>
@@ -1036,6 +1081,11 @@
     <virtualType name="AuthorizationRequestNbeInstallment" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
         <arguments>
             <argument name="config" xsi:type="object">PayPageNbeInstallmentConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuthorizationRequestUrPay" type="PayTabs\PayPage\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PayPageUrPayConfig</argument>
         </arguments>
     </virtualType>
 
@@ -1253,6 +1303,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolUrPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerUrPay</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
         <arguments>
@@ -1352,6 +1409,11 @@
     <virtualType name="PayPageConfigValueHandlerNbeInstallment" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageNbeInstallmentConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerUrPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageUrPayConfig</argument>
         </arguments>
     </virtualType>
 

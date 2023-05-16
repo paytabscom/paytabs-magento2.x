@@ -27,6 +27,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_UNIONPAY   = 'unionpay';
     const CODE_PAYPAL     = 'paypal';
     const CODE_NBE_INSTALLMENT = 'installment';
+    const CODE_URPAY      = 'urpay';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -99,6 +100,9 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_NBE_INSTALLMENT => [
                 'icon' => 'nbe-installment.png'
+            ],
+            self::CODE_URPAY => [
+                'icon' => 'urpay.svg'
             ],
 
             self::CODE_VAULT_ALL => [
