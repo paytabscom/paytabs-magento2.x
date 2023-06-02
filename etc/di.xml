@@ -14,182 +14,146 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageCreditCardFacade" type="PayTabs\PayPage\Model\Creditcard">
+    <virtualType name="PayPageCreditCardFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPool</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolCreditCard</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageStcPayFacade" type="PayTabs\PayPage\Model\Stcpay">
+    <virtualType name="PayPageStcPayFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_STCPAY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolStcPay</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolStcPay</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageApplePayFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageApplePayFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_APPLEPAY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolApplePay</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolApplePay</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageOmanNetFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageOmanNetFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_OMANNET</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolOmanNet</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolOmanNet</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMadaFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageMadaFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MADA</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolMada</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolMada</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageSadadFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageSadadFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolSadad</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolSadad</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageFawryFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageFawryFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolFawry</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolFawry</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageKnPayFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolKnPay</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolKnPay</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayDebitFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageKnPayDebitFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY_DEBIT</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolKnPayDebit</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolKnPayDebit</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageKnPayCreditFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageKnPayCreditFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY_CREDIT</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolKnPayCredit</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolKnPayCredit</argument>
         </arguments>
     </virtualType>
 
 
-    <virtualType name="PayPageAmexFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageAmexFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMEX</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAmex</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolAmex</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageValUFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageValUFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolValU</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolValU</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMeezaFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageMeezaFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MEEZA</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolMeeza</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolMeeza</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageMeezaqrFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageMeezaqrFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_MEEZAQR</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolMeezaqr</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolMeezaqr</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageUnionpayFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageUnionpayFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_UNIONPAY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolUnionpay</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolUnionpay</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPagePayPalFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPagePayPalFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_PAYPAL</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolPayPal</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolPayPal</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageNbeInstallmentFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageNbeInstallmentFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_NBE_INSTALLMENT</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolNbeInstallment</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolNbeInstallment</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageUrPayFacade" type="PayTabs\PayPage\Model\All">
+    <virtualType name="PayPageUrPayFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_URPAY</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">PayTabs\PayPage\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolUrPay</argument>
             <argument name="commandPool" xsi:type="object">PayPageCommandPoolUrPay</argument>
         </arguments>
