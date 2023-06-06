@@ -50,6 +50,7 @@ class FollowupHandler implements HandlerInterface
         $paymentDO = $handlingSubject['payment'];
 
         $payment = $paymentDO->getPayment();
+        $paymentMethod = $payment->getMethodInstance();
 
         /** @var $payment \Magento\Sales\Model\Order\Payment */
 
@@ -95,14 +96,15 @@ class FollowupHandler implements HandlerInterface
 
         //
 
-        if (array_key_exists('valU', $response)) {
-            $valu_values = (array)$response['valU'];
-            $valu_values = $this->pt_add_prefix_to_keys($valu_values, 'valu_');
+        if ($paymentMethod->getCode() == 'valu') {
+            if (array_key_exists('valU', $response)) {
+                $valu_values = (array)$response['valU'];
+                $valu_values = $this->pt_add_prefix_to_keys($valu_values, 'valu_');
 
-            $transaction_info = array_merge($transaction_info, $valu_values);
-        } else {
-            // ToDo: if payment method == valU and valU not found then print the warning
-            PaytabsHelper::log("valU params not found, $tran_ref", 2);
+                $transaction_info = array_merge($transaction_info, $valu_values);
+            } else {
+                PaytabsHelper::log("valU params not found, $tran_ref", 2);
+            }
         }
 
         //

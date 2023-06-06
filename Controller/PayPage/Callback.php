@@ -102,7 +102,7 @@ class Callback extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            PaytabsHelper::log("Paytabs: no post back data received in callback", 3);
+            PaytabsHelper::log("No post back data received in callback", 3);
             return;
         }
 
@@ -121,7 +121,7 @@ class Callback extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            PaytabsHelper::log("Paytabs: OrderId/TransactionId data did not receive in callback", 3);
+            PaytabsHelper::log("OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
@@ -135,7 +135,7 @@ class Callback extends Action
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$this->isValidOrder($order)) {
-            PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
+            PaytabsHelper::log("Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
