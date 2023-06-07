@@ -33,8 +33,9 @@
                     <label>Profile ID</label>
                     <validate>validate-digits</validate>
                 </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="server_key" translate="label" type="password" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Server Key</label>
+                    <validate>no-whitespace</validate>
                 </field>
 
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
