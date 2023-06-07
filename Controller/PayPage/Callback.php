@@ -164,13 +164,13 @@ class Callback extends Action
         $paymentMethod = $payment->getMethodInstance();
 
         $paymentSuccess =
-            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+            $paymentMethod->getConfigData('order_statuses/order_success_status') ?? Order::STATE_PROCESSING;
         $paymentFailed =
-            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
+            $paymentMethod->getConfigData('order_statuses/order_failed_status') ?? Order::STATE_CANCELED;
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        // $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        // $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         //

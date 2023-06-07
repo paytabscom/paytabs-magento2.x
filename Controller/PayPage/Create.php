@@ -117,7 +117,7 @@ class Create extends Action
 
             $payment = $order->getPayment();
             $paymentMethod = $payment->getMethodInstance();
-            $order_status = $paymentMethod->getConfigData('order_status');
+            $order_status = $paymentMethod->getConfigData('order_statuses/order_status');
             if ($order->getStatus() != $order_status) {
                 $this->setNewStatus($order, $order_status, true);
                 $order->save();

@@ -56,32 +56,31 @@
                     </depends>
                 </field>
 
-                <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>New Order Status</label>
-                    <source_model>PayTabs\PayPage\Model\Config\Source\Order\Status\Pending</source_model>
+                <group id="order_statuses" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Status</label>
+                    <comment>It is always recommend to keep the default values unless it is necessary</comment>
                     <depends>
                         <field id="payment_preorder">0</field>
                     </depends>
-                </field>
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
 
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>New Order Status</label>
+                        <source_model>PayTabs\PayPage\Model\Config\Source\Order\Status\Pending</source_model>
+                    </field>
+                    <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Successful payment order status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    </field>
+                    <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Failed to pay order status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    </field>
+
+                    <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Re-Fill the Cart if Payment failed</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                </group>
 
                 <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Order confirmation email</label>
