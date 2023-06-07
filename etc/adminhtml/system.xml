@@ -56,10 +56,13 @@
                     </depends>
                 </field>
 
-                <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>New Order Status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field> -->
+                    <source_model>PayTabs\PayPage\Model\Config\Source\Order\Status\Pending</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
+                </field>
                 <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Successful payment order status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>

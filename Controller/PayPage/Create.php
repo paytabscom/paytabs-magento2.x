@@ -14,6 +14,7 @@ use PayTabs\PayPage\Gateway\Http\Client\Api;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use Magento\Vault\Model\Ui\VaultConfigProvider;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 use stdClass;
 
 /**
@@ -21,6 +22,8 @@ use stdClass;
  */
 class Create extends Action
 {
+    use PaytabsHelpers;
+
     /**
      * @var PageFactory
      */
@@ -111,6 +114,14 @@ class Create extends Action
             $res->tran_ref = $paypage->tran_ref;
 
             $paypage = $res;
+
+            $payment = $order->getPayment();
+            $paymentMethod = $payment->getMethodInstance();
+            $order_status = $paymentMethod->getConfigData('order_status');
+            if ($order->getStatus() != $order_status) {
+                $this->setNewStatus($order, $order_status, true);
+                $order->save();
+            }
         } else {
             PaytabsHelper::log("Paytabs: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
 
