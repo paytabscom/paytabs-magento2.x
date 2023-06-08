@@ -56,7 +56,16 @@
                     </depends>
                 </field>
 
-                <group id="order_statuses" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="email_config" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Order confirmation email</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
+                </field>
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> -->
+
+                <group id="order_statuses" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Order Status</label>
                     <comment>It is always recommend to keep the default values unless it is necessary</comment>
                     <depends>
@@ -82,15 +91,6 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
                 </group>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
 
                 <group id="payment_link" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment links (Beta)</label>
