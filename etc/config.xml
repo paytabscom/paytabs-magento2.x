@@ -12,7 +12,10 @@
             <all>
                 <active>0</active>
                 <title>Online payments powered by PayTabs</title>
-                <order_status>pending_payment</order_status>
+
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageAllFacade</model>
 
@@ -62,7 +65,10 @@
             <creditcard>
                 <active>0</active>
                 <title>PayTabs - CreditCard</title>
-                <order_status>pending_payment</order_status>
+
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageCreditCardFacade</model>
 
@@ -114,7 +120,10 @@
             <stcpay>
                 <active>0</active>
                 <title>PayTabs - STCPay</title>
-                <order_status>pending_payment</order_status>
+
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageStcPayFacade</model>
 
@@ -149,7 +158,9 @@
             <applepay>
                 <active>0</active>
                 <title>PayTabs - ApplePay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageApplePayFacade</model>
 
@@ -184,7 +195,9 @@
             <omannet>
                 <active>0</active>
                 <title>PayTabs - OmanNet</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageOmanNetFacade</model>
 
@@ -221,7 +234,9 @@
             <mada>
                 <active>0</active>
                 <title>PayTabs - mada</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageMadaFacade</model>
 
@@ -258,7 +273,9 @@
             <sadad>
                 <active>0</active>
                 <title>PayTabs - Sadad</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageSadadFacade</model>
 
@@ -293,7 +310,9 @@
             <fawry>
                 <active>0</active>
                 <title>PayTabs - @Fawry</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageFawryFacade</model>
 
@@ -328,7 +347,9 @@
             <knet>
                 <active>0</active>
                 <title>PayTabs - KNPay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageKnPayFacade</model>
 
@@ -365,7 +386,9 @@
             <knetdebit>
                 <active>0</active>
                 <title>PayTabs - KNPay (Debit)</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageKnPayDebitFacade</model>
 
@@ -400,7 +423,9 @@
             <knetcredit>
                 <active>0</active>
                 <title>PayTabs - KNPay (Credit)</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageKnPayCreditFacade</model>
 
@@ -435,7 +460,9 @@
             <amex>
                 <active>0</active>
                 <title>PayTabs - Amex</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageAmexFacade</model>
 
@@ -472,7 +499,9 @@
             <valu>
                 <active>0</active>
                 <title>PayTabs - valU</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageValUFacade</model>
 
@@ -513,7 +542,9 @@
             <meeza>
                 <active>0</active>
                 <title>PayTabs - Meeza</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageMeezaFacade</model>
 
@@ -550,7 +581,9 @@
             <meezaqr>
                 <active>0</active>
                 <title>PayTabs - Meeza QR</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageMeezaqrFacade</model>
 
@@ -585,7 +618,9 @@
             <unionpay>
                 <active>0</active>
                 <title>PayTabs - UnionPay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageUnionpayFacade</model>
 
@@ -620,7 +655,9 @@
             <paypal>
                 <active>0</active>
                 <title>PayTabs - PayPal</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPagePayPalFacade</model>
 
@@ -655,7 +692,9 @@
             <installment>
                 <active>0</active>
                 <title>PayTabs - NBE Installment</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageNbeInstallmentFacade</model>
 
@@ -692,7 +731,9 @@
             <urpay>
                 <active>0</active>
                 <title>PayTabs - UrPay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageUrPayFacade</model>
 
