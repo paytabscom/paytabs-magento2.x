@@ -43,7 +43,7 @@ class Api
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
         //
-        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 

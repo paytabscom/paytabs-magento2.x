@@ -93,10 +93,14 @@ trait PaytabsHelpers
         }
     }
 
-    function setNewStatus($order, $newStatus)
+    function setNewStatus($order, $newStatus, $status_only = false)
     {
-        $order->setState($newStatus)->setStatus($newStatus);
-        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
+        if ($status_only) {
+            $order->setStatus($newStatus);
+        } else {
+            $order->setState($newStatus)->setStatus($newStatus);
+        }
+        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration '$status_only'.");
     }
 
 

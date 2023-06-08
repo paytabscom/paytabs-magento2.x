@@ -102,7 +102,7 @@ class Callback extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            PaytabsHelper::log("Paytabs: no post back data received in callback", 3);
+            PaytabsHelper::log("No post back data received in callback", 3);
             return;
         }
 
@@ -121,7 +121,7 @@ class Callback extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            PaytabsHelper::log("Paytabs: OrderId/TransactionId data did not receive in callback", 3);
+            PaytabsHelper::log("OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
@@ -135,7 +135,7 @@ class Callback extends Action
         $order = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($pOrderId);
 
         if (!$this->isValidOrder($order)) {
-            PaytabsHelper::log("Paytabs: Order is missing, Order [{$pOrderId}]", 3);
+            PaytabsHelper::log("Order is missing, Order [{$pOrderId}]", 3);
             return;
         }
 
@@ -164,13 +164,13 @@ class Callback extends Action
         $paymentMethod = $payment->getMethodInstance();
 
         $paymentSuccess =
-            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+            $paymentMethod->getConfigData('order_statuses/order_success_status') ?? Order::STATE_PROCESSING;
         $paymentFailed =
-            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
+            $paymentMethod->getConfigData('order_statuses/order_failed_status') ?? Order::STATE_CANCELED;
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        // $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        // $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         //

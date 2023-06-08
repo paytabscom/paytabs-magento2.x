@@ -11,6 +11,7 @@ use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
 
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelpers;
 
 
@@ -49,6 +50,7 @@ class FollowupHandler implements HandlerInterface
         $paymentDO = $handlingSubject['payment'];
 
         $payment = $paymentDO->getPayment();
+        $paymentMethod = $payment->getMethodInstance();
 
         /** @var $payment \Magento\Sales\Model\Order\Payment */
 
@@ -91,6 +93,19 @@ class FollowupHandler implements HandlerInterface
         //
 
         $this->pt_manage_tokenize($this->_paymentTokenFactory, $this->encryptor, $payment, (object) $response);
+
+        //
+
+        if ($paymentMethod->getCode() == 'valu') {
+            if (array_key_exists('valU', $response)) {
+                $valu_values = (array)$response['valU'];
+                $valu_values = $this->pt_add_prefix_to_keys($valu_values, 'valu_');
+
+                $transaction_info = array_merge($transaction_info, $valu_values);
+            } else {
+                PaytabsHelper::log("valU params not found, $tran_ref", 2);
+            }
+        }
 
         //
 
