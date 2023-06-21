@@ -1,9 +1,9 @@
 {
-    "name": "clickpay/paypage",
+    "name": "clickpay/magento2",
     "type": "magento2-module",
     "description": "3rd party payment gateway",
     "version": "3.13.0",
-    "homepage": "https://paytabs.com",
+    "homepage": "https://clickpay.com.sa",
     "require": {
         "php": "^7.1|^8.1",
         "magento/module-sales": "101.0.*||102.0.*||103.0.*",
