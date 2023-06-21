@@ -61,6 +61,7 @@
                     <label>Order confirmation email</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
+
                 <group id="order_statuses" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                      <label>Order Status</label>
                     <comment>It is always recommend to keep the default values unless it is necessary</comment>
@@ -140,16 +141,9 @@
                         <validate>integer not-negative-amount</validate>
                         <depends>
                             <field id="pl_enabled">1</field>
-                            <field id="pl_allow_on_cancelled">1</field>
                         </depends>
                     </field>
                 </group>
-
-                
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
 
                 <!-- PT -->
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -174,7 +168,7 @@
             </group>
 
             <group id="all" translate="label" extends="clickpay_iframe" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Clickpay - All</label>
+                <label>ClickPay - All</label>
 
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
@@ -186,10 +180,10 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="ClickPay_all_vault_active" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="clickpay_all_vault_active" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enable Tokenization</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <config_path>payment/ClickPay_all_vault/active</config_path>
+                    <config_path>payment/clickpay_all_vault/active</config_path>
                 </field>
             </group>
 

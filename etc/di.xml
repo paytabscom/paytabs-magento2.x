@@ -9,7 +9,8 @@
             <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_ALL</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">ClickPay\PayPage\Block\Info</argument>
-            <argument name="commandPool" xsi:type="object">PayPageCommandPoolAll</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAll</argument>
+            <argument name="commandPool" xsi:type="object">PayPageCommandPool</argument>
         </arguments>
     </virtualType>
 
@@ -17,6 +18,7 @@
         <arguments>
             <argument name="code" xsi:type="const">\ClickPay\PayPage\Model\Ui\ConfigProvider::CODE_CREDITCARD</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolCard</argument>
+        </arguments>
     </virtualType>
 
     <virtualType name="PayPageStcPayFacade" type="PayPageAllFacade">
@@ -136,6 +138,7 @@
 
                 <item name="vault_authorize" xsi:type="string">PayPageVaultAuthorizeCommand</item>
                 <!-- <item name="vault_capture" xsi:type="string">PayPageVaultCaptureCommandAll</item> -->
+                <item name="vault_sale" xsi:type="string">PayPageVaultCaptureCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -170,10 +173,10 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PayPageAuthorizationRequest</argument>
             <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
-            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
             <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientAuth</argument>
             <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
             <argument name="handler" xsi:type="object">PayPageResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageVaultAuthorizeCommand" type="PayPageAuthorizeCommand">
@@ -212,10 +215,10 @@
     <virtualType name="PayPageAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">AuthorizationRequest</item>
             </argument>
         </arguments>
     </virtualType>
-
 
     <virtualType name="PayPageVaultAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
@@ -226,13 +229,13 @@
         </arguments>
     </virtualType>
 
-
     <virtualType name="PayPageVaultCaptureRequest" type="PayPageVaultAuthorizationRequest">
         <arguments>
-            <item name="transaction" xsi:type="string">VaultCaptureRequest</item>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">VaultCaptureRequest</item>
+            </argument>
         </arguments>
     </virtualType>
-
 
     <virtualType name="AuthorizationRequest" type="ClickPay\PayPage\Gateway\Vault\AuthorizationRequest">
         <arguments>
@@ -240,6 +243,12 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="VaultAuthorizationRequest" type="ClickPay\PayPage\Gateway\Vault\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">ClickPayVaultConfig</argument>
+            <argument name="action" xsi:type="const">\ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction::PAYMENT_ACTION_AUTH</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="VaultCaptureRequest" type="ClickPay\PayPage\Gateway\Vault\AuthorizationRequest">
         <arguments>
@@ -254,9 +263,19 @@
         </arguments>
     </virtualType>
 
+    <!-- Capture command -->
 
+    <virtualType name="PayPageCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">ClickPay\PayPage\Gateway\Request\CaptureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">ClickPay\PayPage\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">ClickPay\PayPage\Gateway\Http\Client\ClientCapture</argument>
+            <argument name="validator" xsi:type="object">ClickPay\PayPage\Gateway\Validator\FollowupValidator</argument>
+            <argument name="handler" xsi:type="object">ClickPay\PayPage\Gateway\Response\FollowupHandler</argument>
+            <argument name="errorMessageMapper" xsi:type="object">ClickPay\PayPage\Gateway\Validator\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
 
-    
     <!-- Capture Request -->
 
     <type name="ClickPay\PayPage\Gateway\Request\CaptureRequest">

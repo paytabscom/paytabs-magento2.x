@@ -93,7 +93,7 @@ trait ClickPayHelpers
         }
     }
 
-    function setNewStatus($order, $newStatus,$status_only = false)
+    function setNewStatus($order, $newStatus, $status_only = false)
     {
         if ($status_only) {
             $order->setStatus($newStatus);
@@ -175,7 +175,7 @@ trait ClickPayHelpers
         }
     }
 
-      // Add a prefix to all Keys (array should associative array, like [$k => $v])
+    // Add a prefix to all Keys (array should associative array, like [$k => $v])
     // returns new array
     function pt_add_prefix_to_keys($array, $prefix)
     {
@@ -186,11 +186,11 @@ trait ClickPayHelpers
 
         return $new_array;
     }
-    
 
-     // Check if the Admin user created this Order
-     public static function is_admin_created($order)
-     {
-         return empty($order->getRemoteIp());
-     }
+
+    // Check if the Admin user created this Order
+    public static function is_admin_created($order)
+    {
+        return empty($order->getRemoteIp());
+    }
 }

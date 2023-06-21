@@ -17,7 +17,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_SADAD      = 'sadad';
     const CODE_AMEX       = 'amex';
 
-    const CODE_VAULT_ALL = 'ClickPay_all_vault';
+    const CODE_VAULT_ALL = 'clickpay_all_vault';
 
     protected $paymentHelper;
     private $assetRepo;

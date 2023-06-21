@@ -5,7 +5,7 @@ namespace ClickPay\PayPage\Gateway\Http;
 use ClickPay\PayPage\Logger\Handler\ClickPayLogger;
 use stdClass;
 
-define('ClickPay_DEBUG_FILE', 'var/log/debug_ClickPay.log');
+define('ClickPay_DEBUG_FILE', 'var/log/debug_clickpay.log');
 define('ClickPay_PAYPAGE_VERSION', '3.13.0');
 
 function ClickPay_error_log($msg, $severity = 3)
@@ -38,10 +38,12 @@ class ClickPayCore
 
 /**
  * ClickPay v2 PHP SDK
- * Version: 2.10.2
+ * Version: 2.11.4
+ * PHP >= 7.0.0
  */
 
-define('CLICKPAY_SDK_VERSION', '2.11.1');
+define('CLICKPAY_SDK_VERSION', '2.11.4');
+
 define('CLICKPAY_DEBUG_FILE_NAME', 'debug_clickpay.log');
 define('CLICKPAY_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
 define('CLICKPAY_PREFIX', 'ClickPay');
@@ -235,6 +237,7 @@ abstract class ClickPayHelper
      * <b>ClickPay_error_log<b> should be defined,
      * Main functionality: use the platform logger to log the error messages
      * If not found: create a new log file and log the messages
+     * @param $severity: [1: info, 2: warning, 3: error]
      */
     public static function log($msg, $severity = 1)
     {
@@ -245,7 +248,9 @@ abstract class ClickPayHelper
                 $severity_str = CLICKPAY_DEBUG_SEVERITY[$severity];
                 $_prefix = date('c') . " " . CLICKPAY_PREFIX . "{$severity_str}: ";
                 $_msg = ($_prefix . $msg . PHP_EOL);
-                file_put_contents(CLICKPAY_DEBUG_FILE_NAME, $_msg, FILE_APPEND);
+
+                $_file = defined('CLICKPAY_DEBUG_FILE') ? ClickPay_DEBUG_FILE : CLICKPAY_DEBUG_FILE_NAME;
+                file_put_contents($_file, $_msg, FILE_APPEND);
             } catch (\Throwable $th) {
                 // var_export($th);
             }
@@ -263,6 +268,7 @@ abstract class ClickPayEnum
     const TRAN_TYPE_CAPTURE  = 'capture';
     const TRAN_TYPE_SALE     = 'sale';
     const TRAN_TYPE_REGISTER = 'register';
+
     const TRAN_TYPE_PAYMENT_REQUEST = 'payment request';
 
     const TRAN_TYPE_VOID    = 'void';
@@ -284,6 +290,8 @@ abstract class ClickPayEnum
     const TRAN_STATUS_Error      = 'E';
     const TRAN_STATUS_Declined   = 'D';
     const TRAN_STATUS_Expired    = 'X';
+
+    //
 
     const PP_ERR_DUPLICATE = 4;
 
@@ -329,6 +337,11 @@ abstract class ClickPayEnum
         return strcasecmp($tran_type, ClickPayEnum::TRAN_TYPE_REFUND) == 0;
     }
 
+    static function TransAreSame($tran_type1, $tran_type2)
+    {
+        return strcasecmp($tran_type1, $tran_type2) == 0;
+    }
+
 
     static function TranIsPaymentComplete($ipn_data)
     {
@@ -350,12 +363,6 @@ abstract class ClickPayEnum
 
         return false;
     }
-
-    static function TransAreSame($tran_type1, $tran_type2)
-    {
-        return strcasecmp($tran_type1, $tran_type2) == 0;
-    }
-
 
     //
 
@@ -973,12 +980,14 @@ class ClickPayApi
         '0'  => ['name' => 'all', 'title' => 'ClickPay - All', 'currencies' => null, 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '1'  => ['name' => 'stcpay', 'title' => 'ClickPay - StcPay', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_IFRAME]],
         '2'  => ['name' => 'stcpayqr', 'title' => 'ClickPay - StcPay(QR)', 'currencies' => ['SAR'], 'groups' => []],
-        '3'  => ['name' => 'applepay', 'title' => 'ClickPay - ApplePay', 'currencies' => ['AED', 'SAR', 'ILS'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE]],
+        '3'  => ['name' => 'applepay', 'title' => 'ClickPay - ApplePay', 'currencies' => null, 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE]],
         '5'  => ['name' => 'mada', 'title' => 'ClickPay - mada', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '6'  => ['name' => 'creditcard', 'title' => 'ClickPay - CreditCard', 'currencies' => null, 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_CARDS_INTERNATIONAL, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '7'  => ['name' => 'sadad', 'title' => 'ClickPay - Sadad', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_IFRAME]],
         '10' => ['name' => 'amex', 'title' => 'ClickPay - Amex', 'currencies' => ['AED', 'SAR', 'USD'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_CARDS_INTERNATIONAL, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '15' => ['name' => 'samsungpay', 'title' => 'ClickPay - SamsungPay', 'currencies' => ['AED', 'SAR'], 'groups' => []],
+        '19' => ['name' => 'urpay', 'title' => 'ClickPay - UrPay', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_IFRAME]],
+        '20' => ['name' => 'paypal', 'title' => 'ClickPay - PayPal', 'currencies' => ['AED', 'EGP', 'USD', 'EUR', 'GPB', 'HKD', 'JPY'], 'groups' => []],
     ];
 
     const BASE_URLS = [
@@ -1273,6 +1282,7 @@ class ClickPayApi
             $_verify->is_pending = ClickpayEnum::TranStatusIsPending($response_status);
 
             $_verify->message = $return_data['respMessage'];
+
             $_verify->transaction_id = $return_data['tranRef'];
             $_verify->reference_no = $return_data['cartId'];
         }

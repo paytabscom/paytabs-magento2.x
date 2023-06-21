@@ -300,13 +300,13 @@
             </amex>
 
 
-            <ClickPay_all_vault>
+            <clickpay_all_vault>
                 <title>ClickPay - Tokenization (All)</title>
                 <model>ClickPayAllVaultFacade</model>
                 <!-- <payment_action>authorize_capture</payment_action> -->
 
                 <can_use_internal>1</can_use_internal>
-            </ClickPay_all_vault>
+            </clickpay_all_vault>
 
         </payment>
     </default>
