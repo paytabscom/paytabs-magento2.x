@@ -9,9 +9,8 @@
     <system>
         <section id="payment">
 
-            <group id="all" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>ClickPay - All</label>
-
+            <group id="clickpay" translate="label" type="text" sortOrder="20">
+               
                 <field id="pt_version" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Version</label>
                     <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\ModuleVersion</frontend_model>
@@ -35,16 +34,9 @@
                     <label>Profile ID</label>
                     <validate>validate-digits</validate>
                 </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="server_key" translate="label" type="password" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
+                    <validate>no-whitespace</validate>
                 </field>
 
                 <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
@@ -65,34 +57,95 @@
                     </depends>
                 </field>
 
-                <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>New Order Status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field> -->
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="email_config" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Order confirmation email</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
                 </field>
+                <group id="order_statuses" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                     <label>Order Status</label>
+                    <comment>It is always recommend to keep the default values unless it is necessary</comment>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
+
+                    <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>ClickPay\PayPage\Model\Config\Source\Order\Status\Pending</source_model>
+                        <validate>validate-select</validate>
+                    </field>
+
+                    <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Successful payment order status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    </field>
+
+                    <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Failed to pay order status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    </field>
+
+                    <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Re-Fill the Cart if Payment failed</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                </group>
+
+                
+                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Invoice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> -->
+
+                <group id="payment_link" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment links (Beta)</label>
+                    <comment>Provide a new way to share the payment link with your Customers to pay for their Orders later</comment>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
+
+                    <field id="pl_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Generate and Show a new Payment link</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+
+                    <field id="pl_flagged_order_only" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow re-pay on flagged Orders only</label>
+                        <comment>Allow customers to re-pay orders that are only associated with a generated payment link</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
+                    </field>
+
+
+                    <field id="pl_customer_view" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Show the payment link to the Customer</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
+                    </field>
+
+                    <field id="pl_allow_on_cancelled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow re-pay on Cancelled Orders</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                        </depends>
+                    </field>
+
+                   <field id="pl_allow_interval" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Allowed interval (in days)</label>
+                        <comment>Created Orders since more than (this option) days, can not be re-paied</comment>
+                        <validate>integer not-negative-amount</validate>
+                        <depends>
+                            <field id="pl_enabled">1</field>
+                            <field id="pl_allow_on_cancelled">1</field>
+                        </depends>
+                    </field>
+                </group>
+
+                
                 <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Send Invoice</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -108,6 +161,20 @@
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
+            </group>
+
+            <group id="clickpay_iframe" translate="label" type="text" sortOrder="25" extends="clickpay">
+                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>iFrame mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="payment_preorder">0</field>
+                    </depends>
+                </field>
+            </group>
+
+            <group id="all" translate="label" extends="clickpay_iframe" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Clickpay - All</label>
 
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
@@ -126,632 +193,81 @@
                 </field>
             </group>
 
-            <group id="creditcard" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="creditcard" translate="label" extends="clickpay_iframe" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - CreditCard</label>
 
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <!-- PT -->
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
-
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-
-                <!-- <field id="order_status" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>New Order Status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field> -->
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
+            
+                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Action</label>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
 
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-
+                <!-- PT -->
                 <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Collect payment before placing the Order (Beta)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <!-- PT -->
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
-                </field>
-
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Action</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
             </group>
 
-
-            <group id="stcpay" translate="label" type="text" sortOrder="105" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="stcpay" translate="label" extends="clickpay_iframe" sortOrder="105" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - STCPay</label>
 
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
-
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
-                </field>
-
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
-
-                 <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
 
-
-            <group id="applepay" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="applepay" translate="label" extends="clickpay" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - ApplePay</label>
 
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <!-- ApplyPay does not allow the iFrame option -->
-                <!-- <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
-
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
-                </field>
-
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
 
-
-            <group id="mada" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="mada" translate="label" extends="clickpay_iframe" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - mada</label>
 
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
-
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
                 </field>
 
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
 
-
-            <group id="sadad" translate="label" type="text" sortOrder="125" showInDefault="1" showInWebsite="1" showInStore="1">
+             <group id="sadad" translate="label" extends="clickpay_iframe" sortOrder="125" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - Sadad</label>
 
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
-
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
-                </field>
-
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
                 </field>
             </group>
 
-
-            <group id="amex" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+             <group id="amex" translate="label" extends="clickpay_iframe" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>ClickPay - Amex</label>
-
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Title</label>
-                </field>
-
-                <field id="endpoint" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Select Endpoint region</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\Endpoints</source_model>
-                </field>
-
-                <field id="profile_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Profile ID</label>
-                    <validate>validate-digits</validate>
-                </field>
-                <field id="server_key" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Server Key</label>
-                </field>
-
-                <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                     <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="currency_select" translate="label" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Currency</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\CurrencySelect</source_model>
-                </field>
-
-                <field id="ipn_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Allow IPN notifications</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="ipn_url" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>IPN URL</label>
-                    <frontend_model>ClickPay\PayPage\Model\Adminhtml\Source\IpnUrl</frontend_model>
-                    <depends>
-                        <!-- This field will only be visible if the field with the id ipn_allow is set to value 1 -->
-                        <field id="ipn_allow">1</field>
-                    </depends>
-                </field>
 
                 <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allow associated methods</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="order_success_status" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Successful payment order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                </field>
-                <field id="order_failed_status" translate="label" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Failed to pay order status</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="order_failed_reorder" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Re-Fill the Cart if Payment failed</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="email_config" translate="label" type="select" sortOrder="68" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Order confirmation email</label>
-                    <source_model>ClickPay\PayPage\Model\Adminhtml\Source\EmailConfig</source_model>
-                </field>
-                <!-- <field id="send_invoice" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Send Invoice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field> -->
-
-                <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Hide Shipping info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="sort_order" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Sort Order</label>
-                    <frontend_class>validate-number</frontend_class>
-                </field>
-
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>ClickPay\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
                 </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                
             </group>
-
+            
         </section>
     </system>
 </config>

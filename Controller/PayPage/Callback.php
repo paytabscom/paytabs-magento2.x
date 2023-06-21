@@ -101,7 +101,7 @@ class Callback extends Action
     public function execute()
     {
         if (!$this->getRequest()->isPost()) {
-            ClickPayHelper::log("ClickPay: no post back data received in callback", 3);
+            ClickPayHelper::log("No post back data received in callback", 3);
             return;
         }
 
@@ -120,7 +120,7 @@ class Callback extends Action
         //
 
         if (!$pOrderId || !$transactionId) {
-            ClickPayHelper::log("ClickPay: OrderId/TransactionId data did not receive in callback", 3);
+            ClickPayHelper::log("OrderId/TransactionId data did not receive in callback", 3);
             return;
         }
 
@@ -163,13 +163,13 @@ class Callback extends Action
         $paymentMethod = $payment->getMethodInstance();
 
         $paymentSuccess =
-            $paymentMethod->getConfigData('order_success_status') ?? Order::STATE_PROCESSING;
+            $paymentMethod->getConfigData('order_statuses/order_success_status') ?? Order::STATE_PROCESSING;
         $paymentFailed =
-            $paymentMethod->getConfigData('order_failed_status') ?? Order::STATE_CANCELED;
+            $paymentMethod->getConfigData('order_statuses/order_failed_status') ?? Order::STATE_CANCELED;
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
-        // $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        // $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
         //

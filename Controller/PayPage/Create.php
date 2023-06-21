@@ -14,6 +14,7 @@ use ClickPay\PayPage\Gateway\Http\Client\Api;
 use ClickPay\PayPage\Gateway\Http\ClickPayCore;
 use ClickPay\PayPage\Gateway\Http\ClickPayHelper;
 use Magento\Vault\Model\Ui\VaultConfigProvider;
+use ClickPay\PayPage\Gateway\Http\ClickPayHelpers;
 use stdClass;
 
 /**
@@ -21,6 +22,8 @@ use stdClass;
  */
 class Create extends Action
 {
+    use ClickPayHelpers;
+
     /**
      * @var PageFactory
      */
@@ -110,6 +113,13 @@ class Create extends Action
               $res->tran_ref = $paypage->tran_ref;
   
               $paypage = $res;
+              $payment = $order->getPayment();
+              $paymentMethod = $payment->getMethodInstance();
+              $order_status = $paymentMethod->getConfigData('order_statuses/order_status');
+               if ($order->getStatus() != $order_status) {
+                    $this->setNewStatus($order, $order_status, true);
+                    $order->save();
+                }
         } else {
             ClickPayHelper::log("ClickPay: create paypage failed!, Order [{$order->getIncrementId()}] - " . json_encode($paypage), 3);
 

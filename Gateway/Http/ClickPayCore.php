@@ -6,7 +6,7 @@ use ClickPay\PayPage\Logger\Handler\ClickPayLogger;
 use stdClass;
 
 define('ClickPay_DEBUG_FILE', 'var/log/debug_ClickPay.log');
-define('ClickPay_PAYPAGE_VERSION', '3.9.1');
+define('ClickPay_PAYPAGE_VERSION', '3.13.0');
 
 function ClickPay_error_log($msg, $severity = 3)
 {
@@ -41,7 +41,7 @@ class ClickPayCore
  * Version: 2.10.2
  */
 
-define('CLICKPAY_SDK_VERSION', '2.10.2');
+define('CLICKPAY_SDK_VERSION', '2.11.1');
 define('CLICKPAY_DEBUG_FILE_NAME', 'debug_clickpay.log');
 define('CLICKPAY_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
 define('CLICKPAY_PREFIX', 'ClickPay');
@@ -633,6 +633,12 @@ abstract class ClickPayBasicHolder extends ClickPayHolder
 
         // 'creditcard' => ['creditcard', 'mada', 'omannet', 'meeza']
 
+        foreach ($codes as &$code) {
+            if (substr($code, 0, 3) === "pt_") {
+                $code = substr($code, 3);
+            }
+        }
+
         $this->payment_code = ['payment_methods' => $codes];
 
         return $this;
@@ -967,11 +973,11 @@ class ClickPayApi
         '0'  => ['name' => 'all', 'title' => 'ClickPay - All', 'currencies' => null, 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '1'  => ['name' => 'stcpay', 'title' => 'ClickPay - StcPay', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_IFRAME]],
         '2'  => ['name' => 'stcpayqr', 'title' => 'ClickPay - StcPay(QR)', 'currencies' => ['SAR'], 'groups' => []],
-        '3'  => ['name' => 'applepay', 'title' => 'ClickPay - ApplePay', 'currencies' => ['AED', 'SAR'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE]],
+        '3'  => ['name' => 'applepay', 'title' => 'ClickPay - ApplePay', 'currencies' => ['AED', 'SAR', 'ILS'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_AUTH_CAPTURE]],
         '5'  => ['name' => 'mada', 'title' => 'ClickPay - mada', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '6'  => ['name' => 'creditcard', 'title' => 'ClickPay - CreditCard', 'currencies' => null, 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_CARDS_INTERNATIONAL, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '7'  => ['name' => 'sadad', 'title' => 'ClickPay - Sadad', 'currencies' => ['SAR'], 'groups' => [ClickPayApi::GROUP_IFRAME]],
-        '10' => ['name' => 'amex', 'title' => 'ClickPay - Amex', 'currencies' => ['AED', 'SAR'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_CARDS_INTERNATIONAL, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
+        '10' => ['name' => 'amex', 'title' => 'ClickPay - Amex', 'currencies' => ['AED', 'SAR', 'USD'], 'groups' => [ClickPayApi::GROUP_TOKENIZE, ClickPayApi::GROUP_CARDS, ClickPayApi::GROUP_CARDS_INTERNATIONAL, ClickPayApi::GROUP_AUTH_CAPTURE, ClickPayApi::GROUP_IFRAME]],
         '15' => ['name' => 'samsungpay', 'title' => 'ClickPay - SamsungPay', 'currencies' => ['AED', 'SAR'], 'groups' => []],
     ];
 
@@ -1243,6 +1249,8 @@ class ClickPayApi
         $_verify->reference_no = @$verify->cart_id;
         $_verify->transaction_id = @$verify->tran_ref;
 
+        $_verify->failed = !($_verify->success || $_verify->is_on_hold || $_verify->is_pending);
+
         return $_verify;
     }
 
@@ -1268,6 +1276,8 @@ class ClickPayApi
             $_verify->transaction_id = $return_data['tranRef'];
             $_verify->reference_no = $return_data['cartId'];
         }
+
+        $_verify->failed = !($_verify->success || $_verify->is_on_hold || $_verify->is_pending);
 
         return $_verify;
     }

@@ -43,7 +43,7 @@ class Api
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
 
-        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
 
@@ -118,7 +118,7 @@ class Api
         // $email = $billingAddress->getEmail();
         // $city = $billingAddress->getCity();
 
-        $postcode = trim($billingAddress->getPostcode());
+        $postcode = trim($billingAddress->getPostcode() ?? '');
 
         // $region = $billingAddress->getRegionCode();
         $country_iso2 = $billingAddress->getCountryId();
@@ -135,7 +135,7 @@ class Api
             // $s_lastName = $shippingAddress->getlastname();
             // $s_city = $shippingAddress->getCity();
 
-            $s_postcode = trim($shippingAddress->getPostcode());
+            $s_postcode = trim($shippingAddress->getPostcode() ?? '');
 
             // $s_region = $shippingAddress->getRegionCode();
             $s_country_iso2 = $shippingAddress->getCountryId();

@@ -104,7 +104,7 @@ class Response extends Action
 
         //
 
-        $cart_refill = (bool) $paymentMethod->getConfigData('order_failed_reorder');
+        $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
         return $this->pt_handle_return($order, $verify_response, $objectManager, $cart_refill);
 
         // return $this->pageFactory->create();

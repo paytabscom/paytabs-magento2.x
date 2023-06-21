@@ -12,7 +12,9 @@
             <all>
                 <active>0</active>
                 <title>Online payments powered by ClickPay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageAllFacade</model>
 
@@ -37,7 +39,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
-                <!-- <can_use_internal>1</can_use_internal> -->
+                <can_use_internal>1</can_use_internal>
 
                 <can_review_payment>0</can_review_payment>
                 <can_deny_payment>0</can_deny_payment>
@@ -50,13 +52,20 @@
 
                 <sort_order>10</sort_order>
                 <payment_preorder>0</payment_preorder>
+
+                <payment_link>
+                    <pl_allow_interval>3</pl_allow_interval>
+                </payment_link>
+                
             </all>
 
 
             <creditcard>
                 <active>0</active>
                 <title>ClickPay - CreditCard</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageCreditCardFacade</model>
 
@@ -83,7 +92,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
-                <!-- <can_use_internal>1</can_use_internal> -->
+                <can_use_internal>1</can_use_internal>
 
                 <can_review_payment>0</can_review_payment>
                 <can_deny_payment>0</can_deny_payment>
@@ -94,6 +103,9 @@
                  <sort_order>11</sort_order>
 
                  <payment_preorder>0</payment_preorder>
+                  <payment_link>
+                    <pl_allow_interval>3</pl_allow_interval>
+                </payment_link>
 
                 <!-- <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>FRAUD_MSG_LIST</paymentInfoKeys>
@@ -104,7 +116,9 @@
             <stcpay>
                 <active>0</active>
                 <title>ClickPay - STCPay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageStcPayFacade</model>
 
@@ -127,6 +141,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -136,7 +151,9 @@
             <applepay>
                 <active>0</active>
                 <title>ClickPay - ApplePay</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageApplePayFacade</model>
 
@@ -159,6 +176,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -170,7 +188,9 @@
             <mada>
                 <active>0</active>
                 <title>ClickPay - mada</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageMadaFacade</model>
 
@@ -195,6 +215,7 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -206,7 +227,9 @@
             <sadad>
                 <active>0</active>
                 <title>ClickPay - Sadad</title>
-                <order_status>pending_payment</order_status>
+               <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageSadadFacade</model>
 
@@ -220,15 +243,16 @@
                 <currency_select>base_currency</currency_select>
 
                 <can_initialize>1</can_initialize>
-                <can_authorize>1</can_authorize>
+                <can_authorize>0</can_authorize>
                 <can_capture>1</can_capture>
-                <can_capture_partial>1</can_capture_partial>
-                <can_void>1</can_void>
-                <can_cancel>1</can_cancel>
-                <can_refund>1</can_refund>
-                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_capture_partial>0</can_capture_partial>
+                <can_void>0</can_void>
+                <can_cancel>0</can_cancel>
+                <can_refund>0</can_refund>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -240,7 +264,9 @@
             <amex>
                 <active>0</active>
                 <title>ClickPay - Amex</title>
-                <order_status>pending_payment</order_status>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
 
                 <model>PayPageAmexFacade</model>
 
@@ -265,6 +291,7 @@
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
 
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
@@ -277,6 +304,8 @@
                 <title>ClickPay - Tokenization (All)</title>
                 <model>ClickPayAllVaultFacade</model>
                 <!-- <payment_action>authorize_capture</payment_action> -->
+
+                <can_use_internal>1</can_use_internal>
             </ClickPay_all_vault>
 
         </payment>

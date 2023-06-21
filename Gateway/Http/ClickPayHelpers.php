@@ -93,10 +93,14 @@ trait ClickPayHelpers
         }
     }
 
-    function setNewStatus($order, $newStatus)
+    function setNewStatus($order, $newStatus,$status_only = false)
     {
-        $order->setState($newStatus)->setStatus($newStatus);
-        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration.");
+        if ($status_only) {
+            $order->setStatus($newStatus);
+        } else {
+            $order->setState($newStatus)->setStatus($newStatus);
+        }
+        $order->addStatusToHistory($newStatus, "Order was set to '$newStatus' as in the admin's configuration '$status_only'.");
     }
 
 
@@ -170,4 +174,23 @@ trait ClickPayHelpers
             return null;
         }
     }
+
+      // Add a prefix to all Keys (array should associative array, like [$k => $v])
+    // returns new array
+    function pt_add_prefix_to_keys($array, $prefix)
+    {
+        $new_array = [];
+        foreach ($array as $k => $v) {
+            $new_array[$prefix . $k] = $v;
+        }
+
+        return $new_array;
+    }
+    
+
+     // Check if the Admin user created this Order
+     public static function is_admin_created($order)
+     {
+         return empty($order->getRemoteIp());
+     }
 }

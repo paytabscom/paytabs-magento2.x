@@ -47,6 +47,7 @@ class FollowupHandler implements HandlerInterface
         $paymentDO = $handlingSubject['payment'];
 
         $payment = $paymentDO->getPayment();
+        $paymentMethod = $payment->getMethodInstance();
 
         /** @var $payment \Magento\Sales\Model\Order\Payment */
         
