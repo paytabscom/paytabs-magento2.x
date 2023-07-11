@@ -167,6 +167,7 @@ class Callback extends Action
             $paymentMethod->getConfigData('order_statuses/order_success_status') ?? Order::STATE_PROCESSING;
         $paymentFailed =
             $paymentMethod->getConfigData('order_statuses/order_failed_status') ?? Order::STATE_CANCELED;
+        $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
@@ -235,6 +236,10 @@ class Callback extends Action
 
 
         $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
+
+        if ($exclude_shipping) {
+            $order->addStatusHistoryComment("Exclude shipping option is enabled");
+        }
 
         if ($is_pending) {
             $payment

@@ -5,6 +5,7 @@ namespace PayTabs\PayPage\Gateway\Http\Client;
 use PayTabs\PayPage\Gateway\Http\PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 use PayTabs\PayPage\Gateway\Http\PaytabsEnum;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Gateway\Http\PaytabsRequestHolder;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 
@@ -218,7 +219,8 @@ class Api
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         if ($exclude_shipping) {
-            $pt_holder->set50UserDefined('exclude_shipping=1');
+            $pt_holder->set50UserDefined('exclude_shipping=' . $shippingAmount);
+            PaytabsHelper::log("Order $orderId, Exclude shipping fees $shippingAmount", 1);
         }
 
         $post_arr = $pt_holder->pt_build();

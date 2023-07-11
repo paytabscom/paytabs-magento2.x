@@ -37,7 +37,7 @@ class OrderServicePlugin
                         $baseurl = $storeManager->getStore()->getBaseUrl();
 
                         $pay_url = "{$baseurl}paytabs/paypage/pay?order={$order->getId()}";
-                        $comment = "The payment link: <strong>{$pay_url}</strong>";
+                        $comment = "The payment link: [ {$pay_url} ]";
 
                         $order
                             ->addCommentToStatusHistory($comment, false, $isVisibleToCustomer)

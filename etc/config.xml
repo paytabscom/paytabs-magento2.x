@@ -536,6 +536,8 @@
                 <payment_link>
                     <pl_allow_interval>3</pl_allow_interval>
                 </payment_link>
+
+                <exclude_shipping>0</exclude_shipping>
             </valu>
 
 
