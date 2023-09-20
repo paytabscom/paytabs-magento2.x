@@ -61,7 +61,7 @@ class ValuInstallments extends Template
     function canShow()
     {
         try {
-            $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
+            $payment_method = $this->getPaymentMethod();
             $enabled =
                 (bool) $payment_method->getConfigData('active')
                 && (bool) $payment_method->getConfigData('valu_widget/valu_widget_enable');
@@ -93,6 +93,7 @@ class ValuInstallments extends Template
 
     function getValUDetails()
     {
+        // ToDo
         // Call external API to check the installment plans
 
         $price = $this->product->getPrice();
@@ -107,5 +108,11 @@ class ValuInstallments extends Template
     {
         $_icons_path = $this->assetRepo->getUrl("PayTabs_PayPage::images/");
         return $_icons_path . '/valu.png';
+    }
+
+    private function getPaymentMethod() {
+        $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
+
+        return $payment_method;
     }
 }
