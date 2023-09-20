@@ -536,6 +536,11 @@
                 <payment_link>
                     <pl_allow_interval>3</pl_allow_interval>
                 </payment_link>
+
+                <valu_widget>
+                    <valu_widget_enable>0</valu_widget_enable>
+                    <valu_widget_price_threshold>300</valu_widget_price_threshold>
+                </valu_widget>
             </valu>
 
 

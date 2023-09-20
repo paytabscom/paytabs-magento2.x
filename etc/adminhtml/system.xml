@@ -334,6 +334,25 @@
                     <label>Exclude Shipping amount</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                <group id="valu_widget" translate="label" type="text" sortOrder="136" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>valU widget</label>
+                    <comment>Show valU widget in product's details page.</comment>
+
+                    <field id="valu_widget_enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Enable valU widget</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+
+                    <field id="valu_widget_price_threshold" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Price threshold</label>
+                        <comment>Display the widget for all products that have a price higher than the current threshold.</comment>
+                        <validate>validate-number</validate>
+                        <depends>
+                            <field id="valu_widget_enable">1</field>
+                        </depends>
+                    </field>
+                </group>
             </group>
 
 
