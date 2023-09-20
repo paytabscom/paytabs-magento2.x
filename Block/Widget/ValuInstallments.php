@@ -6,6 +6,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Asset\Repository;
+use Magento\Payment\Helper\Data;
 use Magento\Widget\Block\BlockInterface;
 
 class ValuInstallments extends Template
@@ -16,7 +17,9 @@ class ValuInstallments extends Template
     protected $coreRegistry;
 
     protected $assetRepo;
+    protected $paymentHelper;
 
+    private $product;
 
     /**
      * View constructor.
@@ -28,12 +31,16 @@ class ValuInstallments extends Template
         Template\Context $context,
         Registry $registry,
         Repository $assetRepo,
+        Data $paymentHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->coreRegistry = $registry;
 
+        $this->paymentHelper = $paymentHelper;
         $this->assetRepo = $assetRepo;
+
+        $this->product = $this->getProduct();
     }
 
     /**
@@ -41,16 +48,31 @@ class ValuInstallments extends Template
      */
     protected function _toHtml(): string
     {
-        $enabled = true;
-        $meetTheCondition = true;
+        $canShow = $this->canShow();
 
-        if ($enabled) {
-            if ($meetTheCondition) {
-                return parent::_toHtml();
-            }
+        if ($canShow) {
+            return parent::_toHtml();
         }
 
         return 'paytabs';
+    }
+
+
+    function canShow()
+    {
+        $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
+        $enabled = (bool) $payment_method->getConfigData('valu_widget/valu_widget_enable');
+        if ($enabled) {
+            $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
+            $threshold = max(0, $threshold);
+
+            $product_price = $this->product->getPrice();
+            if ($product_price > $threshold) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -67,7 +89,7 @@ class ValuInstallments extends Template
     {
         // Call external API to check the installment plans
 
-        $price = $this->getProduct()->getPrice();
+        $price = $this->product->getPrice();
 
         $installment_amount = round($price / 3, 2);
         $msg = "Pay 3 interest-free payments of EGP $installment_amount.";
