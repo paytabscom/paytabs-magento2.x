@@ -7,7 +7,6 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Payment\Helper\Data;
-use Magento\Widget\Block\BlockInterface;
 
 class ValuInstallments extends Template
 {
@@ -54,7 +53,7 @@ class ValuInstallments extends Template
             return parent::_toHtml();
         }
 
-        return 'paytabs';
+        return '';
     }
 
 
