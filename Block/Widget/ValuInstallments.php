@@ -7,6 +7,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Payment\Helper\Data;
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 class ValuInstallments extends Template
 {
@@ -59,16 +60,22 @@ class ValuInstallments extends Template
 
     function canShow()
     {
-        $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
-        $enabled = (bool) $payment_method->getConfigData('valu_widget/valu_widget_enable');
-        if ($enabled) {
-            $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
-            $threshold = max(0, $threshold);
+        try {
+            $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
+            $enabled =
+                (bool) $payment_method->getConfigData('active')
+                && (bool) $payment_method->getConfigData('valu_widget/valu_widget_enable');
+            if ($enabled) {
+                $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
+                $threshold = max(0, $threshold);
 
-            $product_price = $this->product->getPrice();
-            if ($product_price > $threshold) {
-                return true;
+                $product_price = (float) $this->product->getPrice();
+                if ($product_price > $threshold) {
+                    return true;
+                }
             }
+        } catch (\Throwable $th) {
+            PaytabsHelper::log($th->getMessage(), 3);
         }
 
         return false;
