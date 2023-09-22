@@ -232,6 +232,10 @@ class Callback extends Action
             $_tran_details['previous_tran'] = $pt_prev_tran_ref;
         }
 
+        if ($is_exclude_shipping) {
+            $_tran_details['exclude_shipping_amount'] = $excluded_amount;
+        }
+
         // Add valU values as a transaction details
         if (isset($verify_response->valU)) {
             $valu_values = (array)$verify_response->valU;
