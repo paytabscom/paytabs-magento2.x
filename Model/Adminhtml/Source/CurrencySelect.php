@@ -7,6 +7,7 @@
 
 namespace PayTabs\PayPage\Model\Adminhtml\Source;
 
+use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 
 /**
  * Class EmailCOnfig
@@ -82,13 +83,18 @@ class CurrencySelect implements \Magento\Framework\Option\ArrayInterface
         // $amount = $payment->formatAmount($amount, true);
         // $amount = number_format((float) $amount, 3, '.', '');
 
-        $tolerancePercentage = 0.1;
+        if ($amount != $baseAmount) {
+            $tolerancePercentage = 0.1;
+            PaytabsHelper::log("Detect difference in exchange, ($baseAmount <> $amount), tolerance option: ($tolerancePercentage %)", 2);
 
-        // Calculate the percentage difference
-        $percentageDifference = abs((($baseAmount - $amount) / $baseAmount) * 100);
+            // Calculate the percentage difference
+            $percentageDifference = abs((($baseAmount - $amount) / $baseAmount) * 100);
 
-        if ($percentageDifference <= $tolerancePercentage) {
-            $amount = $baseAmount;
+            if ($percentageDifference <= $tolerancePercentage) {
+                $amount = $baseAmount;
+            } else {
+                PaytabsHelper::log("Converted amount exceeded the tolerance value ($percentageDifference)", 2);
+            }
         }
 
         return $amount;

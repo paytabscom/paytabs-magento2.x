@@ -26,7 +26,7 @@ trait PaytabsHelpers
         if ($re_include_shipping) {
             $tranAmount += $shipping_amount;
 
-            $order->addStatusHistoryComment("Exclude shipping option detected, amount ($shipping_amount)");
+            $order->addStatusHistoryComment("Exclude Shipping option detected, amount ($shipping_amount $tranCurrency)");
         }
 
         if ($use_order_currency) {

@@ -220,7 +220,11 @@ class Api
 
         if ($exclude_shipping) {
             $pt_holder->set50UserDefined('exclude_shipping', $shippingAmount);
+
             PaytabsHelper::log("Order $orderId, Exclude shipping fees $shippingAmount", 1);
+            $order
+                ->addStatusHistoryComment("Exclude Shipping option is enabled, amount ($shippingAmount $currency), Gateway amount: ($amount)")
+                ->save();
         }
 
         $post_arr = $pt_holder->pt_build();
