@@ -27,6 +27,7 @@ trait PaytabsHelpers
             $tranAmount += $shipping_amount;
 
             $order->addStatusHistoryComment("Exclude Shipping option detected, amount ($shipping_amount $tranCurrency)");
+            PaytabsHelper::log("Exclude Shipping option detected, amount ($shipping_amount $tranCurrency)", 1);
         }
 
         if ($use_order_currency) {
