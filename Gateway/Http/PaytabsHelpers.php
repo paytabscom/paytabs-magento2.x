@@ -13,13 +13,21 @@ trait PaytabsHelpers
         return $order && $order->getId();
     }
 
-    function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency)
+    function getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency, $re_include_shipping, $shipping_amount)
     {
         $amount = null;
 
-        $orderCurrency = strtoupper($payment->getOrder()->getOrderCurrencyCode());
-        $baseCurrency  = strtoupper($payment->getOrder()->getBaseCurrencyCode());
+        $order = $payment->getOrder();
+
+        $orderCurrency = strtoupper($order->getOrderCurrencyCode());
+        $baseCurrency  = strtoupper($order->getBaseCurrencyCode());
         $tranCurrency  = strtoupper($tranCurrency);
+
+        if ($re_include_shipping) {
+            $tranAmount += $shipping_amount;
+
+            $order->addStatusHistoryComment("Exclude shipping option detected, amount ($shipping_amount)");
+        }
 
         if ($use_order_currency) {
             if ($orderCurrency != $tranCurrency) {
@@ -32,11 +40,11 @@ trait PaytabsHelpers
                 // Convert Amount to Base
                 $amount = CurrencySelect::convertOrderToBase($payment, $tranAmount);
 
-                $payment->getOrder()
+                $order
                     ->addStatusHistoryComment(
                         __(
                             'Transaction amount converted to base currency: (%1) = (%2)',
-                            $payment->getOrder()->getOrderCurrency()->format($tranAmount, [], false),
+                            $order->getOrderCurrency()->format($tranAmount, [], false),
                             $payment->formatPrice($amount)
                         )
                     )

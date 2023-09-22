@@ -158,7 +158,8 @@ class Ipn extends Action
         $payment = $order->getPayment();
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
-        $paymentAmount = $this->getAmount($payment, $pt_tran_currency, $pt_tran_total, $use_order_currency);
+        // Exclude shipping option has nothing to do with IPN, since IPN does not support creating new Orders
+        $paymentAmount = $this->getAmount($payment, $pt_tran_currency, $pt_tran_total, $use_order_currency, false, 0);
 
 
         if (!$pt_success) {

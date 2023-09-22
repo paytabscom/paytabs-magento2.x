@@ -167,7 +167,7 @@ class Callback extends Action
             $paymentMethod->getConfigData('order_statuses/order_success_status') ?? Order::STATE_PROCESSING;
         $paymentFailed =
             $paymentMethod->getConfigData('order_statuses/order_failed_status') ?? Order::STATE_CANCELED;
-        $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+        // $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
 
         $sendInvoice = (bool) $paymentMethod->getConfigData('send_invoice');
         $emailConfig = $paymentMethod->getConfigData('email_config');
@@ -185,6 +185,15 @@ class Callback extends Action
         $pt_prev_tran_ref = @$verify_response->previous_tran_ref;
         $transaction_type = @$verify_response->tran_type;
         $response_code = @$verify_response->response_code;
+
+        $user_defined = @$verify_response->user_defined;
+        if ($user_defined) {
+            $is_exclude_shipping = @$user_defined->udf1 == "exclude_shipping";
+            $excluded_amount = @$user_defined->udf2 ?? 0;
+        } else {
+            $is_exclude_shipping = false;
+            $excluded_amount = 0;
+        }
 
         //
 
@@ -235,11 +244,7 @@ class Callback extends Action
             ->setTransactionAdditionalinfo($this->_row_details, $_tran_details);
 
 
-        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency);
-
-        if ($exclude_shipping) {
-            $order->addStatusHistoryComment("Exclude shipping option is enabled");
-        }
+        $paymentAmount = $this->getAmount($payment, $tranCurrency, $tranAmount, $use_order_currency, $is_exclude_shipping, $excluded_amount);
 
         if ($is_pending) {
             $payment

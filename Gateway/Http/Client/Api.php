@@ -219,7 +219,7 @@ class Api
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         if ($exclude_shipping) {
-            $pt_holder->set50UserDefined('exclude_shipping=' . $shippingAmount);
+            $pt_holder->set50UserDefined('exclude_shipping', $shippingAmount);
             PaytabsHelper::log("Order $orderId, Exclude shipping fees $shippingAmount", 1);
         }
 
