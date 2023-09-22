@@ -20,6 +20,7 @@ class Responsepre extends Action
 
     protected $quoteRepository;
 
+    private $rawResultFactory;
 
     /**
      * @param Context $context

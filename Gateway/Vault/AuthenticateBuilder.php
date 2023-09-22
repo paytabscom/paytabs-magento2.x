@@ -16,6 +16,7 @@ use Magento\Payment\Gateway\ConfigInterface;
  */
 class AuthenticateBuilder implements BuilderInterface
 {
+    private $config;
 
     public function __construct(
         ConfigInterface $config
