@@ -80,9 +80,14 @@ class CurrencySelect implements \Magento\Framework\Option\ArrayInterface
         $amount = $tranAmount * $rate;
 
         // $amount = $payment->formatAmount($amount, true);
-        $amount = number_format((float) $amount, 3, '.', '');
+        // $amount = number_format((float) $amount, 3, '.', '');
 
-        if (abs($baseAmount - $amount) < 0.1) {
+        $tolerancePercentage = 0.1;
+
+        // Calculate the percentage difference
+        $percentageDifference = abs((($baseAmount - $amount) / $baseAmount) * 100);
+
+        if ($percentageDifference <= $tolerancePercentage) {
             $amount = $baseAmount;
         }
 
