@@ -72,8 +72,14 @@ class FollowupValidator extends AbstractValidator
         $payment = $paymentDO->getPayment();
         $order = $payment->getOrder();
 
-        $paymentMethod = $payment->getMethodInstance();
-        $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+        $user_defined = @$pt_response['user_defined'];
+        if ($user_defined) {
+            $is_exclude_shipping = @$user_defined->udf1 == "exclude_shipping";
+            $excluded_amount = @$user_defined->udf2 ?? 0;
+        } else {
+            $is_exclude_shipping = false;
+            $excluded_amount = 0;
+        }
 
         $use_order_currency = CurrencySelect::UseOrderCurrency($payment);
 
@@ -81,16 +87,12 @@ class FollowupValidator extends AbstractValidator
             $currency = $order->getOrderCurrencyCode();
             $amount = $order->getBaseCurrency()->convert($amount, $currency);
             $amount = $payment->formatAmount($amount, true);
-
-            $shippingAmount = $order->getShippingAmount();
         } else {
             $currency = $order->getBaseCurrencyCode();
-
-            $shippingAmount = $order->getBaseShippingAmount();
         }
 
-        if ($exclude_shipping) {
-            $amount -= $shippingAmount;
+        if ($is_exclude_shipping) {
+            $amount -= $excluded_amount;
             $amount = $payment->formatAmount($amount, true);
         }
 

@@ -75,6 +75,19 @@ class FollowupHandler implements HandlerInterface
             $transaction_info['amount'] = $handlingSubject['amount'];
         }
 
+        if (array_key_exists('user_defined', $response)) {
+            $user_defined = $response['user_defined'];
+
+            $is_exclude_shipping = @$user_defined->udf1 == "exclude_shipping";
+            $excluded_amount = @$user_defined->udf2 ?? 0;
+
+            if ($is_exclude_shipping) {
+                $transaction_info['exclude_shipping_amount'] = $excluded_amount;
+
+                PaytabsHelper::log("Exclude Shipping option is enabled, amount ($excluded_amount $pt_tran_currency), Gateway amount: ($pt_tran_amount)", 1);
+            }
+        }
+
         //
 
         $is_verify = array_key_exists('is_verify', $response) ? $response['is_verify'] : false;

@@ -103,6 +103,8 @@ class CaptureRequest implements BuilderInterface
             $transaction_id = $payment->getParentTransactionId();
             $reason = 'Admin request';
 
+            // Sending the same request through Store admin will create separate Capture transaction
+            // However, sending same capture details to the payment gateway will return the same previous capture -if there is any- if the request sent in a short period
             $order_id .= ' - ' . date('U'); // prevents Duplicate request issue
 
             //
