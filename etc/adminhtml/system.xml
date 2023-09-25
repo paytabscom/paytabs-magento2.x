@@ -331,9 +331,10 @@
                 </field>
 
                 <field id="exclude_shipping" translate="label" type="select" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Exclude Shipping amount</label>
+                    <label>Exclude Shipping fees</label>
+                    <tooltip>Shipping fees will be recorded as Paid, Considering them to be paid separately.</tooltip>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Exclude the shipping fees from the online payment, you may collect the shipping/delivery fees by another way.</comment>
+                    <comment><![CDATA[<strong>Shipping fees are not part of the payment</strong>, Exclude them from the online payment. <br />You may collect the shipping/delivery fees by another way, they will be considered as Paid.]]></comment>
                 </field>
             </group>
 
