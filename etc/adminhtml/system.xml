@@ -344,9 +344,9 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
 
-                    <field id="valu_widget_mobile_number" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Mobile number</label>
-                        <comment>Registered valU mobile number.</comment>
+                    <field id="valu_widget_phone_number" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Phone number</label>
+                        <comment>Registered valU phone number.</comment>
                         <validate>required-entry validate-digits</validate>
                         <depends>
                             <field id="valu_widget_enable">1</field>

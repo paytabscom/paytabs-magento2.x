@@ -7,7 +7,10 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Payment\Helper\Data;
+use PayTabs\PayPage\Gateway\Http\Client\Api as PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
+use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
+use PayTabs\PayPage\Observer\PaymentMethodAvailable;
 
 class ValuInstallments extends Template
 {
@@ -21,6 +24,10 @@ class ValuInstallments extends Template
 
     private $product;
 
+    private $payment_method;
+
+    public $_valu_text;
+
     /**
      * View constructor.
      * @param Template\Context $context
@@ -31,6 +38,7 @@ class ValuInstallments extends Template
         Template\Context $context,
         Registry $registry,
         Repository $assetRepo,
+
         Data $paymentHelper,
         array $data = []
     ) {
@@ -41,6 +49,8 @@ class ValuInstallments extends Template
         $this->assetRepo = $assetRepo;
 
         $this->product = $this->getProduct();
+
+        $this->payment_method = $this->getPaymentMethod();
     }
 
     /**
@@ -50,8 +60,10 @@ class ValuInstallments extends Template
     {
         $canShow = $this->canShow();
 
-        if ($canShow) {
-            return parent::_toHtml();
+        if ($this->getValUDetails()) {
+            if ($canShow) {
+                return parent::_toHtml();
+            }
         }
 
         return '';
@@ -61,21 +73,37 @@ class ValuInstallments extends Template
     function canShow()
     {
         try {
-            $payment_method = $this->getPaymentMethod();
+            $payment_method = $this->payment_method;
             $enabled =
                 (bool) $payment_method->getConfigData('active')
                 && (bool) $payment_method->getConfigData('valu_widget/valu_widget_enable');
             if ($enabled) {
-                $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
-                $threshold = max(0, $threshold);
+                if ($this->_isCurrencyAvailable($payment_method)) {
+                    $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
+                    $threshold = max(0, $threshold);
 
-                $product_price = (float) $this->product->getPrice();
-                if ($product_price > $threshold) {
-                    return true;
+                    // $product_price = (float) $this->product->getPrice();
+                    $product_price = $this->getProductPrice();
+
+                    if ($product_price > $threshold) {
+                        return true;
+                    }
                 }
             }
         } catch (\Throwable $th) {
             PaytabsHelper::log($th->getMessage(), 3);
+        }
+
+        return false;
+    }
+
+    function _isCurrencyAvailable($payment_method)
+    {
+        $use_order_currency = CurrencySelect::IsOrderCurrency($payment_method);
+        $currencyCode = PaymentMethodAvailable::getCurrency($use_order_currency);
+
+        if ($currencyCode == 'EGP') {
+            return true;
         }
 
         return false;
@@ -91,17 +119,76 @@ class ValuInstallments extends Template
         return $this->coreRegistry->registry('product');
     }
 
+    private function getProductPrice()
+    {
+        return (float) $this->product->getPriceInfo()->getPrice('final_price')->getValue();
+    }
+
     function getValUDetails()
     {
-        // ToDo
-        // Call external API to check the installment plans
+        $price = $this->getProductPrice();
 
-        $price = $this->product->getPrice();
+        $details = $this->callValUAPI($price, 'EGP');
 
-        $installment_amount = round($price / 3, 2);
-        $msg = "Pay 3 interest-free payments of EGP $installment_amount.";
+        if (!$details->success) {
+            $_err_msg = json_encode($details);
+            PaytabsHelper::log("valU API error: {$_err_msg}", 3);
+            return false;
+        }
 
-        return $msg;
+        $installments_count = 3;
+        $valu_plan = $this->getValUPlan($details, $installments_count);
+
+        $installment_amount = $valu_plan->emi;
+
+        $calculated_installment = round($price / $installments_count, 2);
+        $is_free_interest = $calculated_installment >= $installment_amount;
+
+        $txt_free = $is_free_interest ? "interest-free" : "";
+
+        $msg = "Pay {$installments_count} {$txt_free} payments of EGP $installment_amount.";
+
+        $this->_valu_text = $msg;
+
+        return true;
+    }
+
+    function callValUAPI($price, $currency)
+    {
+        $paytabs = new PaytabsApi;
+        $ptApi = $paytabs->pt($this->payment_method);
+
+        $phone_number = $this->payment_method->getConfigData('valu_widget/valu_widget_phone_number');
+        if (empty($phone_number)) {
+            PaytabsHelper::log("valU phone number is not set, {$this->product->getId()}", 2);
+            return false;
+        }
+
+        $params = [
+            'cart_amount' => $price,
+            'cart_currency' => $currency,
+            'customer_details' => [
+                'phone' => $phone_number,
+            ],
+        ];
+
+        $res = $ptApi->inqiry_valu($params);
+
+        return $res;
+    }
+
+    function getValUPlan($details, $installments_count)
+    {
+        try {
+            $plansList = $details->valuResponse->productList[0]->tenureList;
+            foreach ($plansList as $plan) {
+                if ($plan->tenorMonth == $installments_count) {
+                    return $plan;
+                }
+            }
+        } catch (\Throwable $th) {
+            PaytabsHelper::log("valU widget error: " . $th->getMessage());
+        }
     }
 
     function getValULogo()
@@ -110,7 +197,8 @@ class ValuInstallments extends Template
         return $_icons_path . '/valu.png';
     }
 
-    private function getPaymentMethod() {
+    private function getPaymentMethod()
+    {
         $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
 
         return $payment_method;

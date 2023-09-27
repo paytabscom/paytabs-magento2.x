@@ -1,5 +1,5 @@
 <?php
-$msg = $block->getValUDetails();
+$msg = $block->_valu_text;
 
 $logo = $block->getValULogo();
 ?>
@@ -7,8 +7,8 @@ $logo = $block->getValULogo();
 <div style="border: 1px solid orange; border-radius: 12px; margin: 10px 0px;">
     <table>
         <tr>
-            <td>
-                <img src="<?= $logo ?>" alt="valU logo">
+            <td style="width: 1%; white-space: nowrap;">
+                <img src="<?= $logo ?>" alt="valU logo" style="min-height: 64px; max-width: 128px;">
             </td>
             <td style="vertical-align: middle;">
                 <?= $msg ?>
