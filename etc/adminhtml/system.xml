@@ -344,6 +344,15 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
 
+                    <field id="valu_widget_mobile_number" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Mobile number</label>
+                        <comment>Registered valU mobile number.</comment>
+                        <validate>required-entry validate-digits</validate>
+                        <depends>
+                            <field id="valu_widget_enable">1</field>
+                        </depends>
+                    </field>
+
                     <field id="valu_widget_price_threshold" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                         <label>Price threshold</label>
                         <comment>Display the widget for all products that have a price higher than the current threshold.</comment>
