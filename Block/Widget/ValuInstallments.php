@@ -14,6 +14,8 @@ use PayTabs\PayPage\Observer\PaymentMethodAvailable;
 
 class ValuInstallments extends Template
 {
+    const Currency = 'EGP';
+
     /**
      * @var Registry
      */
@@ -59,17 +61,23 @@ class ValuInstallments extends Template
     protected function _toHtml(): string
     {
         $canShow = $this->canShow();
+        $isFetched = $this->getValUDetails();
 
-        if ($this->getValUDetails()) {
-            if ($canShow) {
-                return parent::_toHtml();
-            }
+        if ($canShow && $isFetched) {
+            return parent::_toHtml();
         }
 
         return '';
     }
 
-
+    /**
+     * Check if the Widget is eligible to be displayed.
+     * Conditions:
+     *  - Enable valU payment method
+     *  - Enable the widget
+     *  - Currency match (Base or Order)
+     *  - Product price > threshold
+     */
     function canShow()
     {
         try {
@@ -91,66 +99,68 @@ class ValuInstallments extends Template
                 }
             }
         } catch (\Throwable $th) {
-            PaytabsHelper::log($th->getMessage(), 3);
-        }
-
-        return false;
-    }
-
-    function _isCurrencyAvailable($payment_method)
-    {
-        $use_order_currency = CurrencySelect::IsOrderCurrency($payment_method);
-        $currencyCode = PaymentMethodAvailable::getCurrency($use_order_currency);
-
-        if ($currencyCode == 'EGP') {
-            return true;
+            PaytabsHelper::log("valU widget, Show error: " . $th->getMessage(), 3);
         }
 
         return false;
     }
 
     /**
-     * Retrieve current product model
-     *
-     * @return Product
+     * Check if the Currency matches the required widget currency.
+     * True if:
+     *  - Base currency = EGP
+     *  - OR valU method enable Order Currency option && Current currency is EGP
      */
-    public function getProduct(): Product
+    function _isCurrencyAvailable($payment_method)
     {
-        return $this->coreRegistry->registry('product');
+        $use_order_currency = CurrencySelect::IsOrderCurrency($payment_method);
+        $currencyCode = PaymentMethodAvailable::getCurrency($use_order_currency);
+
+        if ($currencyCode == ValuInstallments::Currency) {
+            return true;
+        }
+
+        return false;
     }
 
-    private function getProductPrice()
-    {
-        return (float) $this->product->getPriceInfo()->getPrice('final_price')->getValue();
-    }
+    //
 
     function getValUDetails()
     {
         $price = $this->getProductPrice();
 
-        $details = $this->callValUAPI($price, 'EGP');
+        $details = $this->callValUAPI($price, ValuInstallments::Currency);
 
-        if (!$details->success) {
+        if (!$details || !$details->success) {
             $_err_msg = json_encode($details);
-            PaytabsHelper::log("valU API error: {$_err_msg}", 3);
+            PaytabsHelper::log("valU Details error: [{$_err_msg}]", 3);
             return false;
         }
 
         $installments_count = 3;
         $valu_plan = $this->getValUPlan($details, $installments_count);
 
-        $installment_amount = $valu_plan->emi;
+        if (!$valu_plan) {
+            return false;
+        }
 
-        $calculated_installment = round($price / $installments_count, 2);
-        $is_free_interest = $calculated_installment >= $installment_amount;
+        try {
+            $installment_amount = $valu_plan->emi;
 
-        $txt_free = $is_free_interest ? "interest-free" : "";
+            $calculated_installment = round($price / $installments_count, 2);
+            $is_free_interest = $calculated_installment >= $installment_amount;
 
-        $msg = "Pay {$installments_count} {$txt_free} payments of EGP $installment_amount.";
+            $txt_free = $is_free_interest ? "interest-free" : "";
 
-        $this->_valu_text = $msg;
+            $msg = "Pay {$installments_count} {$txt_free} payments of " . ValuInstallments::Currency . " $installment_amount.";
 
-        return true;
+            $this->_valu_text = $msg;
+            return true;
+        } catch (\Throwable $th) {
+            PaytabsHelper::log("valU widget error: " . $th->getMessage(), 3);
+        }
+
+        return false;
     }
 
     function callValUAPI($price, $currency)
@@ -187,8 +197,30 @@ class ValuInstallments extends Template
                 }
             }
         } catch (\Throwable $th) {
-            PaytabsHelper::log("valU widget error: " . $th->getMessage());
+            PaytabsHelper::log("valU Plan error: " . $th->getMessage(), 3);
         }
+
+        $_log = json_encode($plansList);
+        PaytabsHelper::log("valU Plan error: No Plan selected, [{$_log}]", 2);
+
+        return false;
+    }
+
+    //
+
+    /**
+     * Retrieve current product model
+     *
+     * @return Product
+     */
+    public function getProduct(): Product
+    {
+        return $this->coreRegistry->registry('product');
+    }
+
+    private function getProductPrice()
+    {
+        return (float) $this->product->getPriceInfo()->getPrice('final_price')->getValue();
     }
 
     function getValULogo()
