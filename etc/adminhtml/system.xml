@@ -336,7 +336,7 @@
                 </field>
 
                 <group id="valu_widget" translate="label" type="text" sortOrder="136" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>valU widget</label>
+                    <label>valU widget (Beta)</label>
                     <comment>Show valU widget in product's details page.</comment>
 
                     <field id="valu_widget_enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
