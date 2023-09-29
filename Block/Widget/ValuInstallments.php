@@ -11,6 +11,8 @@ use PayTabs\PayPage\Gateway\Http\Client\Api as PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
 use PayTabs\PayPage\Observer\PaymentMethodAvailable;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 
 class ValuInstallments extends Template
 {
@@ -23,6 +25,8 @@ class ValuInstallments extends Template
 
     protected $assetRepo;
     protected $paymentHelper;
+
+    protected $priceCurrency;
 
     private $product;
 
@@ -40,15 +44,19 @@ class ValuInstallments extends Template
         Template\Context $context,
         Registry $registry,
         Repository $assetRepo,
-
+        PriceCurrencyInterface $priceCurrency,
         Data $paymentHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
+        new PaytabsCore;
+
         $this->coreRegistry = $registry;
 
         $this->paymentHelper = $paymentHelper;
         $this->assetRepo = $assetRepo;
+
+        $this->priceCurrency = $priceCurrency;
 
         $this->product = $this->getProduct();
 
@@ -61,10 +69,12 @@ class ValuInstallments extends Template
     protected function _toHtml(): string
     {
         $canShow = $this->canShow();
-        $isFetched = $this->getValUDetails();
 
-        if ($canShow && $isFetched) {
-            return parent::_toHtml();
+        if ($canShow) {
+            $isFetched = $this->getValUDetails();
+            if ($isFetched) {
+                return parent::_toHtml();
+            }
         }
 
         return '';
@@ -129,6 +139,7 @@ class ValuInstallments extends Template
     {
         $price = $this->getProductPrice();
 
+        PaytabsHelper::log("valU inqiry, Product: {$this->product->getId()}, {$price}", 1);
         $details = $this->callValUAPI($price, ValuInstallments::Currency);
 
         if (!$details || !$details->success) {
@@ -220,7 +231,17 @@ class ValuInstallments extends Template
 
     private function getProductPrice()
     {
-        return (float) $this->product->getPriceInfo()->getPrice('final_price')->getValue();
+        // Base price in Base currency
+        $price = (float) $this->product->getPrice(); //->getPrice('final_price')->getValue();
+
+        $use_order_currency = CurrencySelect::IsOrderCurrency($this->payment_method);
+        if ($use_order_currency) {
+            $convertedPrice = $this->priceCurrency->convertAndRound($price, ValuInstallments::Currency);
+        } else {
+            $convertedPrice = $price;
+        }
+
+        return $convertedPrice;
     }
 
     function getValULogo()
