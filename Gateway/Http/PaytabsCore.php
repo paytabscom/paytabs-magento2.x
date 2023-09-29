@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.13.1');
+define('PAYTABS_PAYPAGE_VERSION', '3.13.2');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -42,7 +42,7 @@ class PaytabsCore
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.11.4');
+define('PAYTABS_SDK_VERSION', '2.11.4.1');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
