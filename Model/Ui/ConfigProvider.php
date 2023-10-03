@@ -28,6 +28,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_PAYPAL     = 'paypal';
     const CODE_NBE_INSTALLMENT = 'installment';
     const CODE_URPAY      = 'urpay';
+    const CODE_FORSA      = 'forsa';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -103,6 +104,9 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_URPAY => [
                 'icon' => 'urpay.svg'
+            ],
+            self::CODE_FORSA => [
+                'icon' => 'forsa.png'
             ],
 
             self::CODE_VAULT_ALL => [

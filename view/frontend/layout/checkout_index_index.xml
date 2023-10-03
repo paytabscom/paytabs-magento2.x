@@ -194,6 +194,15 @@
                                                                     </item>
                                                                 </item>
 
+                                                                 <item name="paypage-forsa" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/forsa</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="forsa" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
                                                                 <!-- item-renderer -->
                                                             </item>
                                                         </item>
