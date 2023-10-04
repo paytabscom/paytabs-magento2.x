@@ -140,6 +140,13 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageForsaFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FORSA</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolForsa</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -247,6 +254,11 @@
     <virtualType name="PayPageNbeInstallmentConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_NBE_INSTALLMENT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageForsaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FORSA</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageUrPayConfig" type="Magento\Payment\Gateway\Config\Config">
@@ -608,6 +620,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolForsa" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerForsa</item>
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="PayPageValueHandlerPoolUrPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -714,6 +733,11 @@
     <virtualType name="PayPageConfigValueHandlerNbeInstallment" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageNbeInstallmentConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerForsa" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageForsaConfig</argument>
         </arguments>
     </virtualType>
     <virtualType name="PayPageConfigValueHandlerUrPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
