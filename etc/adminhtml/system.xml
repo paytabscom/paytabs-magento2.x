@@ -415,6 +415,24 @@
                 </field>
             </group>
 
+            <group id="aman" translate="label" extends="paytabs_iframe" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>PayTabs - Aman</label>
+
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Action</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
+                </field>
+            </group>
+            
+            <group id="touchpoints" translate="label" extends="paytabs_iframe" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>PayTabs - Touchpoints</label>
+
+                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Action</label>
+                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
+                </field>
+            </group>
+
         </section>
     </system>
 </config>

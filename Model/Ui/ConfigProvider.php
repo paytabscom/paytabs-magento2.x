@@ -29,6 +29,8 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_NBE_INSTALLMENT = 'installment';
     const CODE_URPAY      = 'urpay';
     const CODE_FORSA      = 'forsa';
+    const CODE_AMAN      = 'aman';
+    const CODE_TOUCHPOINTS      = 'touchpoints';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -107,6 +109,12 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_FORSA => [
                 'icon' => 'forsa.png'
+            ],
+            self::CODE_AMAN => [
+                'icon' => 'aman.svg'
+            ],
+            self::CODE_TOUCHPOINTS => [
+                'icon' => 'touchpoints_adcb.svg'
             ],
 
             self::CODE_VAULT_ALL => [
