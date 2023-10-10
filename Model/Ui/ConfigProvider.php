@@ -31,6 +31,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_FORSA      = 'forsa';
     const CODE_AMAN      = 'aman';
     const CODE_TOUCHPOINTS      = 'touchpoints';
+    const CODE_TABBY      = 'tabby';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -114,6 +115,9 @@ final class ConfigProvider implements ConfigProviderInterface
                 'icon' => 'aman.svg'
             ],
             self::CODE_TOUCHPOINTS => [
+                'icon' => 'touchpoints_adcb.svg'
+            ],
+            self::CODE_TABBY => [
                 'icon' => 'touchpoints_adcb.svg'
             ],
 
