@@ -147,6 +147,28 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageAmanFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMAN</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAman</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageTouchpointsFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TOUCHPOINTS</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolTouchpoints</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PayPageTabbyFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TABBY</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolTabby</argument>
+        </arguments>
+    </virtualType>
+
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -261,9 +283,24 @@
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FORSA</argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageAmanConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMAN</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageTouchpointsConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TOUCHPOINTS</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="PayPageUrPayConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_URPAY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageTabbyConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TABBY</argument>
         </arguments>
     </virtualType>
 
@@ -627,10 +664,31 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolAman" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAman</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolTouchpoints" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerTouchpoints</item>
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="PayPageValueHandlerPoolUrPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="default" xsi:type="string">PayPageConfigValueHandlerUrPay</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageValueHandlerPoolTabby" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerTabby</item>
             </argument>
         </arguments>
     </virtualType>
@@ -740,9 +798,24 @@
             <argument name="configInterface" xsi:type="object">PayPageForsaConfig</argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageConfigValueHandlerAman" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAmanConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerTouchpoints" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageTouchpointsConfig</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="PayPageConfigValueHandlerUrPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageUrPayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerTabby" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageTabbyConfig</argument>
         </arguments>
     </virtualType>
 

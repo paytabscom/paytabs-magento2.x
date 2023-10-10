@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.14.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.15.0');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.12.0
+ * Version: 2.12.1
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.12.0');
+define('PAYTABS_SDK_VERSION', '2.12.1');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -1035,6 +1035,7 @@ class PaytabsApi
         '21' => ['name' => 'installment', 'title' => 'PayTabs - Installment', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_IFRAME]],
         '22' => ['name' => 'touchpoints', 'title' => 'PayTabs - Touchpoints', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_CARDS, PaytabsApi::GROUP_IFRAME]],
         '23' => ['name' => 'forsa', 'title' => 'PayTabs - Forsa', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '24' => ['name' => 'tabby', 'title' => 'PayTabs - Tabby', 'currencies' => ['AED'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
 
     ];
 
