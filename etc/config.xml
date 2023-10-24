@@ -700,7 +700,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>EGY</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -849,7 +849,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>EGY</endpoint>
+                <endpoint>ARE</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>

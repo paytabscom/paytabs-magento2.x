@@ -427,6 +427,11 @@
             <group id="touchpoints" translate="label" extends="paytabs_iframe" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - Touchpoints</label>
 
+                <field id="allow_associated_methods" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow associated methods</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
