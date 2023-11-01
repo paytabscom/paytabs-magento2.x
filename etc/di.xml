@@ -168,6 +168,12 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageSouhoolaFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SOUHOOLA</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolSouhoola</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
@@ -301,6 +307,11 @@
     <virtualType name="PayPageTabbyConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TABBY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageSouhoolaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SOUHOOLA</argument>
         </arguments>
     </virtualType>
 
@@ -692,6 +703,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolSouhoola" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerSouhoola</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
         <arguments>
@@ -816,6 +834,11 @@
     <virtualType name="PayPageConfigValueHandlerTabby" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageTabbyConfig</argument>
+        </arguments>
+    </virtualType>
+     <virtualType name="PayPageConfigValueHandlerSouhoola" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageSouhoolaConfig</argument>
         </arguments>
     </virtualType>
 
