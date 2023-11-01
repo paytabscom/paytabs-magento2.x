@@ -32,7 +32,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_AMAN       = 'aman';
     const CODE_TOUCHPOINTS = 'touchpoints';
     const CODE_TABBY      = 'tabby';
-    const CODE_SOUHOOLA      = 'souhoola';
+    const CODE_SOUHOOLA   = 'souhoola';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
