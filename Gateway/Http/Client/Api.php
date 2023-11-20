@@ -18,6 +18,7 @@ class Api
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
+        $config_id = $paymentMethod->getConfigData('theme_config_id');
 
         new PaytabsCore();
         $pt = PaytabsApi::getInstance($endpoint, $merchant_id, $merchant_key);
@@ -215,6 +216,7 @@ class Api
             ->set08Lang($lang)
             ->set09Framed($framed_mode || $preApprove, $preApprove ? 'iframe' : 'top')
             ->set10Tokenise($isTokenise)
+            ->set11ThemeConfigId($config_id)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
         if ($exclude_shipping) {

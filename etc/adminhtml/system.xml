@@ -137,6 +137,12 @@
                             <field id="pl_enabled">1</field>
                         </depends>
                     </field>
+
+                    <field id="theme_config_id" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Theme Config Id</label>
+                        <comment>Config id of the theme/payment page (if any) you want to open, You may find it in Dashboard, Developers, PayPage Settings (Themes)</comment>
+                        <validate>validate-digits</validate>
+                    </field>
                 </group>
 
                 <!-- PT -->
