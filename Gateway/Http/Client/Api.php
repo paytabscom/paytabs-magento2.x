@@ -18,7 +18,6 @@ class Api
         $merchant_id = $paymentMethod->getConfigData('profile_id');
         $merchant_key = $paymentMethod->getConfigData('server_key');
         $endpoint = $paymentMethod->getConfigData('endpoint');
-        $config_id = $paymentMethod->getConfigData('theme_config_id');
 
         new PaytabsCore();
         $pt = PaytabsApi::getInstance($endpoint, $merchant_id, $merchant_key);
@@ -43,6 +42,7 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+        $config_id = $paymentMethod->getConfigData('theme_config_id');
         //
         $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
@@ -216,9 +216,13 @@ class Api
             ->set08Lang($lang)
             ->set09Framed($framed_mode || $preApprove, $preApprove ? 'iframe' : 'top')
             ->set10Tokenise($isTokenise)
-            ->set11ThemeConfigId($config_id)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
+        if($config_id)
+        {
+            $pt_holder->set11ThemeConfigId($config_id);
+        }
+        
         if ($exclude_shipping) {
             $pt_holder->set50UserDefined('exclude_shipping=1');
         }

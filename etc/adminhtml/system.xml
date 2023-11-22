@@ -138,12 +138,13 @@
                         </depends>
                     </field>
 
-                    <field id="theme_config_id" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                </group>
+
+                <field id="theme_config_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Theme Config Id</label>
                         <comment>Config id of the theme/payment page (if any) you want to open, You may find it in Dashboard, Developers, PayPage Settings (Themes)</comment>
                         <validate>validate-digits</validate>
-                    </field>
-                </group>
+                </field>
 
                 <!-- PT -->
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
