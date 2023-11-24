@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.16.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.17.0');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.13.0
+ * Version: 2.15.0
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.13.0');
+define('PAYTABS_SDK_VERSION', '2.15.0');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -255,8 +255,8 @@ abstract class PaytabsHelper
             paytabs_error_log($msg, $severity);
         } catch (\Throwable $th) {
             try {
-                $severity_str = PAYTABS_DEBUG_SEVERITY[$severity];
-                $_prefix = date('c') . " " . PAYTABS_PREFIX . "{$severity_str}: ";
+                $severity_str = PAYTABS_DEBUG_SEVERITY[--$severity];
+                $_prefix = date('c') . " " . PAYTABS_PREFIX . ".{$severity_str} (FB): ";
                 $_msg = ($_prefix . $msg . PHP_EOL);
 
                 $_file = defined('PAYTABS_DEBUG_FILE') ? PAYTABS_DEBUG_FILE : PAYTABS_DEBUG_FILE_NAME;
@@ -768,6 +768,16 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
      */
     private $framed;
 
+    /**
+     * config_id
+     */
+    private $config_id;
+
+    /**
+     * alt_currency
+     */
+    private $alt_currency;
+
     //
 
     /**
@@ -780,7 +790,9 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
         $this->pt_merges(
             $all,
             $this->hide_shipping,
-            $this->framed
+            $this->framed,
+            $this->config_id,
+            $this->alt_currency
         );
 
         return $all;
@@ -806,6 +818,31 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
             'framed_return_top' => $redirect_target == 'top'
         ];
 
+        return $this;
+    }
+
+    public function set11ThemeConfigId($config_id)
+    {
+        $config_id = (int) trim($config_id ?? "");
+
+        if (is_int($config_id) && $config_id > 0) {
+            $this->config_id = [
+                'config_id' => $config_id
+            ];
+        }
+
+        return $this;
+    }
+
+    public function set12AltCurrency($alt_currency)
+    {
+        $alt_currency = trim($alt_currency ?? "");
+
+        if (!empty($alt_currency)) {
+            $this->alt_currency = [
+                'alt_currency' => $alt_currency
+            ];
+        }
         return $this;
     }
 }
@@ -1304,6 +1341,8 @@ class PaytabsApi
             $_paypage = new stdClass();
             $_paypage->success = false;
             $_paypage->message = 'Create paytabs payment failed';
+        } else if (isset($_paypage->code)) {
+            $_paypage->success = false;
         } else {
             $_paypage->success = isset($paypage->tran_ref, $paypage->redirect_url) && !empty($paypage->redirect_url);
 
