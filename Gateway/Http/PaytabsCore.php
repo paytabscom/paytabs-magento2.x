@@ -36,7 +36,6 @@ class PaytabsCore
 }
 
 
-
 /**
  * PayTabs v2 PHP SDK
  * Version: 2.15.0
