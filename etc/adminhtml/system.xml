@@ -137,19 +137,18 @@
                             <field id="pl_enabled">1</field>
                         </depends>
                     </field>
-
                 </group>
-
-                <field id="theme_config_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Theme Config Id</label>
-                        <comment>Config id of the theme/payment page (if any) you want to open, You may find it in Dashboard, Developers, PayPage Settings (Themes)</comment>
-                        <validate>validate-digits</validate>
-                </field>
 
                 <!-- PT -->
                 <field id="hide_shipping" translate="label" type="select" sortOrder="81" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hide Shipping info</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="theme_config_id" translate="label" type="text" sortOrder="85" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Theme Config Id</label>
+                    <comment>Config id of the theme/payment page (if any) you want to open, You may find it in "Dashboard > Developers > PayPage Settings (Themes)"</comment>
+                    <validate>validate-digits</validate>
                 </field>
 
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">

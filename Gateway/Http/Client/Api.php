@@ -218,11 +218,10 @@ class Api
             ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 
-        if($config_id)
-        {
+        if ($config_id) {
             $pt_holder->set11ThemeConfigId($config_id);
         }
-        
+
         if ($exclude_shipping) {
             $pt_holder->set50UserDefined('exclude_shipping=1');
         }
