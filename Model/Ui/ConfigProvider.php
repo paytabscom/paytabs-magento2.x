@@ -28,6 +28,11 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_PAYPAL     = 'paypal';
     const CODE_NBE_INSTALLMENT = 'installment';
     const CODE_URPAY      = 'urpay';
+    const CODE_FORSA      = 'forsa';
+    const CODE_AMAN       = 'aman';
+    const CODE_TOUCHPOINTS = 'touchpoints';
+    const CODE_TABBY      = 'tabby';
+    const CODE_SOUHOOLA   = 'souhoola';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -103,6 +108,21 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_URPAY => [
                 'icon' => 'urpay.svg'
+            ],
+            self::CODE_FORSA => [
+                'icon' => 'forsa.png'
+            ],
+            self::CODE_AMAN => [
+                'icon' => 'aman.svg'
+            ],
+            self::CODE_TOUCHPOINTS => [
+                'icon' => 'touchpoints_adcb.svg'
+            ],
+            self::CODE_TABBY => [
+                'icon' => 'tabby.svg'
+            ],
+            self::CODE_SOUHOOLA => [
+                'icon' => 'souhoola.png'
             ],
 
             self::CODE_VAULT_ALL => [
