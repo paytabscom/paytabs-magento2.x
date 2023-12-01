@@ -103,7 +103,14 @@ class ValuInstallments extends Template
 
                     $product_price = $this->_getProductPrice();
 
-                    if ($product_price > $threshold) {
+                    if ($product_price >= $threshold) {
+                        return true;
+                    }
+
+                    // ToDo:
+                    // Get the final product price, confirm on the price and use the threshold
+                    $zero_price_enabled = (bool) $payment_method->getConfigData('valu_widget/valu_widget_on_price_zero');
+                    if ($product_price == 0 && $zero_price_enabled) {
                         return true;
                     }
                 }
@@ -258,6 +265,9 @@ class ValuInstallments extends Template
     {
         // Base price in Base currency
         $price = (float) $this->product->getPrice(); //->getPrice('final_price')->getValue();
+
+        // $price = (float) $this->product->getFinalPrice();
+        // $currencyCode = $this->product->getStore()->getCurrentCurrencyCode();
 
         $use_order_currency = CurrencySelect::IsOrderCurrency($this->payment_method);
         if ($use_order_currency) {

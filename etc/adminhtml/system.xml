@@ -377,6 +377,15 @@
                             <field id="valu_widget_enable">1</field>
                         </depends>
                     </field>
+
+                    <field id="valu_widget_on_price_zero" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Enable on Zero price products</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Display the widget for products have a price equal to zero (Configurable products).</comment>
+                        <depends>
+                            <field id="valu_widget_enable">1</field>
+                        </depends>
+                    </field>
                 </group>
             </group>
 
