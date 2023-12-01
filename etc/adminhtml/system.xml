@@ -350,16 +350,26 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
 
+                    <field id="valu_widget_static_content" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Static content</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Display the static content in the widget, Otherwise call the API to fetch live content based on the price.</comment>
+                        <depends>
+                            <field id="valu_widget_enable">1</field>
+                        </depends>
+                    </field>
+
                     <field id="valu_widget_phone_number" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Phone number</label>
                         <comment>Registered valU phone number.</comment>
                         <validate>required-entry validate-digits</validate>
                         <depends>
                             <field id="valu_widget_enable">1</field>
+                            <field id="valu_widget_static_content">0</field>
                         </depends>
                     </field>
 
-                    <field id="valu_widget_price_threshold" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <field id="valu_widget_price_threshold" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Price threshold</label>
                         <comment>Display the widget for all products that have a price higher than the current threshold.</comment>
                         <validate>validate-number</validate>

@@ -539,6 +539,7 @@
 
                 <valu_widget>
                     <valu_widget_enable>0</valu_widget_enable>
+                    <valu_widget_static_content>1</valu_widget_static_content>
                     <valu_widget_price_threshold>1000</valu_widget_price_threshold>
                 </valu_widget>
             </valu>

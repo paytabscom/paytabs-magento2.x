@@ -18,16 +18,15 @@ class ValuInstallments extends Template
 {
     const Currency = 'EGP';
 
+    private $static_content;
+
     /**
      * @var Registry
      */
     protected $coreRegistry;
-
     protected $assetRepo;
     protected $paymentHelper;
-
     protected $priceCurrency;
-
     private $product;
 
     private $payment_method;
@@ -60,7 +59,9 @@ class ValuInstallments extends Template
 
         $this->product = $this->getProduct();
 
-        $this->payment_method = $this->getPaymentMethod();
+        $this->payment_method = $this->_getPaymentMethod();
+
+        $this->static_content = (bool)$this->payment_method->getConfigData('valu_widget/valu_widget_static_content');
     }
 
     /**
@@ -100,8 +101,7 @@ class ValuInstallments extends Template
                     $threshold = (float) $payment_method->getConfigData('valu_widget/valu_widget_price_threshold');
                     $threshold = max(0, $threshold);
 
-                    // $product_price = (float) $this->product->getPrice();
-                    $product_price = $this->getProductPrice();
+                    $product_price = $this->_getProductPrice();
 
                     if ($product_price > $threshold) {
                         return true;
@@ -135,12 +135,37 @@ class ValuInstallments extends Template
 
     //
 
-    function getValUDetails()
+    private function getValUDetails()
     {
-        $price = $this->getProductPrice();
+        if ($this->static_content) {
+            return $this->_getValUDetails_static();
+        } else {
+            return $this->_getValUDetails_live();
+        }
+    }
+
+    function getValULogo()
+    {
+        $_icons_path = $this->assetRepo->getUrl("PayTabs_PayPage::images/");
+        return $_icons_path . '/valu_long.png';
+    }
+
+    //
+
+    private function _getValUDetails_static()
+    {
+        $msg = "Buy Now & Pay Later up to 60 Months!";
+
+        $this->_valu_text = $msg;
+        return true;
+    }
+
+    private function _getValUDetails_live()
+    {
+        $price = $this->_getProductPrice();
 
         PaytabsHelper::log("valU inqiry, Product: {$this->product->getId()}, {$price}", 1);
-        $details = $this->callValUAPI($price, ValuInstallments::Currency);
+        $details = $this->_callValUAPI($price, ValuInstallments::Currency);
 
         if (!$details || !$details->success) {
             $_err_msg = json_encode($details);
@@ -149,7 +174,7 @@ class ValuInstallments extends Template
         }
 
         $installments_count = 3;
-        $valu_plan = $this->getValUPlan($details, $installments_count);
+        $valu_plan = $this->_getValUPlan($details, $installments_count);
 
         if (!$valu_plan) {
             return false;
@@ -174,7 +199,7 @@ class ValuInstallments extends Template
         return false;
     }
 
-    function callValUAPI($price, $currency)
+    private function _callValUAPI($price, $currency)
     {
         $paytabs = new PaytabsApi;
         $ptApi = $paytabs->pt($this->payment_method);
@@ -198,7 +223,7 @@ class ValuInstallments extends Template
         return $res;
     }
 
-    function getValUPlan($details, $installments_count)
+    private function _getValUPlan($details, $installments_count)
     {
         try {
             $plansList = $details->valuResponse->productList[0]->tenureList;
@@ -229,7 +254,7 @@ class ValuInstallments extends Template
         return $this->coreRegistry->registry('product');
     }
 
-    private function getProductPrice()
+    private function _getProductPrice()
     {
         // Base price in Base currency
         $price = (float) $this->product->getPrice(); //->getPrice('final_price')->getValue();
@@ -244,13 +269,8 @@ class ValuInstallments extends Template
         return $convertedPrice;
     }
 
-    function getValULogo()
-    {
-        $_icons_path = $this->assetRepo->getUrl("PayTabs_PayPage::images/");
-        return $_icons_path . '/valu.png';
-    }
 
-    private function getPaymentMethod()
+    private function _getPaymentMethod()
     {
         $payment_method = $this->paymentHelper->getMethodInstance(\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_VALU);
 
