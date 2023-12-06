@@ -1,0 +1,17 @@
+<?php
+$msg = $block->_valu_text;
+$logo = $block->getValULogo();
+?>
+
+<div style="border: 1px solid orange; border-radius: 12px; margin: 10px 0px;">
+    <table>
+        <tr>
+            <td style="width: 1%; white-space: nowrap;">
+                <img src="<?= $logo ?>" alt="valU logo" style="min-height: 32px; max-width: 128pt;">
+            </td>
+            <td style="vertical-align: middle;">
+                <?= $msg ?>
+            </td>
+        </tr>
+    </table>
+</div>
