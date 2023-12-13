@@ -436,6 +436,13 @@ class PaytabsHolder
      */
     private $plugin_info;
 
+    /**
+     * invoice
+     * order_amount, 
+     * shipping_charges, 
+     * array line_items
+     */
+    private $invoice;
 
     //
 
@@ -448,7 +455,8 @@ class PaytabsHolder
         $all = array_merge(
             $this->transaction,
             $this->cart,
-            $this->plugin_info
+            $this->plugin_info,
+            $this->invoice
         );
 
         return $all;
@@ -485,6 +493,50 @@ class PaytabsHolder
         ];
 
         return $this;
+    }
+
+    public function set13Invoice($order_amount, $shipping_charges, array $line_items)
+    {
+        $infos = $this->setInvoiceDetails($order_amount, $shipping_charges, $line_items);
+    
+            $this->invoice = [
+                'invoice' => $infos
+            ];
+    
+            return $this;
+        
+    }
+
+    private function setInvoiceDetails($order_amount, $shipping_charges, array $line_items)
+    {
+       
+        $lineItemsData = [];
+
+        foreach ($line_items as $line_item) {
+            $lineItemsData[] = [
+                "sku" => $line_item["sku"],
+                "description" => $line_item["name"],
+                "url" => '',
+                "unit_cost" => $line_item["price"],
+                "quantity" => $line_item["quantity"],
+                "net_total" => 0,
+                "discount_rate" => 0,
+                "discount_amount" => $line_item["discount"],
+                "tax_rate" => 0,
+                "tax_total" => 0,
+                "total" => $line_item["total"],
+            ];
+        }
+
+        $info = [
+            'shipping_charges' => $shipping_charges,
+            "extra_charges"    => 0,
+            "extra_discount"   => 0,
+            "total"            => $order_amount,
+            "line_items"       => $lineItemsData,
+        ];
+
+        return $info;
     }
 
     public function set99PluginInfo($platform_name, $platform_version, $plugin_version = null)

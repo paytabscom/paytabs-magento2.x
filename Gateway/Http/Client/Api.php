@@ -43,6 +43,8 @@ class Api
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
         $config_id = $paymentMethod->getConfigData('theme_config_id');
+        $invoice = $paymentMethod->getConfigData('invoice');
+        //$shippingAmount = 0;
         //
         $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
@@ -152,8 +154,13 @@ class Api
         $items = $order->getAllVisibleItems();
 
         $items_arr = array_map(function ($p) {
-            $q = (int)$p->getQtyOrdered();
-            return "{$p->getName()} ({$q})";
+            $quantity = (int)$p->getQtyOrdered();
+            $sku = $p->getSku();
+            $price = $p->getPrice();
+            $discount = $p->getDiscountAmount();
+            $total = $price - $discount;
+            $name = $p->getName();
+            return "{$name} ({$quantity}) ({$sku}) ({$price}) ({$total}) ({$discount})";
         }, $items);
 
         $cart_desc = implode(', ', $items_arr);
@@ -224,6 +231,11 @@ class Api
 
         if ($exclude_shipping) {
             $pt_holder->set50UserDefined('exclude_shipping=1');
+        }
+
+        if ($invoice)
+        {
+            $pt_holder->set13Invoice($amount,$shippingAmount,$items_arr);
         }
 
         $post_arr = $pt_holder->pt_build();

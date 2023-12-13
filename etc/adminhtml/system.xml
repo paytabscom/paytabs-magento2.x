@@ -155,6 +155,12 @@
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
+
+                <field id="invoice" translate="label" type="select" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Invoice option</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
             </group>
 
             <group id="paytabs_iframe" translate="label" type="text" sortOrder="25" extends="paytabs">
