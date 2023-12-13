@@ -8,7 +8,6 @@ use stdClass;
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
 define('PAYTABS_PAYPAGE_VERSION', '3.18.0');
 
-
 function paytabs_error_log($msg, $severity = 3)
 {
     $logger = PayTabsLogger::getInstance();
