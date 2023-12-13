@@ -693,7 +693,6 @@ abstract class PaytabsBasicHolder extends PaytabsHolder
 
     public function set07URLs($return_url, $callback_url)
     {
-        $callback_url = str_replace('https://localhost', 'https://5fa1-5-193-61-154.ngrok-free.app', $callback_url);
         $this->urls = [
             'return'   => $return_url,
             'callback' => $callback_url,
