@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.18.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.18.1');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -693,6 +693,7 @@ abstract class PaytabsBasicHolder extends PaytabsHolder
 
     public function set07URLs($return_url, $callback_url)
     {
+        $callback_url = str_replace('https://localhost', 'https://5fa1-5-193-61-154.ngrok-free.app', $callback_url);
         $this->urls = [
             'return'   => $return_url,
             'callback' => $callback_url,
