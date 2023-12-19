@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.18.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.19.0');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -42,7 +42,7 @@ class PaytabsCore
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.17.0');
+define('PAYTABS_SDK_VERSION', '2.18.0');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -119,6 +119,15 @@ abstract class PaytabsHelper
         }
         return $methods;
     }
+
+    /**
+     * @return true if the payment method can use the Card methods features
+     */
+    static function canUseCardFeatures($code)
+    {
+        return ($code == 'all') || static::isCardPayment($code);
+    }
+
 
     static function supportTokenization($code)
     {
@@ -266,6 +275,29 @@ abstract class PaytabsHelper
             }
         }
     }
+
+    static function isValidDiscountPattern($pattern)
+    {
+        return preg_match(PaytabsEnum::DISCOUNT_PATTERN_REGEX, $pattern);
+    }
+
+    /**
+     * Validate the patterns for discount option
+     * @param $patterns_str string, comma separated
+     */
+    static function isValidDiscountPatterns($patterns_str)
+    {
+        $patterns = explode(',', $patterns_str);
+
+        if (empty($patterns)) return false;
+
+        foreach ($patterns as $prefix) {
+            if (!static::isValidDiscountPattern($prefix)) {
+                return false;
+            }
+        }
+    }
+
 }
 
 
@@ -306,6 +338,15 @@ abstract class PaytabsEnum
     const PP_ERR_DUPLICATE = 4;
 
     //
+
+    const DISCOUNT_PERCENTAGE = "percentage";
+    const DISCOUNT_FIXED = "fixed";
+
+    const DISCOUNT_PATTERN_REGEX = '/^[0-9]{4,10}$/';
+
+    //
+
+
 
     static function TranIsAuth($tran_type)
     {
@@ -436,15 +477,6 @@ class PaytabsHolder
      */
     private $plugin_info;
 
-    /**
-     * invoice
-     * order_amount, 
-     * shipping_charges, 
-     * array line_items
-     */
-    private $invoice;
-
-    //
 
 
     /**
@@ -455,8 +487,7 @@ class PaytabsHolder
         $all = array_merge(
             $this->transaction,
             $this->cart,
-            $this->plugin_info,
-            $this->invoice
+            $this->plugin_info
         );
 
         return $all;
@@ -495,49 +526,6 @@ class PaytabsHolder
         return $this;
     }
 
-    public function set13Invoice($order_amount, $shipping_charges, array $line_items)
-    {
-        $infos = $this->setInvoiceDetails($order_amount, $shipping_charges, $line_items);
-    
-            $this->invoice = [
-                'invoice' => $infos
-            ];
-    
-            return $this;
-        
-    }
-
-    private function setInvoiceDetails($order_amount, $shipping_charges, array $line_items)
-    {
-       
-        $lineItemsData = [];
-
-        foreach ($line_items as $line_item) {
-            $lineItemsData[] = [
-                "sku" => $line_item["sku"],
-                "description" => $line_item["name"],
-                "url" => '',
-                "unit_cost" => $line_item["price"],
-                "quantity" => $line_item["quantity"],
-                "net_total" => 0,
-                "discount_rate" => 0,
-                "discount_amount" => $line_item["discount"],
-                "tax_rate" => 0,
-                "tax_total" => 0,
-                "total" => $line_item["total"],
-            ];
-        }
-
-        $info = [
-            'shipping_charges' => $shipping_charges,
-            "extra_charges"    => 0,
-            "extra_discount"   => 0,
-            "total"            => $order_amount,
-            "line_items"       => $lineItemsData,
-        ];
-
-        return $info;
-    }
 
     public function set99PluginInfo($platform_name, $platform_version, $plugin_version = null)
     {
@@ -830,6 +818,19 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
      */
     private $alt_currency;
 
+    /**
+     * card_discounts
+     */
+    private $card_discounts;
+
+    /**
+     * invoice
+     * order_amount, 
+     * shipping_charges, 
+     * array line_items
+     */
+    private $invoice;
+
     //
 
     /**
@@ -844,7 +845,9 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
             $this->hide_shipping,
             $this->framed,
             $this->config_id,
-            $this->alt_currency
+            $this->alt_currency,
+            $this->card_discounts,
+            $this->invoice
         );
 
         return $all;
@@ -896,6 +899,102 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
             ];
         }
         return $this;
+    }
+
+    public function set13CardDiscounts($discount_patterns, $discount_amounts, $discount_types)
+    {
+        if (empty($discount_patterns)) {
+            PaytabsHelper::log('Paytabs admin: Discount arrays must be not empty', 3);
+            return $this;
+        }
+
+        $count = count($discount_patterns);
+
+        if ($count != count($discount_amounts) || $count != count($discount_types)) {
+            PaytabsHelper::log('Paytabs admin: Discount arrays must have the same length', 3);
+            return $this;
+        }
+
+        $cards = [];
+
+        for ($i = 0; $i < $count; $i++) {
+            $pattern = $discount_patterns[$i];
+            $amount = $discount_amounts[$i];
+            $type = $discount_types[$i];
+
+            if (!PaytabsHelper::isValidDiscountPattern($pattern)) {
+                PaytabsHelper::log('Paytabs admin: Discount pattern not valid', 2);
+                // uncomment if you want to stop the request, otherwise send the reqeust
+                // return $this;
+            }
+
+            if ($type == PaytabsEnum::DISCOUNT_PERCENTAGE) {
+                $type_key = 'discount_percent';
+                $title = "$discount_amounts[$i]% discount applied on cards starting with $discount_patterns[$i]";
+            } elseif ($type == PaytabsEnum::DISCOUNT_FIXED) {
+                $type_key = 'discount_amount';
+                $title = "$discount_amounts[$i] fixed discount applied on cards starting with $discount_patterns[$i]";
+            } else {
+                PaytabsHelper::log('Paytabs admin: Discount type does not exist', 3);
+                return $this;
+            }
+
+            $cards[$i]['discount_cards'] = $pattern;
+            $cards[$i][$type_key] = $amount;
+            $cards[$i]['title'] = $title;
+        }
+
+        if (count($cards) > 0) {
+            $this->card_discounts = [
+                'card_discounts' => $cards
+            ];
+        }
+
+        return $this;
+    }
+
+    public function set30Invoice($order_amount, $shipping_charges, array $line_items)
+    {
+
+        $infos = $this->setInvoiceDetails($order_amount, $shipping_charges, $line_items);
+    
+            $this->invoice = [
+                'invoice' => $infos
+            ];
+    
+            return $this;
+        
+    }
+
+    private function setInvoiceDetails($order_amount, $shipping_charges, array $line_items)
+    {
+        $lineItemsData = [];
+
+        foreach ($line_items as $line_item) {
+            $lineItemsData[] = [
+                "sku"           => $line_item['sku'],
+                "description"   => $line_item['name'],
+                "url"           => '',
+                "unit_cost"     => $line_item['price'],
+                "quantity"      => $line_item['quantity'],
+                "net_total"     => 0,
+                "discount_rate" => 0,
+                "discount_amount" => $line_item['discount'],
+                "tax_rate"      => 0,
+                "tax_total"     => 0,
+                "total"         => $line_item['total'],
+            ];
+        }
+
+        $info = [
+            'shipping_charges' => $shipping_charges,
+            "extra_charges"    => 0,
+            "extra_discount"   => 0,
+            "total"            => $order_amount,
+            "line_items"       => $lineItemsData,
+        ];
+
+        return $info;
     }
 }
 
