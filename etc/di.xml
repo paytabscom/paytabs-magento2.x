@@ -178,7 +178,7 @@
     <virtualType name="PayPageAmanInstallmentsFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMANINSTALLMENTS</argument>
-            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAman</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAmanInstallments</argument>
         </arguments>
     </virtualType>
 
@@ -862,7 +862,7 @@
     </virtualType>
     <virtualType name="PayPageConfigValueHandlerAmanInstallments" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
-            <argument name="configInterface" xsi:type="object">PayPageAmanConfig</argument>
+            <argument name="configInterface" xsi:type="object">PayPageAmanInstallmentsConfig</argument>
         </arguments>
     </virtualType>
 

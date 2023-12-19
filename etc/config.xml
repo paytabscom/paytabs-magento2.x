@@ -960,7 +960,7 @@
                     <order_status>pending_payment</order_status>
                 </order_statuses>
 
-                <model>PayPageAmanFacade</model>
+                <model>PayPageAmanInstallmentsFacade</model>
 
                 <hide_shipping>0</hide_shipping>
 
