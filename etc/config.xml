@@ -953,6 +953,41 @@
                 <sort_order>24</sort_order>
             </souhoola>
 
+            <amaninstallments>
+                <active>0</active>
+                <title>PayTabs - Aman installments</title>
+                <order_statuses>
+                    <order_status>pending_payment</order_status>
+                </order_statuses>
+
+                <model>PayPageAmanInstallmentsFacade</model>
+
+                <hide_shipping>0</hide_shipping>
+
+                <endpoint>EGY</endpoint>
+                <payment_action>authorize_capture</payment_action>
+
+                <iframe_mode>0</iframe_mode>
+
+                <currency_select>base_currency</currency_select>
+
+                <can_initialize>1</can_initialize>
+                <can_authorize>0</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_void>0</can_void>
+                <can_cancel>0</can_cancel>
+                <can_refund>0</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+
+                <is_gateway>1</is_gateway>
+                <is_offline>0</is_offline>
+            </amaninstallments>
+
+
 
             <paytabs_all_vault>
                 <title>PayTabs - Tokenization (All)</title>

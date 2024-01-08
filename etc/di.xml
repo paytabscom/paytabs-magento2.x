@@ -175,6 +175,13 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageAmanInstallmentsFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMANINSTALLMENTS</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolAmanInstallments</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -312,6 +319,11 @@
     <virtualType name="PayPageSouhoolaConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SOUHOOLA</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageAmanInstallmentsConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMANINSTALLMENTS</argument>
         </arguments>
     </virtualType>
 
@@ -710,6 +722,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolAmanInstallments" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerAmanInstallments</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
         <arguments>
@@ -839,6 +858,11 @@
      <virtualType name="PayPageConfigValueHandlerSouhoola" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageSouhoolaConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerAmanInstallments" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageAmanInstallmentsConfig</argument>
         </arguments>
     </virtualType>
 
