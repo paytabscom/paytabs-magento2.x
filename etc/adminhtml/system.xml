@@ -151,6 +151,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                 <field id="theme_config_id" translate="label" type="text" sortOrder="85" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Theme Config Id</label>
+                    <comment>Config id of the theme/payment page (if any) you want to open, You may find it in "Dashboard > Developers > PayPage Settings (Themes)"</comment>
+                    <validate>validate-digits</validate>
+                </field>
+
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
