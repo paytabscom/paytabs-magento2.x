@@ -20,7 +20,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <order_failed_reorder>0</order_failed_reorder>
@@ -71,7 +71,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <order_failed_reorder>0</order_failed_reorder>
@@ -124,7 +124,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -159,7 +159,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -196,7 +196,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -235,7 +235,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -272,7 +272,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>ARE</endpoint>
+                <endpoint>SAU</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
