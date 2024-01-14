@@ -33,14 +33,14 @@ class PaymentMethodAvailable implements ObserverInterface
 
             if ($checkResult->getData('is_available')) {
                 $use_order_currency = CurrencySelect::IsOrderCurrency($paymentMethod);
-                $currency = $this->getCurrency($use_order_currency);
+                $currency = self::getCurrency($use_order_currency);
                 $isAllowed = ClickPayHelper::paymentAllowed($code, $currency);
                 $checkResult->setData('is_available', $isAllowed);
             }
         }
     }
 
-    private function getCurrency($use_order_currency)
+    static function getCurrency($use_order_currency)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
