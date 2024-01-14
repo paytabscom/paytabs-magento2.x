@@ -42,6 +42,8 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+        $config_id = $paymentMethod->getConfigData('theme_config_id');
+
 
         $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
@@ -217,7 +219,10 @@ class Api
             ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, ClickPay_PAYPAGE_VERSION);
 
-
+        if ($config_id) {
+            $pt_holder->set11ThemeConfigId($config_id);
+        }    
+        
         if ($exclude_shipping) {
             $pt_holder->set50UserDefined('exclude_shipping=1');
         }
