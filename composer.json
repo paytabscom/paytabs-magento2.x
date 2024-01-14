@@ -2,7 +2,7 @@
     "name": "clickpay/magento2",
     "type": "magento2-module",
     "description": "3rd party payment gateway",
-    "version": "3.13.0",
+    "version": "3.19.0",
     "homepage": "https://clickpay.com.sa",
     "require": {
         "php": "^7.1|^8.1",
