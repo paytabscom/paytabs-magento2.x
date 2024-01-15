@@ -239,6 +239,15 @@
                                                                     </item>
                                                                 </item>
 
+                                                                <item name="paypage-amaninstallments" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/amaninstallments</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="amaninstallments" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+
                                                                 <!-- item-renderer -->
                                                             </item>
                                                         </item>

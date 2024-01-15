@@ -33,6 +33,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_TOUCHPOINTS = 'touchpoints';
     const CODE_TABBY      = 'tabby';
     const CODE_SOUHOOLA   = 'souhoola';
+    const CODE_AMANINSTALLMENTS = 'amaninstallments';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -124,7 +125,9 @@ final class ConfigProvider implements ConfigProviderInterface
             self::CODE_SOUHOOLA => [
                 'icon' => 'souhoola.png'
             ],
-
+            self::CODE_AMANINSTALLMENTS => [
+                'icon' => 'aman_installments.svg'
+            ],
             self::CODE_VAULT_ALL => [
                 'vault_code' => self::CODE_VAULT_ALL
             ],
