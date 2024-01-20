@@ -43,6 +43,8 @@ class Api
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
         $config_id = $paymentMethod->getConfigData('theme_config_id');
+        $alt_currency_enable =(bool) $paymentMethod->getConfigData('alt_currency_enable');
+        $alt_currency = $paymentMethod->getConfigData('alt_currency');
         //
         $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
 
@@ -220,6 +222,28 @@ class Api
 
         if ($config_id) {
             $pt_holder->set11ThemeConfigId($config_id);
+        }
+
+        if($alt_currency_enable)
+        {
+            if(!empty($alt_currency))
+            {
+                $alt_currency = $alt_currency;
+            }
+            else
+            {
+                if ($use_order_currency) {
+                    if ($preApprove) {
+                        $alt_currency = $order->getQuoteCurrencyCode();
+                    } else {
+                        $alt_currency = $order->getOrderCurrencyCode();
+                    }
+                } else {
+                    $alt_currency = $order->getBaseCurrencyCode();
+                }
+            }
+
+            $pt_holder->set12AltCurrency($alt_currency);
         }
 
         if ($exclude_shipping) {
