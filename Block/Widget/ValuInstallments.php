@@ -161,8 +161,20 @@ class ValuInstallments extends Template
 
     private function _getValUDetails_static()
     {
-        $msg = "Buy Now & Pay Later up to 60 Months!";
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $localeResolver = $objectManager->get('\Magento\Framework\Locale\ResolverInterface');
+        $lang_code = $localeResolver->getLocale();
+        $lang = ($lang_code == 'ar' || substr($lang_code, 0, 3) == 'ar_') ? 'ar' : 'en';
 
+        if($lang == 'ar')
+        {
+            "! اشترى اﻻن وقم بالدفع على مدار 60 شهر";
+        }
+        else
+        {
+            $msg = "Buy Now & Pay Later up to 60 Months!";
+        }
+        
         $this->_valu_text = $msg;
         return true;
     }
