@@ -158,7 +158,7 @@ class Api
             $sku = $p->getSku();
             $price = $p->getPrice();
             $discount = $p->getDiscountAmount();
-            $total = $price - $discount;
+            $total = ($price * (int)$p->getQtyOrdered()) - $discount;
             $name = $p->getName();
 
             $formated_items_arr = 

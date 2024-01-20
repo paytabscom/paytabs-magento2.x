@@ -969,6 +969,8 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
     private function setInvoiceDetails($order_amount, $shipping_charges, array $line_items)
     {
         $lineItemsData = [];
+        $line_counts = count($line_items);
+        $shipping_per_line = $shipping_charges / $line_counts;
 
         foreach ($line_items as $line_item) {
             $lineItemsData[] = [
@@ -982,9 +984,11 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
                 "discount_amount" => $line_item['discount'],
                 "tax_rate"      => 0,
                 "tax_total"     => 0,
-                "total"         => $line_item['total'],
+                "total"         => number_format((float) ($line_item['total'] + $shipping_per_line), 3, '.', '')
             ];
         }
+
+
 
         $info = [
             'shipping_charges' => $shipping_charges,
@@ -993,6 +997,8 @@ class PaytabsRequestHolder extends PaytabsBasicHolder
             "total"            => $order_amount,
             "line_items"       => $lineItemsData,
         ];
+
+        PaytabsHelper::log("line items are : " . json_encode($info), 3);
 
         return $info;
     }
