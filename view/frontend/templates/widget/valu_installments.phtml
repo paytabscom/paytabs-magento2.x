@@ -3,7 +3,7 @@ $msg = $block->_valu_text;
 $logo = $block->getValULogo();
 ?>
 
-<div style="border: 1px solid orange; border-radius: 12px; margin: 10px 0px;">
+<div style="border: 1px solid orange; border-radius: 12px; margin: 10px 0px; <?= $block->_is_arabic ? 'direction: rtl;' : '' ?>">
     <table>
         <tr>
             <td style="width: 1%; white-space: nowrap;">

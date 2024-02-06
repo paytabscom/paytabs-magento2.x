@@ -7,6 +7,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Payment\Helper\Data;
+use Magento\Framework\Locale\Resolver;
 use PayTabs\PayPage\Gateway\Http\Client\Api as PaytabsApi;
 use PayTabs\PayPage\Gateway\Http\PaytabsHelper;
 use PayTabs\PayPage\Model\Adminhtml\Source\CurrencySelect;
@@ -33,6 +34,8 @@ class ValuInstallments extends Template
 
     public $_valu_text;
 
+    public $_is_arabic;
+
     /**
      * View constructor.
      * @param Template\Context $context
@@ -45,6 +48,7 @@ class ValuInstallments extends Template
         Repository $assetRepo,
         PriceCurrencyInterface $priceCurrency,
         Data $paymentHelper,
+        Resolver $localeResolver,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -62,6 +66,8 @@ class ValuInstallments extends Template
         $this->payment_method = $this->_getPaymentMethod();
 
         $this->static_content = (bool)$this->payment_method->getConfigData('valu_widget/valu_widget_static_content');
+
+        $this->_set_lang($localeResolver);
     }
 
     /**
@@ -122,6 +128,15 @@ class ValuInstallments extends Template
         return false;
     }
 
+    function _set_lang($localeResolver)
+    {
+        $lang_code = $localeResolver->getLocale();
+
+        $languageCode = strstr($lang_code, '_', true);
+
+        $this->_is_arabic = ($languageCode == 'ar');
+    }
+
     /**
      * Check if the Currency matches the required widget currency.
      * True if:
@@ -161,7 +176,11 @@ class ValuInstallments extends Template
 
     private function _getValUDetails_static()
     {
-        $msg = "Buy Now & Pay Later up to 60 Months!";
+        if ($this->_is_arabic) {
+            $msg = "! اشترى اﻻن وقم بالدفع على مدار 60 شهر";
+        } else {
+            $msg = "Buy Now & Pay Later up to 60 Months!";
+        }
 
         $this->_valu_text = $msg;
         return true;
