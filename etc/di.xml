@@ -56,12 +56,15 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="PayPageFawryFacade" type="PayPageAllFacade">
-        <arguments>
-            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
-            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolFawry</argument>
-        </arguments>
-    </virtualType>
+
+    <!--
+        <virtualType name="PayPageFawryFacade" type="PayPageAllFacade">
+            <arguments>
+                <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
+                <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolFawry</argument>
+            </arguments>
+        </virtualType>
+    -->
 
     <virtualType name="PayPageKnPayFacade" type="PayPageAllFacade">
         <arguments>
@@ -236,11 +239,13 @@
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_SADAD</argument>
         </arguments>
     </virtualType>
-    <virtualType name="PayPageFawryConfig" type="Magento\Payment\Gateway\Config\Config">
-        <arguments>
-            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
-        </arguments>
-    </virtualType>
+    <!--
+        <virtualType name="PayPageFawryConfig" type="Magento\Payment\Gateway\Config\Config">
+            <arguments>
+                <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_FAWRY</argument>
+            </arguments>
+        </virtualType>
+    -->
     <virtualType name="PayPageKnPayConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_KNPAY</argument>
@@ -603,13 +608,15 @@
             </argument>
         </arguments>
     </virtualType>
-    <virtualType name="PayPageValueHandlerPoolFawry" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
-        <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="default" xsi:type="string">PayPageConfigValueHandlerFawry</item>
-            </argument>
-        </arguments>
-    </virtualType>
+    <!--
+        <virtualType name="PayPageValueHandlerPoolFawry" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+            <arguments>
+                <argument name="handlers" xsi:type="array">
+                    <item name="default" xsi:type="string">PayPageConfigValueHandlerFawry</item>
+                </argument>
+            </arguments>
+        </virtualType>
+    -->
     <virtualType name="PayPageValueHandlerPoolKnPay" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -775,11 +782,13 @@
             <argument name="configInterface" xsi:type="object">PayPageSadadConfig</argument>
         </arguments>
     </virtualType>
-    <virtualType name="PayPageConfigValueHandlerFawry" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
-        <arguments>
-            <argument name="configInterface" xsi:type="object">PayPageFawryConfig</argument>
-        </arguments>
-    </virtualType>
+    <!--
+        <virtualType name="PayPageConfigValueHandlerFawry" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+            <arguments>
+                <argument name="configInterface" xsi:type="object">PayPageFawryConfig</argument>
+            </arguments>
+        </virtualType>
+    -->
     <virtualType name="PayPageConfigValueHandlerKnPay" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageKnPayConfig</argument>

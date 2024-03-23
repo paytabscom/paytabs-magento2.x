@@ -86,6 +86,7 @@
                                                                     </item>
                                                                 </item>
 
+                                                                <!--
                                                                 <item name="paypage-fawry" xsi:type="array">
                                                                     <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/fawry</item>
                                                                     <item name="methods" xsi:type="array">
@@ -94,6 +95,7 @@
                                                                         </item>
                                                                     </item>
                                                                 </item>
+                                                                -->
 
                                                                 <item name="paypage-knet" xsi:type="array">
                                                                     <item name="component" xsi:type="string">PayTabs_PayPage/js/view/payment/knet</item>

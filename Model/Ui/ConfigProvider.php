@@ -16,7 +16,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_OMANNET    = 'omannet';
     const CODE_MADA       = 'mada';
     const CODE_SADAD      = 'sadad';
-    const CODE_FAWRY      = 'fawry';
+    //const CODE_FAWRY      = 'fawry';
     const CODE_KNPAY        = 'knet';
     const CODE_KNPAY_DEBIT  = 'knetdebit';
     const CODE_KNPAY_CREDIT = 'knetcredit';
@@ -78,9 +78,9 @@ final class ConfigProvider implements ConfigProviderInterface
             self::CODE_SADAD => [
                 'icon' => 'sadad.png'
             ],
-            self::CODE_FAWRY => [
+           /* self::CODE_FAWRY => [
                 'icon' => 'fawry.png'
-            ],
+            ],*/
             self::CODE_KNPAY => [
                 'icon' => 'knet.svg'
             ],
