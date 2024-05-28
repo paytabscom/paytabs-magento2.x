@@ -269,15 +269,16 @@
             </group>
 
 
-            <group id="fawry" translate="label" extends="paytabs_iframe" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>PayTabs - @Fawry</label>
+            <!--
+                <group id="fawry" translate="label" extends="paytabs_iframe" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PayTabs - @Fawry</label>
 
-                <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Action</label>
-                    <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
-                </field>
-            </group>
-
+                    <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Payment Action</label>
+                        <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
+                    </field>
+                </group>
+            -->
 
             <group id="knet" translate="label" extends="paytabs" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>PayTabs - KNPay</label>
