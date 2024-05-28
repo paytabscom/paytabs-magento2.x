@@ -14,13 +14,8 @@
     "authors": [
         {
             "name": "PayTabs",
-            "role": "IT team",
+            "role": "Integration team",
             "email": "integration@paytabs.com"
-        },
-        {
-            "name": "Wajih Kammoun",
-            "role": "Developer",
-            "email": "w.kammoun@paytabs.com"
         }
     ],
     "license": "MIT",
