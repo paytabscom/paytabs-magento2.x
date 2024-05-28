@@ -19,6 +19,8 @@ class FollowupHandler implements HandlerInterface
 {
     use PaytabsHelpers;
 
+    private $_paymentTokenFactory;
+    private $encryptor;
 
     public function __construct(
         \Magento\Vault\Api\Data\PaymentTokenFactoryInterface $paymentTokenFactory,
