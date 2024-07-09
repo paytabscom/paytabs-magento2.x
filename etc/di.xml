@@ -185,6 +185,15 @@
         </arguments>
     </virtualType>
 
+
+    <virtualType name="PayPageTamaraFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TAMARA</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolTamara</argument>
+        </arguments>
+    </virtualType>
+
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -329,6 +338,11 @@
     <virtualType name="PayPageAmanInstallmentsConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_AMANINSTALLMENTS</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageTamaraConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TAMARA</argument>
         </arguments>
     </virtualType>
 
@@ -736,6 +750,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolTamara" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerTamara</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
         <arguments>
@@ -872,6 +893,11 @@
     <virtualType name="PayPageConfigValueHandlerAmanInstallments" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageAmanInstallmentsConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageConfigValueHandlerTamara" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageTamaraConfig</argument>
         </arguments>
     </virtualType>
 
