@@ -34,6 +34,7 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_TABBY      = 'tabby';
     const CODE_SOUHOOLA   = 'souhoola';
     const CODE_AMANINSTALLMENTS = 'amaninstallments';
+    const CODE_TAMARA     = 'tamara';
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -127,6 +128,9 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_AMANINSTALLMENTS => [
                 'icon' => 'aman_installments.svg'
+            ],
+            self::CODE_TAMARA => [
+                'icon' => 'tamara.svg'
             ],
             self::CODE_VAULT_ALL => [
                 'vault_code' => self::CODE_VAULT_ALL
