@@ -1000,7 +1000,7 @@
 
                 <hide_shipping>0</hide_shipping>
 
-                <endpoint>EGY</endpoint>
+                <endpoint>ARE</endpoint>
                 <payment_action>authorize_capture</payment_action>
 
                 <iframe_mode>0</iframe_mode>
@@ -1013,7 +1013,7 @@
                 <can_capture_partial>0</can_capture_partial>
                 <can_void>0</can_void>
                 <can_cancel>0</can_cancel>
-                <can_refund>0</can_refund>
+                <can_refund>1</can_refund>
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
 
                 <can_use_checkout>1</can_use_checkout>
@@ -1022,7 +1022,6 @@
                 <is_gateway>1</is_gateway>
                 <is_offline>0</is_offline>
             </tamara>
-
 
 
             <paytabs_all_vault>
