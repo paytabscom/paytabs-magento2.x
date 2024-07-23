@@ -185,14 +185,12 @@
         </arguments>
     </virtualType>
 
-
     <virtualType name="PayPageTamaraFacade" type="PayPageAllFacade">
         <arguments>
             <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TAMARA</argument>
             <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolTamara</argument>
         </arguments>
     </virtualType>
-
 
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
@@ -885,7 +883,7 @@
             <argument name="configInterface" xsi:type="object">PayPageTabbyConfig</argument>
         </arguments>
     </virtualType>
-     <virtualType name="PayPageConfigValueHandlerSouhoola" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+    <virtualType name="PayPageConfigValueHandlerSouhoola" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageSouhoolaConfig</argument>
         </arguments>
