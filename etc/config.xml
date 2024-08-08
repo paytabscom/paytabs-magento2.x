@@ -1030,7 +1030,7 @@
                     <order_status>pending_payment</order_status>
                 </order_statuses>
 
-                <model>PayPageTamaraFacade</model>
+                <model>PayPageHalanFacade</model>
 
                 <hide_shipping>0</hide_shipping>
 
