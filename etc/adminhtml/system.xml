@@ -165,6 +165,11 @@
                         <field id="payment_preorder">0</field>
                     </depends>
                 </field>
+
+                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Require payment prior to order placement (RC)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
 
 
@@ -181,11 +186,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <config_path>payment/paytabs_all_vault/active</config_path>
                 </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
             </group>
 
 
@@ -200,11 +200,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentAction</source_model>
-                </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 
@@ -330,11 +325,6 @@
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
                     <source_model>PayTabs\PayPage\Model\Adminhtml\Source\PaymentActionSale</source_model>
-                </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Collect the payment before placing the Order (Beta)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
                 <field id="exclude_shipping" translate="label" type="select" sortOrder="135" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
