@@ -110,6 +110,15 @@ define(
             },
 
             /**
+             * True if the payment completed and the Place order logic attempt
+             * @returns bool
+             */
+            isPlaceOrderAttempt: function () {
+                return this.isPaymentDone() &&
+                    (this.payment_info.place_order_attempt);
+            },
+
+            /**
              * True if the payment generated but the browser failed tp open the Popup
              * This happens in case (PreOrder = true & iFrame = false)
              * @returns bool
@@ -153,6 +162,7 @@ define(
                 popup_fail: null,
                 payment_url: null,
                 status_interval: null,
+                place_order_attempt: null,
             },
 
             //
@@ -162,7 +172,11 @@ define(
             placeOrder: function (data, event) {
 
                 if (this.isPaymentPreOrder()) {
-                    let force = this.isPaymentDone();
+                    let force = false;
+
+                    if (this.isPaymentDone() && !this.isPlaceOrderAttempt()) {
+                        force = true;
+                    }
 
                     if (!force) {
                         console.log('placeOrder: Collect');
@@ -171,6 +185,7 @@ define(
                     }
 
                     console.log('placeOrder: Force');
+                    this.payment_info.place_order_attempt = true;
                 }
 
                 this._super(data, event);
@@ -264,6 +279,9 @@ define(
                 // this.redirectAfterPlaceOrder = true;
 
                 this.payment_info.status = 'completed';
+                this.payment_info.place_order_attempt = false;
+
+                this.pt_set_status('info', 'Payment completed', 3);
 
                 this.placeOrder(this.payment_info.data, this.payment_info.event);
 
@@ -274,7 +292,6 @@ define(
                 }
 
                 $("body").trigger('processStop');
-                this.pt_set_status('info', 'Payment completed', 3);
             },
 
             /**
@@ -300,7 +317,7 @@ define(
 
                 $("body").trigger('processStart');
                 this.pt_start_payment_ui(true);
-                this.pt_set_status('info', 'Generating the payment link');
+                this.pt_set_status('info', (this.isPlaceOrderAttempt() ? 'Re-' : '') + 'Generating the payment link');
 
                 //
 
@@ -382,13 +399,13 @@ define(
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
-                                clickableOverlay: isPreorder,
+                                clickableOverlay: isPreOrder,
                                 buttons: [{
                                     text: $.mage.__('Close'),
                                     class: 'action primary accept',
 
                                     click: function () {
-                                        if (isPreorder) {
+                                        if (isPreOrder) {
                                         } else {
                                             $.mage.redirect(_urlBuilder.build('checkout/cart'));
                                         }
