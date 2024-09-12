@@ -141,7 +141,7 @@ define(
                     this.payment_info.popup_fail = true;
 
                     $('.payment-method._active .pt_popup_warning').show();
-                    this.pt_set_status('warning', 'Popup blocked', 3);
+                    this.pt_set_status('warning', 'Popup blocked', false, 3);
                 } else {
                     $('.payment-method._active .pt_popup_warning').hide();
                 }
@@ -190,7 +190,7 @@ define(
 
                 this._super(data, event);
 
-                this.pt_set_status('info', 'Placing the Order', 3);
+                this.pt_set_status('info', 'Placing the Order', true, 3);
             },
 
 
@@ -268,7 +268,7 @@ define(
                         break;
                 }
 
-                this.pt_set_status('info', 'Waiting for the payment to complete', 12);
+                this.pt_set_status('info', 'Waiting for the payment to complete', false, 18);
             },
 
             /**
@@ -281,7 +281,7 @@ define(
                 this.payment_info.status = 'completed';
                 this.payment_info.place_order_attempt = false;
 
-                this.pt_set_status('info', 'Payment completed', 3);
+                this.pt_set_status('info', 'Payment completed', false, 3);
 
                 this.placeOrder(this.payment_info.data, this.payment_info.event);
 
@@ -433,7 +433,7 @@ define(
                     $('.payment-method._active .btn_place_order').hide('fast');
                 } else {
                     $('.payment-method._active .btn_place_order').show('fast');
-                    this.pt_set_status('', '');
+                    // this.pt_set_status('', '');
                 }
             },
 
@@ -441,20 +441,30 @@ define(
              * Display a message for a specific duration with specific status
              * @param {string} status css class (info, error, warning, notice, success)
              * @param {string} msg the message
+             * @param {bool} append the new message to any existing message
              * @param {number} period numbers of seconds
              */
-            pt_set_status: function (status, msg, period = 5) {
+            pt_set_status: function (status, msg, append = false, period = 5) {
                 let classes = 'info error warning notice success';
 
                 let panel = $('.payment-method._active .pt_status_message');
                 $(panel)
                     .removeClass(classes)
                     .addClass(status)
-                    .text(msg)
                     .show('fast');
 
                 if (this.payment_info.status_interval) {
                     clearInterval(this.payment_info.status_interval);
+                    this.payment_info.status_interval = null;
+                } else {
+                    append = false;
+                }
+
+                if (append) {
+                    let separator = $(panel).text().trim() != '' ? ', ' : '';
+                    $(panel).append(separator + msg)
+                } else {
+                    $(panel).text(msg)
                 }
 
                 this.payment_info.status_interval = setTimeout(function () {
