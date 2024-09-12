@@ -37,7 +37,13 @@ define(
                 this.vaultEnabler = new VaultEnabler();
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
 
-                this.redirectAfterPlaceOrder = this.isPaymentPreorder();
+                /**
+                 * Default flow:
+                 *  Place the Order -> Collect the payment
+                 * Require payment prior order flow:
+                 *  Collect the payment -> Place the order
+                 */
+                this.redirectAfterPlaceOrder = this.isPaymentPreOrder();
 
                 return self;
             },
@@ -68,7 +74,7 @@ define(
              * False: Default Order flow (Place then Payment)
              * @returns bool
              */
-            isPaymentPreorder: function (code = null) {
+            isPaymentPreOrder: function (code = null) {
                 code = code || this.getCode();
 
                 return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
@@ -82,6 +88,10 @@ define(
 
             //
 
+            /**
+             * True if the payment link (PP payment page) has been generated
+             * @returns bool
+             */
             isPaymentGenerated: function () {
                 return this.payment_info &&
                     (this.payment_info.ready
@@ -89,11 +99,21 @@ define(
                     );
             },
 
+            /**
+             * True if the payment has been completed by the customer
+             * It does not tell if the payment succeed or failed
+             * @returns bool
+             */
             isPaymentDone: function () {
                 return this.payment_info &&
                     (this.payment_info.status == 'completed');
             },
 
+            /**
+             * True if the payment generated but the browser failed tp open the Popup
+             * This happens in case (PreOrder = true & iFrame = false)
+             * @returns bool
+             */
             isPaymentPopupFail: function () {
                 return this.isPaymentGenerated() && this.payment_info.popup_fail;
             },
@@ -105,7 +125,7 @@ define(
                 }
 
                 let handle = window.open(redirectURL, '_blank');
-                this.ptStartPaymentListining('popup', handle);
+                this.ptStartPaymentListening('popup', handle);
 
                 if (!handle) {
                     console.log('No handle');
@@ -141,7 +161,7 @@ define(
 
             placeOrder: function (data, event) {
 
-                if (this.isPaymentPreorder()) {
+                if (this.isPaymentPreOrder()) {
                     let force = this.isPaymentDone();
 
                     if (!force) {
@@ -160,8 +180,8 @@ define(
 
 
             afterPlaceOrder: function () {
-                let isPreorder = this.isPaymentPreorder();
-                if (isPreorder) {
+                let isPreOrder = this.isPaymentPreOrder();
+                if (isPreOrder) {
                     return this._super();
                 }
 
@@ -170,7 +190,7 @@ define(
 
 
             ptPaymentCollect: function (data, event) {
-                if (!this.isPaymentPreorder()) {
+                if (!this.isPaymentPreOrder()) {
                     console.log('Default flow');
                     return;
                 }
@@ -185,8 +205,18 @@ define(
                 };
             },
 
-
-            ptStartPaymentListining: function (type, handler) {
+            /**
+             * Waiting for the payment to be completed by the customer
+             * Trigger ptAsyncPaymentCompleted() once the payment completed.
+             * iFrame:
+             *  Checks every time the iframe content is changed, until a predefined content is met
+             * Popup:
+             *  Checks periodically for the handler (the new tab window), until it is closed
+             * @param {string} type : 'iframe' or 'popup'
+             * @param handler the iframe container or the window handler (popup)
+             * @returns void
+             */
+            ptStartPaymentListening: function (type, handler) {
                 if (!type || !handler) {
                     console.log('Listener missing some information');
                     return;
@@ -202,7 +232,7 @@ define(
                             console.log('iframe ', c);
 
                             if (c == 'Done - Loading...') {
-                                page.ptAyncPaymentCompleted();
+                                page.ptAsyncPaymentCompleted();
                             }
                         });
                         break;
@@ -215,7 +245,7 @@ define(
                             if (handler.closed) {
                                 console.log('Payment Page has been closed, continue...');
 
-                                page.ptAyncPaymentCompleted();
+                                page.ptAsyncPaymentCompleted();
                             }
                         }, 1000);
 
@@ -226,7 +256,11 @@ define(
                 this.pt_set_status('info', 'Waiting for the payment to complete', 12);
             },
 
-            ptAyncPaymentCompleted: function () {
+            /**
+             * Triggered after an indicator that the customer completes the payment
+             * Continue placing the order routine
+             */
+            ptAsyncPaymentCompleted: function () {
                 // this.redirectAfterPlaceOrder = true;
 
                 this.payment_info.status = 'completed';
@@ -243,6 +277,22 @@ define(
                 this.pt_set_status('info', 'Payment completed', 3);
             },
 
+            /**
+             * The main function that communicates with the backend to generate the payment page
+             * The option PreOrder affects the logic (change the endpoint and params)
+             * Generates the Payment page, and then:
+             * 1. PreOrder = false & iFrame = false
+             *  Full redirect (normal behavior)
+             * 2. PreOrder = true & iFrame = true
+             *  Place the Order (Pending payment status) -> display the payment page inside iFrame.
+             * 3. PreOrder = false & iFrame = true
+             *  Stop the place order routine -> generate payment page
+             *  -> Collect the payment -> Continue the place routine
+             *  (Backend will check the transaction status (success or fail))
+             * 4. PreOrder = false & iFrame = false
+             *  Open a Popup (Either new browser tab, or new Window depends on the browser settings)
+             *  Logic goes same as the 3rd logic
+             */
             payPage: function () {
                 var page = this;
 
@@ -254,14 +304,14 @@ define(
 
                 //
 
-                let isPreorder = this.isPaymentPreorder();
+                let isPreOrder = this.isPaymentPreOrder();
 
                 let url = 'paytabs/paypage/create';
                 let payload = {
                     quote: quoteId
                 };
 
-                if (isPreorder) {
+                if (isPreOrder) {
                     url = 'paytabs/paypage/createpre';
                     payload = {
                         quote: quoteId,
@@ -282,7 +332,7 @@ define(
                             let tran_ref = result.tran_ref;
                             let redirectURL = result.payment_url;
                             let framed_mode = page.isFramed();
-                            let preOrder = page.isPaymentPreorder();
+                            let preOrder = page.isPaymentPreOrder();
 
                             page.payment_info.ready = true;
                             page.payment_info.payment_url = redirectURL;
@@ -300,7 +350,7 @@ define(
 
                                 if (framed_mode) {
                                     handle = page.displayIframe(result.payment_url);
-                                    page.ptStartPaymentListining('iframe', handle);
+                                    page.ptStartPaymentListening('iframe', handle);
                                 } else if (preOrder) {
                                     page.openPopup();
                                 }
@@ -357,6 +407,10 @@ define(
                     });
             },
 
+            /**
+             * Do some changes to UI elements once the payment logic started or stopped
+             * @param {bool} is_start Payment check started
+             */
             pt_start_payment_ui: function (is_start) {
                 if (is_start) {
                     $('.payment-method._active .btn_place_order').hide('fast');
@@ -366,6 +420,12 @@ define(
                 }
             },
 
+            /**
+             * Display a message for a specific duration with specific status
+             * @param {string} status css class (info, error, warning, notice, success)
+             * @param {string} msg the message
+             * @param {number} period numbers of seconds
+             */
             pt_set_status: function (status, msg, period = 5) {
                 let classes = 'info error warning notice success';
 
@@ -385,6 +445,11 @@ define(
                 }, period * 1000);
             },
 
+            /**
+             * Create a new iFrame element with the payment link as the src
+             * @param {url} src the payment page link
+             * @returns element iFrame
+             */
             displayIframe: function (src) {
                 let pt_iframe = $('<iframe>', {
                     src: src,
@@ -405,6 +470,10 @@ define(
                 return pt_iframe;
             },
 
+            /**
+             * Control the UI elements of the payment method based on the iFrame Show or Hide
+             * @param {bool} show_iframe
+             */
             displayIframeUI: function (show_iframe) {
                 let classes = [
                     '.payment-method._active .payment-method-billing-address',
@@ -445,6 +514,10 @@ define(
                     typeof window.checkoutConfig.payment[this.getCode()].icon !== 'undefined';
             },
 
+            /**
+             * True if the exclude shipping fees is set to true & there is a shipping fees for this quote
+             * @returns bool
+             */
             shippingExcluded: function () {
                 let isEnabled = typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     window.checkoutConfig.payment[this.getCode()].exclude_shipping === true;
