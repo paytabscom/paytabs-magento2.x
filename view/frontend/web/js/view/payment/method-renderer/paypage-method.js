@@ -80,21 +80,82 @@ define(
                     window.checkoutConfig.payment[this.getCode()]['iframe_mode'] === true;
             },
 
-            redirectAfterPlaceOrder: false,
+            //
 
-            placeOrder: function (data, event) {
-                let force = this.payment_info && this.payment_info.ready;
+            isPaymentGenerated: function () {
+                return this.payment_info &&
+                    (this.payment_info.ready
+                        && this.payment_info.status == 'generated'
+                    );
+            },
 
-                if (this.isPaymentPreorder() && !force) {
-                    console.log('placeOrder: Collect');
-                    this.ptPaymentCollect(data, event);
+            isPaymentDone: function () {
+                return this.payment_info &&
+                    (this.payment_info.status == 'completed');
+            },
+
+            isPaymentPopupFail: function () {
+                return this.isPaymentGenerated() && this.payment_info.popup_fail;
+            },
+
+            openPopup: function () {
+                let redirectURL = this.payment_info.payment_url;
+                if (!redirectURL) {
                     return;
                 }
 
-                if (force) {
+                let handle = window.open(redirectURL, '_blank');
+                this.ptStartPaymentListining('popup', handle);
+
+                if (!handle) {
+                    console.log('No handle');
+                    this.payment_info.popup_fail = true;
+
+                    $('.payment-method._active .pt_popup_warning').show();
+                    this.pt_set_status('warning', 'Popup blocked', 3);
+                } else {
+                    $('.payment-method._active .pt_popup_warning').hide();
+                }
+            },
+
+            pendingPaymentHandler: {
+                type: null,
+                handler: null,
+                payment_checker: null,
+            },
+
+            payment_info: {
+                data: null,
+                event: null,
+                // Init, generating, generated, completed
+                status: 'Init',
+                ready: false,
+                popup_fail: null,
+                payment_url: null,
+                status_interval: null,
+            },
+
+            //
+
+            redirectAfterPlaceOrder: false,
+
+            placeOrder: function (data, event) {
+
+                if (this.isPaymentPreorder()) {
+                    let force = this.isPaymentDone();
+
+                    if (!force) {
+                        console.log('placeOrder: Collect');
+                        this.ptPaymentCollect(data, event);
+                        return;
+                    }
+
                     console.log('placeOrder: Force');
                 }
+
                 this._super(data, event);
+
+                this.pt_set_status('info', 'Placing the Order', 3);
             },
 
 
@@ -104,21 +165,7 @@ define(
                     return this._super();
                 }
 
-                try {
-                    let quoteId = quote.getQuoteId();
-
-                    this.pt_start_payment_ui(true);
-
-                    this.payPage(quoteId);
-                } catch (error) {
-                    alert({
-                        title: $.mage.__('AfterPlaceOrder error'),
-                        content: $.mage.__(error),
-                        actions: {
-                            always: function () { }
-                        }
-                    });
-                }
+                this.payPage();
             },
 
 
@@ -127,53 +174,85 @@ define(
                     console.log('Default flow');
                     return;
                 }
-                try {
-                    let quoteId = quote.getQuoteId();
 
-                    this.pt_start_payment_ui(true);
+                this.payPage();
 
-                    this.payPage(quoteId);
+                this.payment_info = {
+                    data: data,
+                    event: event,
+                    status: 'generating',
+                    ready: false,
+                };
+            },
 
-                    this.payment_info = {
-                        data: data,
-                        event: event,
-                        ready: false
-                    };
-                } catch (error) {
-                    alert({
-                        title: $.mage.__('PaymentCollect error'),
-                        content: $.mage.__(error),
-                        actions: {
-                            always: function () { }
-                        }
-                    });
+
+            ptStartPaymentListining: function (type, handler) {
+                if (!type || !handler) {
+                    console.log('Listener missing some information');
+                    return;
+                }
+                let page = this;
+                page.pendingPaymentHandler.type = type;
+                page.pendingPaymentHandler.handler = handler;
+
+                switch (type) {
+                    case 'iframe':
+                        $(handler).on('load', function () {
+                            let c = $(this).contents().find('body').html();
+                            console.log('iframe ', c);
+
+                            if (c == 'Done - Loading...') {
+                                page.ptAyncPaymentCompleted();
+                            }
+                        });
+                        break;
+
+                    case 'popup':
+                        $("body").trigger('processStart');
+                        page.pendingPaymentHandler.payment_checker = setInterval(function () {
+                            console.log('Payment Page not yet closed ...');
+
+                            if (handler.closed) {
+                                console.log('Payment Page has been closed, continue...');
+
+                                page.ptAyncPaymentCompleted();
+                            }
+                        }, 1000);
+
+                    default:
+                        break;
                 }
 
-                return false;
+                this.pt_set_status('info', 'Waiting for the payment to complete', 12);
             },
 
-            ptStartPaymentListining: function (pt_iframe) {
-                let page = this;
-                page.payment_info.ready = true;
+            ptAyncPaymentCompleted: function () {
+                // this.redirectAfterPlaceOrder = true;
 
-                $(pt_iframe).on("load", function () {
-                    let c = $(this).contents().find("body").html();
-                    console.log('iframe ', c);
+                this.payment_info.status = 'completed';
 
-                    if (c == 'Done - Loading...') {
-                        page.redirectAfterPlaceOrder = true;
-                        page.placeOrder(page.payment_info.data, page.payment_info.event);
+                this.placeOrder(this.payment_info.data, this.payment_info.event);
 
-                        page.displayIframeUI(false);
-                        delete page.payment_info;
-                    }
-                });
+                this.displayIframeUI(false);
+
+                if (this.pendingPaymentHandler.payment_checker) {
+                    clearInterval(this.pendingPaymentHandler.payment_checker);
+                }
+
+                $("body").trigger('processStop');
+                this.pt_set_status('info', 'Payment completed', 3);
             },
 
-
-            payPage: function (quoteId) {
-                $("body").trigger('processStart');
+            payPage: function () {
                 var page = this;
+
+                let quoteId = quote.getQuoteId();
+
+                $("body").trigger('processStart');
+                this.pt_start_payment_ui(true);
+                this.pt_set_status('info', 'Generating the payment link');
+
+                //
 
                 let isPreorder = this.isPaymentPreorder();
 
@@ -197,21 +276,33 @@ define(
                 )
                     .done(function (result) {
                         // console.log(result);
+                        page.payment_info.status = 'generated';
+
                         if (result && result.success) {
-                            try {
-                                let tran_ref = result.tran_ref;
-                                $('.payment-method._active .paytabs_ref').text('Payment reference: ' + tran_ref);
-                            } catch (error) {
-                                console.log(error);
-                            }
-                            var redirectURL = result.payment_url;
-                            let framed_mode = page.isFramed() || page.isPaymentPreorder();
+                            let tran_ref = result.tran_ref;
+                            let redirectURL = result.payment_url;
+                            let framed_mode = page.isFramed();
+                            let preOrder = page.isPaymentPreorder();
+
+                            page.payment_info.ready = true;
+                            page.payment_info.payment_url = redirectURL;
+
+                            $('.payment-method._active .paytabs_ref').text('Payment reference: ' + tran_ref);
 
                             if (!result.had_paid) {
-                                if (framed_mode) {
-                                    page.displayIframe(result.payment_url);
-                                } else {
+                                let isFullRedirect = !framed_mode && !preOrder;
+
+                                if (isFullRedirect) {
                                     $.mage.redirect(redirectURL);
+                                }
+
+                                var handle = null;
+
+                                if (framed_mode) {
+                                    handle = page.displayIframe(result.payment_url);
+                                    page.ptStartPaymentListining('iframe', handle);
+                                } else if (preOrder) {
+                                    page.openPopup();
                                 }
                             } else {
                                 alert({
@@ -236,7 +327,6 @@ define(
                                     ]
                                 });
                             }
-
                         } else {
                             let msg = result.result || result.message;
                             alert({
@@ -255,14 +345,11 @@ define(
                                     }
                                 }]
                             });
-
-                            page.pt_start_payment_ui(false);
                         }
                     })
                     .fail(function (xhr, status, error) {
                         console.log(error, xhr);
                         // alert(status);
-                        page.pt_start_payment_ui(false);
                     })
                     .always(function () {
                         $("body").trigger('processStop');
@@ -273,11 +360,29 @@ define(
             pt_start_payment_ui: function (is_start) {
                 if (is_start) {
                     $('.payment-method._active .btn_place_order').hide('fast');
-                    $('.payment-method._active .btn_pay').show('fast');
                 } else {
                     $('.payment-method._active .btn_place_order').show('fast');
-                    $('.payment-method._active .btn_pay').hide('fast');
+                    this.pt_set_status('', '');
                 }
+            },
+
+            pt_set_status: function (status, msg, period = 5) {
+                let classes = 'info error warning notice success';
+
+                let panel = $('.payment-method._active .pt_status_message');
+                $(panel)
+                    .removeClass(classes)
+                    .addClass(status)
+                    .text(msg)
+                    .show('fast');
+
+                if (this.payment_info.status_interval) {
+                    clearInterval(this.payment_info.status_interval);
+                }
+
+                this.payment_info.status_interval = setTimeout(function () {
+                    $(panel).hide('fast');
+                }, period * 1000);
             },
 
             displayIframe: function (src) {
@@ -297,10 +402,7 @@ define(
                 // Hide the Address & Actions sections
                 this.displayIframeUI(true);
 
-                let isPreorder = this.isPaymentPreorder();
-                if (isPreorder) {
-                    this.ptStartPaymentListining(pt_iframe);
-                }
+                return pt_iframe;
             },
 
             displayIframeUI: function (show_iframe) {
