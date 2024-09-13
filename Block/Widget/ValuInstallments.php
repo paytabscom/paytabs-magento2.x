@@ -190,8 +190,8 @@ class ValuInstallments extends Template
     {
         $price = $this->_getProductPrice();
 
-        PaytabsHelper::log("valU inqiry, Product: {$this->product->getId()}, {$price}", 1);
-        $details = $this->_callValUAPI($price, ValuInstallments::Currency);
+        PaytabsHelper::log("valU inquiry, Product: {$this->product->getId()}, {$price}", 1);
+        $details = $this->_callValuAPI($price, ValuInstallments::Currency);
 
         if (!$details || !$details->success) {
             $_err_msg = json_encode($details);
@@ -225,7 +225,7 @@ class ValuInstallments extends Template
         return false;
     }
 
-    private function _callValUAPI($price, $currency)
+    private function _callValuAPI($price, $currency)
     {
         $paytabs = new PaytabsApi;
         $ptApi = $paytabs->pt($this->payment_method);
@@ -244,7 +244,7 @@ class ValuInstallments extends Template
             ],
         ];
 
-        $res = $ptApi->inqiry_valu($params);
+        $res = $ptApi->inquiry_valu($params);
 
         return $res;
     }

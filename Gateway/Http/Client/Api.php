@@ -82,16 +82,31 @@ class Api
 
         $baseurl = $storeManager->getStore()->getBaseUrl();
 
+        $_returnUrlParams = [];
+
         if ($preApprove) {
             $orderId = 'Q' . $order->getId();
 
             $returnUrl = $baseurl . "paytabs/paypage/responsepre";
             $callbackUrl = $baseurl . "paytabs/paypage/responsepre"; // Disable IPN
+
+            if (!$framed_mode) {
+                $_returnUrlParams['close'] = 1;
+            }
         } else {
             $orderId = $order->getIncrementId();
 
-            $returnUrl = $baseurl . "paytabs/paypage/response" . ($isLoggedIn ? "" : ($cart_refill ? "?g=1" : ""));
+            $returnUrl = $baseurl . "paytabs/paypage/response";
             $callbackUrl = $baseurl . "paytabs/paypage/callback";
+
+            if (!$isLoggedIn && $cart_refill) {
+                $_returnUrlParams['g'] = 1;
+            }
+        }
+
+        if ($_returnUrlParams) {
+            $returnUrlParams = http_build_query($_returnUrlParams);
+            $returnUrl .= ('?' . $returnUrlParams);
         }
 
         $lang_code = $localeResolver->getLocale();
@@ -214,7 +229,7 @@ class Api
             ->set06HideShipping($hide_shipping)
             ->set07URLs($returnUrl, $callbackUrl)
             ->set08Lang($lang)
-            ->set09Framed($framed_mode || $preApprove, $preApprove ? 'iframe' : 'top')
+            ->set09Framed($framed_mode, $preApprove ? 'iframe' : 'top')
             ->set10Tokenise($isTokenise)
             ->set99PluginInfo('Magento', $versionMagento, PAYTABS_PAYPAGE_VERSION);
 

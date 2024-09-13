@@ -37,7 +37,13 @@ define(
                 this.vaultEnabler = new VaultEnabler();
                 this.vaultEnabler.setPaymentCode(this.getVaultCode());
 
-                this.redirectAfterPlaceOrder = this.isPaymentPreorder();
+                /**
+                 * Default flow:
+                 *  Place the Order -> Collect the payment
+                 * Require payment prior order flow:
+                 *  Collect the payment -> Place the order
+                 */
+                this.redirectAfterPlaceOrder = this.isPaymentPreOrder();
 
                 return self;
             },
@@ -68,7 +74,7 @@ define(
              * False: Default Order flow (Place then Payment)
              * @returns bool
              */
-            isPaymentPreorder: function (code = null) {
+            isPaymentPreOrder: function (code = null) {
                 code = code || this.getCode();
 
                 return typeof window.checkoutConfig.payment[code] !== 'undefined' &&
@@ -80,109 +86,307 @@ define(
                     window.checkoutConfig.payment[this.getCode()]['iframe_mode'] === true;
             },
 
-            redirectAfterPlaceOrder: false,
+            //
 
-            placeOrder: function (data, event) {
-                let force = this.payment_info && this.payment_info.ready;
+            /**
+             * True if the payment link (PP payment page) has been generated
+             * @returns bool
+             */
+            isPaymentGenerated: function () {
+                return this.payment_info &&
+                    (this.payment_info.ready
+                        && this.payment_info.status == 'generated'
+                    );
+            },
 
-                if (this.isPaymentPreorder() && !force) {
-                    console.log('placeOrder: Collect');
-                    this.ptPaymentCollect(data, event);
+            /**
+             * True if the payment has been completed by the customer
+             * It does not tell if the payment succeed or failed
+             * @returns bool
+             */
+            isPaymentDone: function () {
+                return this.payment_info &&
+                    (this.payment_info.status == 'completed');
+            },
+
+            /**
+             * True if the payment has been opened
+             * But not yet completed
+             * @returns bool
+             */
+            isPaymentWaiting: function () {
+                return this.payment_info &&
+                    (this.payment_info.status == 'waiting_payment');
+            },
+
+            /**
+             * The class is external
+             * It uses variables from the window object
+             */
+            paymentObserver: {
+                isWaiting: function () {
+                    return (window.pt_waiting_payment == true);
+                },
+
+                init: function () {
+                    if (!window.pt_waiting_payment_init) {
+                        $(window).on("beforeunload", function () {
+                            if (window.pt_waiting_payment) {
+                                return confirm("There is a waiting payment already opened, kindly complete/close the pending payment request?");
+                            }
+                        });
+                        window.pt_waiting_payment_init = true;
+                    }
+                    return this;
+                },
+
+                confirm: function () {
+                    if (this.isWaiting()) {
+                        return confirm("There is a waiting payment already opened (" + window.pt_waiting_payment_code + "), kindly complete/close the pending payment request?");
+                    }
+                    return true;
+                },
+
+                set: function (code = null) {
+                    window.pt_waiting_payment = true;
+                    window.pt_waiting_payment_code = code;
+                },
+
+                clear: function () {
+                    window.pt_waiting_payment = false;
+                },
+            },
+
+            /**
+             * True if the payment completed and the Place order logic attempt
+             * @returns bool
+             */
+            isPlaceOrderAttempt: function () {
+                return this.isPaymentDone() &&
+                    (this.payment_info.place_order_attempt);
+            },
+
+            /**
+             * True if the payment generated but the browser failed tp open the Popup
+             * This happens in case (PreOrder = true & iFrame = false)
+             * @returns bool
+             */
+            isPaymentPopupFail: function () {
+                return this.isPaymentGenerated() && this.payment_info.popup_fail;
+            },
+
+            openPopup: function () {
+                let redirectURL = this.payment_info.payment_url;
+                if (!redirectURL) {
                     return;
                 }
 
-                if (force) {
-                    console.log('placeOrder: Force');
+                let handle = window.open(redirectURL, '_blank');
+                this.ptStartPaymentListening('popup', handle);
+
+                if (!handle) {
+                    console.log('No handle');
+                    this.payment_info.popup_fail = true;
+
+                    $('.payment-method._active .pt_popup_warning').show();
+                    this.pt_set_status('warning', 'Popup blocked', false, 3);
+                } else {
+                    $('.payment-method._active .pt_popup_warning').hide();
                 }
+            },
+
+            pendingPaymentHandler: {
+                type: null,
+                handler: null,
+                payment_checker: null,
+            },
+
+            payment_info: {
+                data: null,
+                event: null,
+                // Init, generating, generated, completed
+                status: 'Init',
+                ready: false,
+                popup_fail: null,
+                payment_url: null,
+                status_interval: null,
+                place_order_attempt: null,
+            },
+
+            //
+
+            redirectAfterPlaceOrder: false,
+
+            placeOrder: function (data, event) {
+                if (!this.paymentObserver.confirm()) {
+                    return;
+                }
+                this.paymentObserver.clear();
+
+                if (this.isPaymentPreOrder()) {
+                    let force = false;
+
+                    if (this.isPaymentDone() && !this.isPlaceOrderAttempt()) {
+                        force = true;
+                    }
+
+                    if (!force) {
+                        console.log('placeOrder: Collect');
+                        this.ptPaymentCollect(data, event);
+                        return;
+                    }
+
+                    console.log('placeOrder: Force');
+                    this.payment_info.place_order_attempt = true;
+                }
+
                 this._super(data, event);
+
+                this.pt_set_status('info', 'Placing the Order', true, 3);
             },
 
 
             afterPlaceOrder: function () {
-                let isPreorder = this.isPaymentPreorder();
-                if (isPreorder) {
+                let isPreOrder = this.isPaymentPreOrder();
+                if (isPreOrder) {
                     return this._super();
                 }
 
-                try {
-                    let quoteId = quote.getQuoteId();
-
-                    this.pt_start_payment_ui(true);
-
-                    this.payPage(quoteId);
-                } catch (error) {
-                    alert({
-                        title: $.mage.__('AfterPlaceOrder error'),
-                        content: $.mage.__(error),
-                        actions: {
-                            always: function () { }
-                        }
-                    });
-                }
+                this.payPage();
             },
 
 
             ptPaymentCollect: function (data, event) {
-                if (!this.isPaymentPreorder()) {
+                if (!this.isPaymentPreOrder()) {
                     console.log('Default flow');
                     return;
                 }
-                try {
-                    let quoteId = quote.getQuoteId();
 
-                    this.pt_start_payment_ui(true);
+                this.payPage();
 
-                    this.payPage(quoteId);
+                this.payment_info = {
+                    data: data,
+                    event: event,
+                    status: 'generating',
+                    ready: false,
+                };
+            },
 
-                    this.payment_info = {
-                        data: data,
-                        event: event,
-                        ready: false
-                    };
-                } catch (error) {
-                    alert({
-                        title: $.mage.__('PaymentCollect error'),
-                        content: $.mage.__(error),
-                        actions: {
-                            always: function () { }
-                        }
-                    });
+            /**
+             * Waiting for the payment to be completed by the customer
+             * Trigger ptAsyncPaymentCompleted() once the payment completed.
+             * iFrame:
+             *  Checks every time the iframe content is changed, until a predefined content is met
+             * Popup:
+             *  Checks periodically for the handler (the new tab window), until it is closed
+             * @param {string} type : 'iframe' or 'popup'
+             * @param handler the iframe container or the window handler (popup)
+             * @returns void
+             */
+            ptStartPaymentListening: function (type, handler) {
+                if (!type || !handler) {
+                    console.log('Listener missing some information');
+                    return;
+                }
+                let page = this;
+                page.pendingPaymentHandler.type = type;
+                page.pendingPaymentHandler.handler = handler;
+
+                switch (type) {
+                    case 'iframe':
+                        $(handler).on('load', function () {
+                            let c = $(this).contents().find('body').html();
+                            console.log('iframe ', c);
+
+                            if (c == 'Done - Loading...') {
+                                page.ptAsyncPaymentCompleted();
+                            }
+                        });
+                        break;
+
+                    case 'popup':
+                        $("body").trigger('processStart');
+                        page.pendingPaymentHandler.payment_checker = setInterval(function () {
+                            console.log('Payment Page not yet closed ...');
+
+                            if (handler.closed) {
+                                console.log('Payment Page has been closed, continue...');
+
+                                page.ptAsyncPaymentCompleted();
+                            }
+                        }, 1000);
+
+                    default:
+                        break;
                 }
 
-                return false;
+                this.pt_set_status('info', 'Waiting for the payment to complete', false, 18);
+
+                this.payment_info.status = 'waiting_payment';
+                this.paymentObserver.init().set(this.getTitle());
             },
 
-            ptStartPaymentListining: function (pt_iframe) {
-                let page = this;
-                page.payment_info.ready = true;
+            /**
+             * Triggered after an indicator that the customer completes the payment
+             * Continue placing the order routine
+             */
+            ptAsyncPaymentCompleted: function () {
+                // this.redirectAfterPlaceOrder = true;
 
-                $(pt_iframe).on("load", function () {
-                    let c = $(this).contents().find("body").html();
-                    console.log('iframe ', c);
+                this.payment_info.status = 'completed';
+                this.payment_info.place_order_attempt = false;
+                this.paymentObserver.clear();
 
-                    if (c == 'Done - Loading...') {
-                        page.redirectAfterPlaceOrder = true;
-                        page.placeOrder(page.payment_info.data, page.payment_info.event);
+                this.pt_set_status('info', 'Payment completed', false, 3);
 
-                        page.displayIframeUI(false);
-                        delete page.payment_info;
-                    }
-                });
+                this.placeOrder(this.payment_info.data, this.payment_info.event);
+
+                this.displayIframeUI(false);
+
+                if (this.pendingPaymentHandler.payment_checker) {
+                    clearInterval(this.pendingPaymentHandler.payment_checker);
+                }
+
+                $("body").trigger('processStop');
             },
 
-
-            payPage: function (quoteId) {
-                $("body").trigger('processStart');
+            /**
+             * The main function that communicates with the backend to generate the payment page
+             * The option PreOrder affects the logic (change the endpoint and params)
+             * Generates the Payment page, and then:
+             * 1. PreOrder = false & iFrame = false
+             *  Full redirect (normal behavior)
+             * 2. PreOrder = false & iFrame = true
+             *  Place the Order (Pending payment status) -> display the payment page inside iFrame.
+             * 3. PreOrder = true & iFrame = true
+             *  Stop the place order routine -> generate payment page -> display the payment page in iFrame
+             *  -> Collect the payment -> Continue the place routine
+             *  (Backend will check the transaction status (success or fail))
+             * 4. PreOrder = true & iFrame = false
+             *  Stop the place order routine -> generate payment page
+             *  -> Open a Popup (Either new browser tab, or new Window depends on the browser settings)
+             *  -> Collect the payment -> Continue the place routine
+             *  (Backend will check the transaction status (success or fail))
+             */
+            payPage: function () {
                 var page = this;
 
-                let isPreorder = this.isPaymentPreorder();
+                let quoteId = quote.getQuoteId();
+
+                $("body").trigger('processStart');
+                this.pt_start_payment_ui(true);
+                this.pt_set_status('info', (this.isPlaceOrderAttempt() ? 'Re-' : '') + 'Generating the payment link');
+
+                //
+
+                let isPreOrder = this.isPaymentPreOrder();
 
                 let url = 'paytabs/paypage/create';
                 let payload = {
                     quote: quoteId
                 };
 
-                if (isPreorder) {
+                if (isPreOrder) {
                     url = 'paytabs/paypage/createpre';
                     payload = {
                         quote: quoteId,
@@ -197,21 +401,33 @@ define(
                 )
                     .done(function (result) {
                         // console.log(result);
+                        page.payment_info.status = 'generated';
+
                         if (result && result.success) {
-                            try {
-                                let tran_ref = result.tran_ref;
-                                $('.payment-method._active .paytabs_ref').text('Payment reference: ' + tran_ref);
-                            } catch (error) {
-                                console.log(error);
-                            }
-                            var redirectURL = result.payment_url;
-                            let framed_mode = page.isFramed() || page.isPaymentPreorder();
+                            let tran_ref = result.tran_ref;
+                            let redirectURL = result.payment_url;
+                            let framed_mode = page.isFramed();
+                            let preOrder = page.isPaymentPreOrder();
+
+                            page.payment_info.ready = true;
+                            page.payment_info.payment_url = redirectURL;
+
+                            $('.payment-method._active .paytabs_ref').text('Payment reference: ' + tran_ref);
 
                             if (!result.had_paid) {
-                                if (framed_mode) {
-                                    page.displayIframe(result.payment_url);
-                                } else {
+                                let isFullRedirect = !framed_mode && !preOrder;
+
+                                if (isFullRedirect) {
                                     $.mage.redirect(redirectURL);
+                                }
+
+                                var handle = null;
+
+                                if (framed_mode) {
+                                    handle = page.displayIframe(result.payment_url);
+                                    page.ptStartPaymentListening('iframe', handle);
+                                } else if (preOrder) {
+                                    page.openPopup();
                                 }
                             } else {
                                 alert({
@@ -236,33 +452,29 @@ define(
                                     ]
                                 });
                             }
-
                         } else {
                             let msg = result.result || result.message;
                             alert({
                                 title: $.mage.__('Creating PayTabs page error'),
                                 content: $.mage.__(msg),
-                                clickableOverlay: isPreorder,
+                                clickableOverlay: isPreOrder,
                                 buttons: [{
                                     text: $.mage.__('Close'),
                                     class: 'action primary accept',
 
                                     click: function () {
-                                        if (isPreorder) {
+                                        if (isPreOrder) {
                                         } else {
                                             $.mage.redirect(_urlBuilder.build('checkout/cart'));
                                         }
                                     }
                                 }]
                             });
-
-                            page.pt_start_payment_ui(false);
                         }
                     })
                     .fail(function (xhr, status, error) {
                         console.log(error, xhr);
                         // alert(status);
-                        page.pt_start_payment_ui(false);
                     })
                     .always(function () {
                         $("body").trigger('processStop');
@@ -270,16 +482,59 @@ define(
                     });
             },
 
+            /**
+             * Do some changes to UI elements once the payment logic started or stopped
+             * @param {bool} is_start Payment check started
+             */
             pt_start_payment_ui: function (is_start) {
                 if (is_start) {
                     $('.payment-method._active .btn_place_order').hide('fast');
-                    $('.payment-method._active .btn_pay').show('fast');
                 } else {
                     $('.payment-method._active .btn_place_order').show('fast');
-                    $('.payment-method._active .btn_pay').hide('fast');
+                    // this.pt_set_status('', '');
                 }
             },
 
+            /**
+             * Display a message for a specific duration with specific status
+             * @param {string} status css class (info, error, warning, notice, success)
+             * @param {string} msg the message
+             * @param {bool} append the new message to any existing message
+             * @param {number} period numbers of seconds
+             */
+            pt_set_status: function (status, msg, append = false, period = 5) {
+                let classes = 'info error warning notice success';
+
+                let panel = $('.payment-method._active .pt_status_message');
+                $(panel)
+                    .removeClass(classes)
+                    .addClass(status)
+                    .show('fast');
+
+                if (this.payment_info.status_interval) {
+                    clearInterval(this.payment_info.status_interval);
+                    this.payment_info.status_interval = null;
+                } else {
+                    append = false;
+                }
+
+                if (append) {
+                    let separator = $(panel).text().trim() != '' ? ', ' : '';
+                    $(panel).append(separator + msg)
+                } else {
+                    $(panel).text(msg)
+                }
+
+                this.payment_info.status_interval = setTimeout(function () {
+                    $(panel).hide('fast');
+                }, period * 1000);
+            },
+
+            /**
+             * Create a new iFrame element with the payment link as the src
+             * @param {url} src the payment page link
+             * @returns element iFrame
+             */
             displayIframe: function (src) {
                 let pt_iframe = $('<iframe>', {
                     src: src,
@@ -297,12 +552,13 @@ define(
                 // Hide the Address & Actions sections
                 this.displayIframeUI(true);
 
-                let isPreorder = this.isPaymentPreorder();
-                if (isPreorder) {
-                    this.ptStartPaymentListining(pt_iframe);
-                }
+                return pt_iframe;
             },
 
+            /**
+             * Control the UI elements of the payment method based on the iFrame Show or Hide
+             * @param {bool} show_iframe
+             */
             displayIframeUI: function (show_iframe) {
                 let classes = [
                     '.payment-method._active .payment-method-billing-address',
@@ -343,6 +599,10 @@ define(
                     typeof window.checkoutConfig.payment[this.getCode()].icon !== 'undefined';
             },
 
+            /**
+             * True if the exclude shipping fees is set to true & there is a shipping fees for this quote
+             * @returns bool
+             */
             shippingExcluded: function () {
                 let isEnabled = typeof window.checkoutConfig.payment[this.getCode()] !== 'undefined' &&
                     window.checkoutConfig.payment[this.getCode()].exclude_shipping === true;

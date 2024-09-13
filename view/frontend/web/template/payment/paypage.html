@@ -66,8 +66,24 @@
             </div>
 
         <div
-            data-bind="visible: isPaymentPreorder()"
+            data-bind="visible: isPaymentPreOrder()"
             class="paytabs_ref" style="margin-top: 10px; color: #2c89db;"></div>
+
+        <div class="pt_popup_warning" style="display: none;">
+            <div class="message warning">
+                <p>The payment page could not be opened automatically (Popup blocked maybe), Kindly use the link below to try again.</p>
+                <p>IMPORTANT: Please use the link below to try again, do not try to open the link externally</p>
+                <button
+                    data-bind="click: openPopup"
+                    class="pt_payment_url action">Complete the Payment</a>
+            </div>
+        </div>
+
+        <div class="pt_status">
+            <span
+                class="message pt_status_message"
+                style="display: none; text-align: center;"></span>
+        </div>
 
         <div class="actions-toolbar">
             <div class="primary">
@@ -81,12 +97,6 @@
                         "
                         disabled>
                     <span data-bind="i18n: 'Place Order'"></span>
-                </button>
-                <button class="action primary checkout btn_pay"
-                        type="submit"
-                        disabled
-                        style="display: none;">
-                    <span data-bind="i18n: 'Continue to Payment'"></span>
                 </button>
             </div>
         </div>

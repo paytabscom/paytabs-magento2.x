@@ -52,10 +52,13 @@ class Responsepre extends Action
 
         $_p_tran_ref = 'tranRef';
         $_p_cart_id = 'cartId';
+        $_p_close_page = 'close';
+
         $transactionId = $this->getRequest()->getParam($_p_tran_ref, null);
         $pOrderId = $this->getRequest()->getParam($_p_cart_id, null);
+        $pClosePage = (bool) $this->getRequest()->getParam($_p_close_page, false);
 
-        PaytabsHelper::log("Return pre [$pOrderId] [$transactionId]", 1);
+        PaytabsHelper::log("Return pre [$pOrderId] [$transactionId], [$pClosePage]", 1);
 
         //
 
@@ -75,6 +78,10 @@ class Responsepre extends Action
 
         $result = $this->rawResultFactory; //->create();
         $result->setContents('Done - Loading...');
+
+        if ($pClosePage) {
+            $result->setContents('<script>close()</script>');
+        }
 
         return $result;
     }

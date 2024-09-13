@@ -65,6 +65,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field> -->
 
+                <field id="payment_preorder" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Require payment prior to order placement (RC)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <group id="order_statuses" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Order Status</label>
                     <comment>It is always recommend to keep the default values unless it is necessary</comment>
@@ -160,14 +165,6 @@
             <group id="paytabs_iframe" translate="label" type="text" sortOrder="25" extends="paytabs">
                 <field id="iframe_mode" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>iFrame mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="payment_preorder">0</field>
-                    </depends>
-                </field>
-
-                <field id="payment_preorder" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Require payment prior to order placement (RC)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
