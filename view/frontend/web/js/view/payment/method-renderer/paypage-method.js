@@ -356,15 +356,17 @@ define(
              * Generates the Payment page, and then:
              * 1. PreOrder = false & iFrame = false
              *  Full redirect (normal behavior)
-             * 2. PreOrder = true & iFrame = true
+             * 2. PreOrder = false & iFrame = true
              *  Place the Order (Pending payment status) -> display the payment page inside iFrame.
-             * 3. PreOrder = false & iFrame = true
-             *  Stop the place order routine -> generate payment page
+             * 3. PreOrder = true & iFrame = true
+             *  Stop the place order routine -> generate payment page -> display the payment page in iFrame
              *  -> Collect the payment -> Continue the place routine
              *  (Backend will check the transaction status (success or fail))
-             * 4. PreOrder = false & iFrame = false
-             *  Open a Popup (Either new browser tab, or new Window depends on the browser settings)
-             *  Logic goes same as the 3rd logic
+             * 4. PreOrder = true & iFrame = false
+             *  Stop the place order routine -> generate payment page
+             *  -> Open a Popup (Either new browser tab, or new Window depends on the browser settings)
+             *  -> Collect the payment -> Continue the place routine
+             *  (Backend will check the transaction status (success or fail))
              */
             payPage: function () {
                 var page = this;
