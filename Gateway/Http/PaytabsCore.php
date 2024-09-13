@@ -1499,13 +1499,13 @@ class PaytabsApi
             'title' => 'Palestine',
             'endpoint' => 'https://secure-palestine.paytabs.com/'
         ],
-        'GLOBAL' => [
-            'title' => 'Global',
-            'endpoint' => 'https://secure-global.paytabs.com/'
-        ],
         'KWT' => [
             'title' => 'Kuwait',
             'endpoint' => 'https://secure-kuwait.paytabs.com/'
+        ],
+        'GLOBAL' => [
+            'title' => 'Global',
+            'endpoint' => 'https://secure-global.paytabs.com/'
         ],
         // 'DEMO' => [
         //     'title' => 'Demo',
