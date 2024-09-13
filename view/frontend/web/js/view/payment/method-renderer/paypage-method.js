@@ -110,6 +110,54 @@ define(
             },
 
             /**
+             * True if the payment has been opened
+             * But not yet completed
+             * @returns bool
+             */
+            isPaymentWaiting: function () {
+                return this.payment_info &&
+                    (this.payment_info.status == 'waiting_payment');
+            },
+
+            /**
+             * The class is external
+             * It uses variables from the window object
+             */
+            paymentObserver: {
+                isWaiting: function () {
+                    return (window.pt_waiting_payment == true);
+                },
+
+                init: function () {
+                    if (!window.pt_waiting_payment_init) {
+                        $(window).on("beforeunload", function () {
+                            if (window.pt_waiting_payment) {
+                                return confirm("There is a waiting payment already opened, kindly complete/close the pending payment request?");
+                            }
+                        });
+                        window.pt_waiting_payment_init = true;
+                    }
+                    return this;
+                },
+
+                confirm: function () {
+                    if (this.isWaiting()) {
+                        return confirm("There is a waiting payment already opened (" + window.pt_waiting_payment_code + "), kindly complete/close the pending payment request?");
+                    }
+                    return true;
+                },
+
+                set: function (code = null) {
+                    window.pt_waiting_payment = true;
+                    window.pt_waiting_payment_code = code;
+                },
+
+                clear: function () {
+                    window.pt_waiting_payment = false;
+                },
+            },
+
+            /**
              * True if the payment completed and the Place order logic attempt
              * @returns bool
              */
@@ -170,6 +218,10 @@ define(
             redirectAfterPlaceOrder: false,
 
             placeOrder: function (data, event) {
+                if (!this.paymentObserver.confirm()) {
+                    return;
+                }
+                this.paymentObserver.clear();
 
                 if (this.isPaymentPreOrder()) {
                     let force = false;
@@ -269,6 +321,9 @@ define(
                 }
 
                 this.pt_set_status('info', 'Waiting for the payment to complete', false, 18);
+
+                this.payment_info.status = 'waiting_payment';
+                this.paymentObserver.init().set(this.getTitle());
             },
 
             /**
@@ -280,6 +335,7 @@ define(
 
                 this.payment_info.status = 'completed';
                 this.payment_info.place_order_attempt = false;
+                this.paymentObserver.clear();
 
                 this.pt_set_status('info', 'Payment completed', false, 3);
 
