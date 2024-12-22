@@ -1,48 +1,12 @@
 <?php
 
-namespace PayTabs\PayPage\Gateway\Http;
-
-use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
-use stdClass;
-
-define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.23.0');
-
-function paytabs_error_log($msg, $severity = 3)
-{
-    $logger = PayTabsLogger::getInstance();
-
-    switch ($severity) {
-        case 2:
-            $logger->warning($msg);
-            break;
-
-        case 3:
-            $logger->error($msg);
-            break;
-
-        default:
-            $logger->info($msg);
-            break;
-    }
-}
-
-class PaytabsCore
-{
-    final static function getVersion()
-    {
-        return PAYTABS_PAYPAGE_VERSION;
-    }
-}
-
-
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.24.0
+ * Version: 2.26.0
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.24.0');
+define('PAYTABS_SDK_VERSION', '2.26.0');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -1468,6 +1432,8 @@ class PaytabsApi
         '26' => ['name' => 'amaninstallments', 'title' => 'PayTabs - Aman installments', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME, PaytabsApi::GROUP_REFUND]],
         '27' => ['name' => 'tamara', 'title' => 'PayTabs - Tamara', 'currencies' => ['AED', 'SAR'], 'groups' => [PaytabsApi::GROUP_IFRAME, PaytabsApi::GROUP_REFUND]],
         '28' => ['name' => 'halan', 'title' => 'PayTabs - Halan', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME]],
+        '29' => ['name' => 'tru', 'title' => 'PayTabs - TRU', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME, PaytabsApi::GROUP_REFUND]],
+        '30' => ['name' => 'basata', 'title' => 'PayTabs - Basata', 'currencies' => ['EGP'], 'groups' => [PaytabsApi::GROUP_IFRAME, PaytabsApi::GROUP_PENDING]],
     ];
 
     const BASE_URLS = [
