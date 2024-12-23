@@ -526,7 +526,7 @@
 
 
             <group id="basata" translate="label" extends="paytabs_iframe" sortOrder="292" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>PayTabs - BASATA</label>
+                <label>PayTabs - Basata</label>
 
                 <field id="payment_action" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Payment Action</label>
