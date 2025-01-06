@@ -37,6 +37,8 @@ final class ConfigProvider implements ConfigProviderInterface
     const CODE_TAMARA     = 'tamara';
     const CODE_HALAN      = 'halan';
     const CODE_BASATA     = 'basata';
+    const CODE_TRU        = 'tru';
+
 
     const CODE_VAULT_ALL = 'paytabs_all_vault';
 
@@ -139,6 +141,9 @@ final class ConfigProvider implements ConfigProviderInterface
             ],
             self::CODE_BASATA => [
                 'icon' => 'basata.svg'
+            ],
+             self::CODE_TRU => [
+                'icon' => 'tru.svg'
             ],
             self::CODE_VAULT_ALL => [
                 'vault_code' => self::CODE_VAULT_ALL
