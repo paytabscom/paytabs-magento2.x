@@ -206,6 +206,13 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PayPageTruFacade" type="PayPageAllFacade">
+        <arguments>
+            <argument name="code" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TRU</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PayPageValueHandlerPoolTru</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PayTabsAllVaultFacade" type="PayTabs\PayPage\Gateway\PayTabsVault">
         <arguments>
             <argument name="config" xsi:type="object">PayTabsAllVaultPaymentConfig</argument>
@@ -365,6 +372,11 @@
      <virtualType name="PayPageBasataConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_BASATA</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PayPageTruConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\PayTabs\PayPage\Model\Ui\ConfigProvider::CODE_TRU</argument>
         </arguments>
     </virtualType>
 
@@ -793,6 +805,13 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="PayPageValueHandlerPoolTru" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PayPageConfigValueHandlerTru</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="PayTabsVaultValueHandlerPool" type="VaultPaymentValueHandlerPool">
         <arguments>
@@ -944,6 +963,11 @@
     <virtualType name="PayPageConfigValueHandlerBasata" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PayPageBasataConfig</argument>
+        </arguments>
+    </virtualType>
+     <virtualType name="PayPageConfigValueHandlerTru" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PayPageTruConfig</argument>
         </arguments>
     </virtualType>
 
