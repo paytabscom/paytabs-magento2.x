@@ -1093,7 +1093,7 @@
 
             <tru>
                 <active>0</active>
-                <title>PayTabs - Tru</title>
+                <title>PayTabs - TRU</title>
                 <order_statuses>
                     <order_status>pending_payment</order_status>
                 </order_statuses>
