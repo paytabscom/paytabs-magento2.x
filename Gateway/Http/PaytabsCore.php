@@ -6,7 +6,7 @@ use PayTabs\PayPage\Logger\Handler\PayTabsLogger;
 use stdClass;
 
 define('PAYTABS_DEBUG_FILE', 'var/log/debug_paytabs.log');
-define('PAYTABS_PAYPAGE_VERSION', '3.25.0');
+define('PAYTABS_PAYPAGE_VERSION', '3.26.0');
 
 function paytabs_error_log($msg, $severity = 3)
 {
@@ -38,11 +38,11 @@ class PaytabsCore
 
 /**
  * PayTabs v2 PHP SDK
- * Version: 2.26.0
+ * Version: 2.27.0
  * PHP >= 7.0.0
  */
 
-define('PAYTABS_SDK_VERSION', '2.26.0');
+define('PAYTABS_SDK_VERSION', '2.27.0');
 
 define('PAYTABS_DEBUG_FILE_NAME', 'debug_paytabs.log');
 define('PAYTABS_DEBUG_SEVERITY', ['Info', 'Warning', 'Error']);
@@ -1496,10 +1496,6 @@ class PaytabsApi
         'IRQ' => [
             'title' => 'Iraq',
             'endpoint' => 'https://secure-iraq.paytabs.com/'
-        ],
-        'PSE' => [
-            'title' => 'Palestine',
-            'endpoint' => 'https://secure-palestine.paytabs.com/'
         ],
         'KWT' => [
             'title' => 'Kuwait',
