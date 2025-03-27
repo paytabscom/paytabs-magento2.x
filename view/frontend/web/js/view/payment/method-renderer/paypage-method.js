@@ -110,20 +110,15 @@ define(
             },
 
             /**
-             * True if the payment has been opened
-             * But not yet completed
-             * @returns bool
-             */
-            isPaymentWaiting: function () {
-                return this.payment_info &&
-                    (this.payment_info.status == 'waiting_payment');
-            },
-
-            /**
              * The class is external
              * It uses variables from the window object
              */
             paymentObserver: {
+                /**
+                 * True if the payment has been opened
+                 * But not yet completed
+                 * @returns bool
+                 */
                 isWaiting: function () {
                     return (window.pt_waiting_payment == true);
                 },
@@ -289,19 +284,23 @@ define(
                     return;
                 }
                 let page = this;
+                let preOrder = page.isPaymentPreOrder();
+
                 page.pendingPaymentHandler.type = type;
                 page.pendingPaymentHandler.handler = handler;
 
                 switch (type) {
                     case 'iframe':
-                        $(handler).on('load', function () {
-                            let c = $(this).contents().find('body').html();
-                            console.log('iframe ', c);
+                        if (preOrder) {
+                            $(handler).on('load', function () {
+                                let c = $(this).contents().find('body').html();
+                                console.log('iframe ', c);
 
-                            if (c == 'Done - Loading...') {
-                                page.ptAsyncPaymentCompleted();
-                            }
-                        });
+                                if (c == 'Done - Loading...') {
+                                    page.ptAsyncPaymentCompleted();
+                                }
+                            });
+                        }
                         break;
 
                     case 'popup':
@@ -323,7 +322,9 @@ define(
                 this.pt_set_status('info', 'Waiting for the payment to complete', false, 18);
 
                 this.payment_info.status = 'waiting_payment';
-                this.paymentObserver.init().set(this.getTitle());
+                if (preOrder) {
+                    this.paymentObserver.init().set(this.getTitle());
+                }
             },
 
             /**
