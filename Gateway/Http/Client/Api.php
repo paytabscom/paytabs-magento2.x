@@ -42,6 +42,7 @@ class Api
         $framed_mode = (bool) $paymentMethod->getConfigData('iframe_mode');
         $payment_action = $paymentMethod->getConfigData('payment_action');
         $exclude_shipping = (bool) $paymentMethod->getConfigData('exclude_shipping');
+        $ignore_phone = (bool) $paymentMethod->getConfigData('ignore_phone');
         $config_id = $paymentMethod->getConfigData('theme_config_id');
         //
         $cart_refill = (bool) $paymentMethod->getConfigData('order_statuses/order_failed_reorder');
@@ -199,7 +200,7 @@ class Api
             ->set04CustomerDetails(
                 $billingAddress->getName(),
                 $billingAddress->getEmail(),
-                $billingAddress->getTelephone(),
+                ($ignore_phone ? null : $billingAddress->getTelephone()),
                 $billing_address,
                 $billingAddress->getCity(),
                 $billingAddress->getRegionCode(),
