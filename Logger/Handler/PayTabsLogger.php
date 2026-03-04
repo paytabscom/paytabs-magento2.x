@@ -3,7 +3,7 @@
 namespace PayTabs\PayPage\Logger\Handler;
 
 use Magento\Framework\Filesystem\Driver\File as FileSystem;
-
+use PayTabs\PayPage\Gateway\Http\PaytabsCore;
 
 class PayTabsLogger extends \Monolog\Logger
 {
@@ -21,7 +21,7 @@ class PayTabsLogger extends \Monolog\Logger
 
     private function __construct()
     {
-        $handler = new ErrorHandler(new FileSystem(), null, PAYTABS_DEBUG_FILE);
+        $handler = new ErrorHandler(new FileSystem(), null, PaytabsCore::getLogFile());
 
         parent::__construct('PayTabs', [$handler]);
     }

@@ -33,6 +33,11 @@ class PaytabsCore
     {
         return PAYTABS_PAYPAGE_VERSION;
     }
+
+    final static function getLogFile()
+    {
+        return PAYTABS_DEBUG_FILE;
+    }
 }
 
 
