@@ -1552,7 +1552,7 @@ class PaytabsApi
         '11' => [
             'name' => 'valu',
             'title' => 'PayTabs - valU',
-            'currencies' => ['EGP'],
+            'currencies' => ['EGP','JOD'],
             'groups' => [
                 PaytabsApi::GROUP_IFRAME,
                 PaytabsApi::GROUP_REFUND
